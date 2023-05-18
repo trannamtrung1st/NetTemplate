@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="Cross\Commands\" />
+		<Folder Include="Cross\Constants\" />
+		<Folder Include="Cross\Events\" />
+		<Folder Include="Cross\Exceptions\" />
+		<Folder Include="Cross\Handlers\" />
+		<Folder Include="Cross\Implementations\" />
+		<Folder Include="Cross\Interfaces\" />
+		<Folder Include="Cross\Jobs\" />
+		<Folder Include="Cross\Mapping\" />
+		<Folder Include="Cross\Models\" />
+		<Folder Include="Cross\Queries\" />
+		<Folder Include="Cross\Utils\" />
+		<Folder Include="Comment\" />
+		<Folder Include="User\Exceptions\" />
+		<Folder Include="User\Models\" />
+		<Folder Include="User\Handlers\" />
+		<Folder Include="User\Commands\" />
+		<Folder Include="User\Mapping\" />
+		<Folder Include="User\Jobs\" />
+		<Folder Include="User\Queries\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.ApplicationCore\NetTemplate.Shared.ApplicationCore.csproj" />
+	</ItemGroup>
+
+</Project>

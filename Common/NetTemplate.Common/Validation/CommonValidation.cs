@@ -14,5 +14,8 @@ namespace NetTemplate.Common.Validation
 
         public static bool IsValidPhoneNumber(string phoneNo)
             => phoneNo != null && Regex.IsMatch(phoneNo, PhoneNumberRegex);
+
+        public static bool StringNotEmptyOrWhitespace(IEnumerable<string> values)
+            => values.All(val => !string.IsNullOrWhiteSpace(val));
     }
 }
