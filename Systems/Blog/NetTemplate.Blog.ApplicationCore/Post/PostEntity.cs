@@ -1,5 +1,6 @@
 ﻿using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory;
+using NetTemplate.Blog.ApplicationCore.User;
 using NetTemplate.Common.Validation;
 using NetTemplate.Shared.ApplicationCore.Constants;
 using NetTemplate.Shared.ApplicationCore.Entities;
@@ -23,6 +24,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 
         #region Non-aggregate relationships (Query-only)
 
+        public virtual UserPartialEntity Creator { get; set; }
         public virtual PostCategoryEntity Category { get; set; }
 
         #endregion

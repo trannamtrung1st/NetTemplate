@@ -19,7 +19,7 @@
    - Interfaces
      - Repositories
      - Services
-     - IUnitOfWork
+     - IUnitOfWork: final UoW
    - Utils: helpers/utils and extensions
 2. Business (use cases)
    - Models
@@ -33,7 +33,7 @@
    - Clients
    - Implementations
    - Handlers
-   - Background
+   - Background: jobs, job runners
    - Pub/Sub
    - Caching
    - Logging

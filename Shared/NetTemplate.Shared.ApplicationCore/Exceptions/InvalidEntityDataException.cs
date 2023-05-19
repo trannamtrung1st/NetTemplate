@@ -1,4 +1,4 @@
-﻿using Fammy.Domain;
+﻿using NetTemplate.Shared.ApplicationCore.Constants;
 
 namespace NetTemplate.Shared.ApplicationCore.Exceptions
 {

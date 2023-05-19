@@ -1,4 +1,4 @@
-﻿using NetTemplate.Shared.ApplicationCore.Interfaces.Repositories;
+﻿using NetTemplate.Shared.ApplicationCore.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory
 {

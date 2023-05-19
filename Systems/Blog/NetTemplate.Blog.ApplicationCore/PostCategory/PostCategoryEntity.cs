@@ -1,5 +1,6 @@
 ﻿using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
+using NetTemplate.Blog.ApplicationCore.User;
 using NetTemplate.Shared.ApplicationCore.Constants;
 using NetTemplate.Shared.ApplicationCore.Entities;
 using NetTemplate.Shared.ApplicationCore.Exceptions;
@@ -17,6 +18,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
 
         #region Non-aggregate relationships (Query-only)
 
+        public virtual UserPartialEntity Creator { get; set; }
         public virtual IEnumerable<PostEntity> Posts { get; set; }
 
         #endregion
@@ -35,6 +37,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
         }
 
         #region Validation rules
+
         private bool ValidateNew(string name, out Exception ex)
         {
             List<string> invalidFields = new List<string>();
@@ -53,6 +56,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
 
             return ex == null;
         }
+
         #endregion
 
         public override int TransientIdValue() => default;

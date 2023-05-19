@@ -6,6 +6,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post
     public class PostTagEntity : AppAuditableEntity<int>
     {
         public string Value { get; private set; }
+        public int PostId { get; private set; }
 
         public PostTagEntity(string value)
         {

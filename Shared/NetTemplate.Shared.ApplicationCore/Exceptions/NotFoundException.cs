@@ -1,5 +1,5 @@
-﻿using Fammy.Domain;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
+using NetTemplate.Shared.ApplicationCore.Constants;
 
 namespace NetTemplate.Shared.ApplicationCore.Exceptions
 {

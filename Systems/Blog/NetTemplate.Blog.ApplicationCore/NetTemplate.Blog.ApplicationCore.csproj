@@ -18,17 +18,15 @@
 		<Folder Include="Cross\Models\" />
 		<Folder Include="Cross\Queries\" />
 		<Folder Include="Cross\Utils\" />
-		<Folder Include="Comment\" />
 		<Folder Include="User\Exceptions\" />
 		<Folder Include="User\Models\" />
 		<Folder Include="User\Handlers\" />
-		<Folder Include="User\Commands\" />
 		<Folder Include="User\Mapping\" />
-		<Folder Include="User\Jobs\" />
 		<Folder Include="User\Queries\" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.ApplicationCore.Domains\NetTemplate.Shared.ApplicationCore.Domains.csproj" />
 	  <ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.ApplicationCore\NetTemplate.Shared.ApplicationCore.csproj" />
 	</ItemGroup>
 

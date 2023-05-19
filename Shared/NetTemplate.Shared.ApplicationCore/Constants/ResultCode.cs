@@ -1,8 +1,7 @@
-﻿using NetTemplate.Shared.ApplicationCore.Constants;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Fammy.Domain
+namespace NetTemplate.Shared.ApplicationCore.Constants
 {
     public enum ResultCode
     {

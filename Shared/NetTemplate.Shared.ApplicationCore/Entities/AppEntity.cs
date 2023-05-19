@@ -33,7 +33,7 @@ namespace NetTemplate.Shared.ApplicationCore.Entities
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is AppAuditableEntity<TId>))
+            if (obj == null || !(obj is AppEntity<TId>))
                 return false;
 
             if (ReferenceEquals(this, obj))
@@ -42,7 +42,7 @@ namespace NetTemplate.Shared.ApplicationCore.Entities
             if (GetType() != obj.GetType())
                 return false;
 
-            AppAuditableEntity<TId> item = (AppAuditableEntity<TId>)obj;
+            AppEntity<TId> item = (AppEntity<TId>)obj;
 
             return item.Id?.Equals(Id) == true;
         }
@@ -74,21 +74,21 @@ namespace NetTemplate.Shared.ApplicationCore.Entities
         }
     }
 
-    public abstract class AppAuditableEntity<TId> : AppEntity<TId>, IAuditableEntity<TId>
+    public abstract class AppAuditableEntity<TId> : AppEntity<TId>, IAuditableEntity<int>
     {
         protected AppAuditableEntity() : base()
         {
         }
 
-        public TId CreatorId { get; set; }
-        public TId LastModifyUserId { get; set; }
+        public int? CreatorId { get; set; }
+        public int? LastModifyUserId { get; set; }
         public DateTimeOffset CreatedTime { get; set; }
         public DateTimeOffset? LastModifiedTime { get; set; }
     }
 
-    public abstract class AppFullAuditableEntity<TId> : AppAuditableEntity<TId>, ISoftDeleteEntity<TId>
+    public abstract class AppFullAuditableEntity<TId> : AppAuditableEntity<TId>, ISoftDeleteEntity<int>
     {
-        public TId DeletorId { get; set; }
+        public int? DeletorId { get; set; }
         public DateTimeOffset? DeletedTime { get; set; }
         public bool IsDeleted { get; set; }
     }
