@@ -2,7 +2,7 @@
 
 namespace NetTemplate.Blog.ApplicationCore.Post
 {
-    public interface IPostRepository : ISoftDeleteRepository<PostEntity>
+    public interface IPostRepository : IRepository<PostEntity>
     {
     }
 }

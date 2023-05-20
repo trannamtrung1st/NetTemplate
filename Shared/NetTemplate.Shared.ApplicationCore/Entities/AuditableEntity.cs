@@ -2,25 +2,34 @@
 {
     public interface IAuditableEntity
     {
-        public DateTimeOffset CreatedTime { get; set; }
-        public DateTimeOffset? LastModifiedTime { get; set; }
+        DateTimeOffset CreatedTime { get; }
+        DateTimeOffset? LastModifiedTime { get; }
+
+        void SetCreatedTime(DateTimeOffset time);
+        void SetLastModifiedTime(DateTimeOffset? time);
     }
 
     public interface IAuditableEntity<TUserKey> : IAuditableEntity where TUserKey : struct
     {
-        public TUserKey? CreatorId { get; set; }
-        public TUserKey? LastModifyUserId { get; set; }
+        TUserKey? CreatorId { get; }
+        TUserKey? LastModifyUserId { get; }
+
+        void SetCreatorId(TUserKey? key);
+        void SetLastModifyUserId(TUserKey? key);
     }
 
     public interface ISoftDeleteEntity
     {
-        public DateTimeOffset? DeletedTime { get; set; }
-        public bool IsDeleted { get; set; }
+        DateTimeOffset? DeletedTime { get; }
+        bool IsDeleted { get; }
 
+        void SoftDelete();
     }
 
     public interface ISoftDeleteEntity<TUserKey> : ISoftDeleteEntity where TUserKey : struct
     {
-        public TUserKey? DeletorId { get; set; }
+        TUserKey? DeletorId { get; }
+
+        void SetDeletorId(TUserKey? key);
     }
 }

@@ -80,16 +80,47 @@ namespace NetTemplate.Shared.ApplicationCore.Entities
         {
         }
 
-        public int? CreatorId { get; set; }
-        public int? LastModifyUserId { get; set; }
-        public DateTimeOffset CreatedTime { get; set; }
-        public DateTimeOffset? LastModifiedTime { get; set; }
+        public int? CreatorId { get; protected set; }
+        public int? LastModifyUserId { get; protected set; }
+        public DateTimeOffset CreatedTime { get; protected set; }
+        public DateTimeOffset? LastModifiedTime { get; protected set; }
+
+        public virtual void SetCreatedTime(DateTimeOffset time)
+        {
+            CreatedTime = time;
+        }
+
+        public virtual void SetCreatorId(int? key)
+        {
+            CreatorId = key;
+        }
+
+        public virtual void SetLastModifiedTime(DateTimeOffset? time)
+        {
+            LastModifiedTime = time;
+        }
+
+        public virtual void SetLastModifyUserId(int? key)
+        {
+            LastModifyUserId = key;
+        }
     }
 
     public abstract class AppFullAuditableEntity<TId> : AppAuditableEntity<TId>, ISoftDeleteEntity<int>
     {
-        public int? DeletorId { get; set; }
-        public DateTimeOffset? DeletedTime { get; set; }
-        public bool IsDeleted { get; set; }
+        public int? DeletorId { get; protected set; }
+        public DateTimeOffset? DeletedTime { get; protected set; }
+        public bool IsDeleted { get; protected set; }
+
+        public virtual void SetDeletorId(int? key)
+        {
+            DeletorId = key;
+        }
+
+        public virtual void SoftDelete()
+        {
+            IsDeleted = true;
+            DeletedTime = DateTimeOffset.UtcNow;
+        }
     }
 }

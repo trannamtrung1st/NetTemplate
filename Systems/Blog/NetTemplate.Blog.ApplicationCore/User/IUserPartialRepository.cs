@@ -2,7 +2,7 @@
 
 namespace NetTemplate.Blog.ApplicationCore.User
 {
-    public interface IUserPartialRepository : ISoftDeleteRepository<UserPartialEntity>
+    public interface IUserPartialRepository : IRepository<UserPartialEntity>
     {
     }
 }

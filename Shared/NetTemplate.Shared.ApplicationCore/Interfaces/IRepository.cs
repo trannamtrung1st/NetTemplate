@@ -11,10 +11,4 @@ namespace NetTemplate.Shared.ApplicationCore.Interfaces
         Task<T> DeleteAsync(T entity);
         Task<T> TrackAsync(T entity);
     }
-
-    public interface ISoftDeleteRepository<T> : IRepository<T>
-        where T : class, IAggregateRoot, ISoftDeleteEntity
-    {
-        Task<T> SoftDeleteAsync(T entity);
-    }
 }

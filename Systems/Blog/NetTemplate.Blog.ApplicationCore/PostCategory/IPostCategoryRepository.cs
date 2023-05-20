@@ -2,7 +2,7 @@
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory
 {
-    public interface IPostCategoryRepository : ISoftDeleteRepository<PostCategoryEntity>
+    public interface IPostCategoryRepository : IRepository<PostCategoryEntity>
     {
     }
 }

@@ -68,15 +68,26 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             QueuePipelineEvent(new PostUpdatedEvent(this.Id, title, content, categoryId));
         }
 
-        public void UpdateTags(IEnumerable<PostTagEntity> tags)
+        public override void SoftDelete()
         {
-            if (tags == null) throw new ArgumentNullException(nameof(tags));
+            object _ = ValidateDelete(out Exception ex) ? null : throw ex;
+
+            base.SoftDelete();
+
+            QueuePipelineEvent(new PostDeletedEvent(this.Id));
+        }
+
+        public void UpdateTags(IEnumerable<string> updatedTags)
+        {
+            if (updatedTags == null) throw new ArgumentNullException(nameof(updatedTags));
 
             if (_tags == null) throw new InvalidEntityDataException(nameof(Tags));
 
-            _tags.RemoveAll(currentTag => !tags.Contains(currentTag));
+            _tags.RemoveAll(currentTag => !updatedTags.Contains(currentTag.Value));
 
-            PostTagEntity[] newTags = tags.Where(t => t.IsTransient()).ToArray();
+            PostTagEntity[] newTags = updatedTags
+                .Where(t => !_tags.Any(currentTag => currentTag.Value == t))
+                .Select(t => new PostTagEntity(t)).ToArray();
 
             _tags.AddRange(newTags);
 
@@ -105,6 +116,13 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             invalidFields.AddRange(ValidatePostCommon(title, content, categoryId));
 
             ex = invalidFields.Count > 0 ? new InvalidEntityDataException(invalidFields.ToArray()) : null;
+
+            return ex == null;
+        }
+
+        private bool ValidateDelete(out Exception ex)
+        {
+            ex = null;
 
             return ex == null;
         }

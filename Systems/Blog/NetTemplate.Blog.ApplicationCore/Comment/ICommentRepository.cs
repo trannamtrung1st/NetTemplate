@@ -2,7 +2,7 @@
 
 namespace NetTemplate.Blog.ApplicationCore.Comment
 {
-    public interface ICommentRepository : ISoftDeleteRepository<CommentEntity>
+    public interface ICommentRepository : IRepository<CommentEntity>
     {
     }
 }
