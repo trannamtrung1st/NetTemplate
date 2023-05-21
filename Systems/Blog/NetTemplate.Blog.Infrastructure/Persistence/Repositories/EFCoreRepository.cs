@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NetTemplate.Blog.Infrastructure.Persistence.Extensions;
-using NetTemplate.Shared.ApplicationCore.Entities;
-using NetTemplate.Shared.ApplicationCore.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence.Repositories
 {

@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Common.Reflection;
-using NetTemplate.Shared.ApplicationCore.Interfaces;
-using NetTemplate.Shared.ApplicationCore.Models;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence.Behaviors
 {

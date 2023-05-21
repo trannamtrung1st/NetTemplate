@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTemplate.Blog.Infrastructure.Persistence.Interfaces;
 using NetTemplate.Common.Reflection;
-using NetTemplate.Shared.ApplicationCore.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using System.Linq.Expressions;
 using System.Reflection;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using NetTemplate.Blog.Infrastructure.Persistence.Interfaces;
-using NetTemplate.Shared.ApplicationCore.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using System.Linq.Expressions;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence.QueryFilters

@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
-using NetTemplate.Shared.ApplicationCore.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.User.Commands.SyncUsers
 {

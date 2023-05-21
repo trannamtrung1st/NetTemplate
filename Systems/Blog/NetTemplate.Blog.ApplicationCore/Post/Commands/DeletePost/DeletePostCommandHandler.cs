@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using NetTemplate.Shared.ApplicationCore.Exceptions;
-using NetTemplate.Shared.ApplicationCore.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Commands.DeletePost
 {

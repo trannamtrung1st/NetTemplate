@@ -5,15 +5,12 @@
         public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
-        public PostCategoryView Category { get; set; }
+        public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
         public IEnumerable<string> Tags { get; set; }
         public int? CreatorId { get; set; }
-        public string CreatorName { get; set; }
-
-        public class PostCategoryView
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-        }
+        public string CreatorName => $"{(FirstName != null ? $"{FirstName} " : "")}{LastName}";
+        private string FirstName { get; set; }
+        private string LastName { get; set; }
     }
 }

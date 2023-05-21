@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage;
 using NetTemplate.Blog.Infrastructure.Persistence.Extensions;
 using NetTemplate.Common.Mediator;
-using NetTemplate.Shared.ApplicationCore.Entities;
-using NetTemplate.Shared.ApplicationCore.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
+using NetTemplate.Shared.ApplicationCore.Identity.Interfaces;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence
 {

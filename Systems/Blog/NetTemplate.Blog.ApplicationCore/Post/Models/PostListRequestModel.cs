@@ -1,4 +1,4 @@
-﻿using NetTemplate.Shared.ApplicationCore.Models;
+﻿using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Models
 {

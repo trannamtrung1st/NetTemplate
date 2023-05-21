@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using NetTemplate.Blog.ApplicationCore.Post.Models;
-using SharedConstraints = NetTemplate.Shared.ApplicationCore.Constants.Constraints;
+using SharedConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Validators
 {

@@ -1,8 +1,8 @@
 ﻿using NetTemplate.Blog.ApplicationCore.Comment.Events;
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.User;
-using NetTemplate.Shared.ApplicationCore.Entities;
-using NetTemplate.Shared.ApplicationCore.Exceptions;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 
 namespace NetTemplate.Blog.ApplicationCore.Comment
 {

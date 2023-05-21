@@ -1,5 +1,5 @@
 ﻿using NetTemplate.Blog.Infrastructure.Persistence;
-using NetTemplate.Shared.ApplicationCore.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.Infrastructure
 {

@@ -1,9 +1,9 @@
 ﻿using NetTemplate.Blog.ApplicationCore.User.Events;
 using NetTemplate.Common.Validation;
-using NetTemplate.Shared.ApplicationCore.Constants;
-using NetTemplate.Shared.ApplicationCore.Entities;
-using NetTemplate.Shared.ApplicationCore.Exceptions;
-using NetTemplate.Shared.ApplicationCore.Utils;
+using NetTemplate.Shared.ApplicationCore.Common.Constants;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
+using NetTemplate.Shared.ApplicationCore.Common.Utils;
 
 namespace NetTemplate.Blog.ApplicationCore.User
 {

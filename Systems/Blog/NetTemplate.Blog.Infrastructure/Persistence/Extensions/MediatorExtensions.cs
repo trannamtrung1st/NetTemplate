@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using NetTemplate.Shared.ApplicationCore.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence.Extensions
 {

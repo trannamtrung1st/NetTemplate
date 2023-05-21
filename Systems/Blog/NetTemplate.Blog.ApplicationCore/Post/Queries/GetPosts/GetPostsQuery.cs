@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using NetTemplate.Blog.ApplicationCore.Post.Models;
-using NetTemplate.Shared.ApplicationCore.Models;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
 {

@@ -1,4 +1,4 @@
-﻿using NetTemplate.Shared.ApplicationCore.Interfaces;
+﻿using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.User
 {

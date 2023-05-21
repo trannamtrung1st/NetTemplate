@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Blog.ApplicationCore.Post.Models;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
-using NetTemplate.Shared.ApplicationCore.Models;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
 {
@@ -35,7 +35,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
         {
             _validator.ValidateAndThrow(request);
 
-            return _postViewManager.IsReady
+            return _postViewManager.IsAvailable
                 ? await HandleUsingView(request, cancellationToken)
                 : await HandleUsingRepository(request, cancellationToken);
         }
@@ -53,7 +53,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
 
             if (model.CategoryId != null)
             {
-                views = views.Where(e => e.Category.Id == model.CategoryId);
+                views = views.Where(e => e.CategoryId == model.CategoryId);
             }
 
             int total = views.Count();
