@@ -18,6 +18,12 @@
 		<Folder Include="Cross\Models\" />
 		<Folder Include="Cross\Queries\" />
 		<Folder Include="Cross\Utils\" />
+		<Folder Include="PostCategory\Commands\UpdatePostCategory\" />
+		<Folder Include="PostCategory\Commands\DeletePostCategory\" />
+		<Folder Include="PostCategory\Commands\CreatePostCategory\" />
+		<Folder Include="PostCategory\Models\" />
+		<Folder Include="PostCategory\Validators\" />
+		<Folder Include="Post\Queries\GetPostDetails\" />
 		<Folder Include="User\Exceptions\" />
 		<Folder Include="User\Models\" />
 		<Folder Include="User\Handlers\" />
