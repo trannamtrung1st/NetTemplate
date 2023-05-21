@@ -2,18 +2,9 @@
 {
     public abstract class BaseFilterQuery : IPagingQuery, ISearchQuery
     {
-        public BaseFilterQuery() { }
-        public BaseFilterQuery(string terms,
-            int skip, int? take)
-        {
-            Terms = terms;
-            Skip = skip;
-            Take = take;
-        }
-
-        public string Terms { get; }
-        public int Skip { get; }
-        public int? Take { get; }
+        public string Terms { get; set; }
+        public int Skip { get; set; }
+        public int? Take { get; set; }
 
         public abstract bool CanGetAll();
     }

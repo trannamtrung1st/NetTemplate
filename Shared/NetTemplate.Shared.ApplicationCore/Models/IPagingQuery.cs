@@ -2,8 +2,8 @@
 {
     public interface IPagingQuery
     {
-        int Skip { get; }
-        int? Take { get; }
+        int Skip { get; set; }
+        int? Take { get; set; }
         bool CanGetAll();
     }
 }

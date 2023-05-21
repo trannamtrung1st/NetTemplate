@@ -2,6 +2,6 @@
 {
     public interface ISearchQuery
     {
-        string Terms { get; }
+        string Terms { get; set; }
     }
 }
