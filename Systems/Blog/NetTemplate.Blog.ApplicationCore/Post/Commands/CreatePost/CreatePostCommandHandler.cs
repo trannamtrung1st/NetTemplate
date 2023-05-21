@@ -34,7 +34,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.CreatePost
 
             PostEntity entity = new PostEntity(model.Title, model.Content, model.CategoryId, tags);
 
-            await _postRepository.CreateAsync(entity);
+            await _postRepository.Create(entity);
 
             await _unitOfWork.CommitChanges();
         }

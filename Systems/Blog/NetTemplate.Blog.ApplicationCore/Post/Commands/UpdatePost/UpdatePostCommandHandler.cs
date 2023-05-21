@@ -31,7 +31,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdatePost
 
             Models.UpdatePostModel model = request.Model;
 
-            PostEntity entity = await _postRepository.FindByIdAsync(model.Id);
+            PostEntity entity = await _postRepository.FindById(model.Id);
 
             if (entity == null) throw new NotFoundException();
 

@@ -5,10 +5,10 @@ namespace NetTemplate.Shared.ApplicationCore.Interfaces
     public interface IRepository<T> where T : class, IAggregateRoot
     {
         IQueryable<T> GetQuery();
-        Task<T> FindByIdAsync(params object[] keys);
-        Task<T> CreateAsync(T entity);
-        Task<T> UpdateAsync(T entity);
-        Task<T> DeleteAsync(T entity);
-        Task<T> TrackAsync(T entity);
+        Task<T> FindById(params object[] keys);
+        Task<T> Create(T entity);
+        Task<T> Update(T entity);
+        Task<T> Delete(T entity);
+        Task<T> Track(T entity);
     }
 }

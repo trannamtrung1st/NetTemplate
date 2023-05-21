@@ -70,6 +70,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
             return new ListResponseModel<PostListItemModel>(total, list);
         }
 
+        // [NOTE] Optional, we can use views only
         private async Task<ListResponseModel<PostListItemModel>> HandleUsingRepository(GetPostsQuery request, CancellationToken cancellationToken)
         {
             PostListRequestModel model = request.Model;

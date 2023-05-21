@@ -9,5 +9,11 @@
         public IEnumerable<string> Tags { get; set; }
         public int? CreatorId { get; set; }
         public string CreatorName { get; set; }
+
+        public class PostCategoryView
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
     }
 }

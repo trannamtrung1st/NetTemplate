@@ -5,8 +5,8 @@
         DateTimeOffset CreatedTime { get; }
         DateTimeOffset? LastModifiedTime { get; }
 
-        void SetCreatedTime(DateTimeOffset time);
-        void SetLastModifiedTime(DateTimeOffset? time);
+        void UpdateCreatedTime();
+        void UpdateLastModifiedTime();
     }
 
     public interface IAuditableEntity<TUserKey> : IAuditableEntity where TUserKey : struct

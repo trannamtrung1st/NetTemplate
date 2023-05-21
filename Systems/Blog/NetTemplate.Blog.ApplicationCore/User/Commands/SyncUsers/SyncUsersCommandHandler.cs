@@ -53,7 +53,7 @@ namespace NetTemplate.Blog.ApplicationCore.User.Commands.SyncUsers
                             identityUser.LastName,
                             identityUser.IsActive);
 
-                        await _userPartialRepository.CreateAsync(currentUser);
+                        await _userPartialRepository.Create(currentUser);
                     }
                     else
                     {

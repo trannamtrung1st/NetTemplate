@@ -32,6 +32,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="AutoMapper" Version="12.0.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.ApplicationCore.Domains\NetTemplate.Shared.ApplicationCore.Domains.csproj" />
 	  <ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.ApplicationCore\NetTemplate.Shared.ApplicationCore.csproj" />
 	</ItemGroup>

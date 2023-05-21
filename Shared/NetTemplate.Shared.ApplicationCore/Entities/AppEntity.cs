@@ -85,9 +85,9 @@ namespace NetTemplate.Shared.ApplicationCore.Entities
         public DateTimeOffset CreatedTime { get; protected set; }
         public DateTimeOffset? LastModifiedTime { get; protected set; }
 
-        public virtual void SetCreatedTime(DateTimeOffset time)
+        public virtual void UpdateCreatedTime()
         {
-            CreatedTime = time;
+            CreatedTime = DateTimeOffset.UtcNow;
         }
 
         public virtual void SetCreatorId(int? key)
@@ -95,9 +95,9 @@ namespace NetTemplate.Shared.ApplicationCore.Entities
             CreatorId = key;
         }
 
-        public virtual void SetLastModifiedTime(DateTimeOffset? time)
+        public virtual void UpdateLastModifiedTime()
         {
-            LastModifiedTime = time;
+            LastModifiedTime = DateTimeOffset.UtcNow;
         }
 
         public virtual void SetLastModifyUserId(int? key)
