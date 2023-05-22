@@ -23,11 +23,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.Blog.Applicatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.Shared.ApplicationCore.Domains", "Shared\NetTemplate.Shared.ApplicationCore.Domains\NetTemplate.Shared.ApplicationCore.Domains.csproj", "{40CCB8B9-3C1B-4616-A35E-0166D84CB877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTemplate.Blog.Infrastructure", "Systems\Blog\NetTemplate.Blog.Infrastructure\NetTemplate.Blog.Infrastructure.csproj", "{04CACE58-8AA8-492F-A6CF-38C3DE11E746}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.Blog.Infrastructure", "Systems\Blog\NetTemplate.Blog.Infrastructure\NetTemplate.Blog.Infrastructure.csproj", "{04CACE58-8AA8-492F-A6CF-38C3DE11E746}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTemplate.Shared.Infrastructure", "Shared\NetTemplate.Shared.Infrastructure\NetTemplate.Shared.Infrastructure.csproj", "{7B6ECB48-4B91-413E-97C7-9F3D5789EE3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.Shared.Infrastructure", "Shared\NetTemplate.Shared.Infrastructure\NetTemplate.Shared.Infrastructure.csproj", "{7B6ECB48-4B91-413E-97C7-9F3D5789EE3B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.Blog.Infrastructure.Domains", "Systems\Blog\NetTemplate.Blog.Infrastructure.Domains\NetTemplate.Blog.Infrastructure.Domains.csproj", "{72D65D48-7618-4895-96C3-DCADBAFC6637}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.Shared.Infrastructure.Domains", "Shared\NetTemplate.Shared.Infrastructure.Domains\NetTemplate.Shared.Infrastructure.Domains.csproj", "{227709DC-053D-4C86-9CE7-59BE2EC339B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTemplate.Shared.ClientSDK", "Shared\NetTemplate.Shared.ClientSDK\NetTemplate.Shared.ClientSDK.csproj", "{F4507A7B-9D13-424E-BF16-547F1B8D24A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +71,14 @@ Global
 		{72D65D48-7618-4895-96C3-DCADBAFC6637}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D65D48-7618-4895-96C3-DCADBAFC6637}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72D65D48-7618-4895-96C3-DCADBAFC6637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{227709DC-053D-4C86-9CE7-59BE2EC339B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{227709DC-053D-4C86-9CE7-59BE2EC339B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{227709DC-053D-4C86-9CE7-59BE2EC339B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{227709DC-053D-4C86-9CE7-59BE2EC339B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4507A7B-9D13-424E-BF16-547F1B8D24A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4507A7B-9D13-424E-BF16-547F1B8D24A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4507A7B-9D13-424E-BF16-547F1B8D24A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4507A7B-9D13-424E-BF16-547F1B8D24A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +94,8 @@ Global
 		{04CACE58-8AA8-492F-A6CF-38C3DE11E746} = {6C99D2B1-F5FF-455A-BE67-BD8ADD1FD4E6}
 		{7B6ECB48-4B91-413E-97C7-9F3D5789EE3B} = {34C75EB4-F01E-444C-A48E-D4E863BDC178}
 		{72D65D48-7618-4895-96C3-DCADBAFC6637} = {6C99D2B1-F5FF-455A-BE67-BD8ADD1FD4E6}
+		{227709DC-053D-4C86-9CE7-59BE2EC339B1} = {34C75EB4-F01E-444C-A48E-D4E863BDC178}
+		{F4507A7B-9D13-424E-BF16-547F1B8D24A3} = {34C75EB4-F01E-444C-A48E-D4E863BDC178}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2119FE8C-EDF8-4B3A-B6DC-A62DC2C39512}

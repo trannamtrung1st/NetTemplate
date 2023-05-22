@@ -8,11 +8,4 @@ namespace NetTemplate.Shared.ApplicationCore.Identity.Interfaces
         string UserCode { get; }
         int? UserId { get; }
     }
-
-    public class NullCurrentUserProvider : ICurrentUserProvider
-    {
-        public ClaimsPrincipal User { get; }
-        public string UserCode { get; }
-        public int? UserId { get; }
-    }
 }
