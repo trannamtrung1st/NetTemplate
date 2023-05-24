@@ -14,7 +14,7 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Constants
 
         [Display(GroupName = nameof(Common))]
         [Description(Messages.Common.NotFound)]
-        Common_PostNotFound = Common + 2,
+        Common_NotFound = Common + 2,
 
         [Display(GroupName = nameof(Common))]
         [Description(Messages.Common.BadRequest)]

@@ -6,4 +6,8 @@
 		<OutputType>Library</OutputType>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+	</ItemGroup>
+
 </Project>

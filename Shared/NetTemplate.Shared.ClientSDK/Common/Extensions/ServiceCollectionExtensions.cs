@@ -6,7 +6,7 @@ namespace NetTemplate.Shared.ClientSDK.Common.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddClientServices(this IServiceCollection services)
+        public static IServiceCollection AddClientSdkHandlers(this IServiceCollection services)
         {
             return services.AddScoped<WrapHttpErrorResponseHandler>();
         }

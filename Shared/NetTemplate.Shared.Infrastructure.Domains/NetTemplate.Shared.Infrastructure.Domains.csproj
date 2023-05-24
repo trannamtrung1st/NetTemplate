@@ -5,4 +5,11 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Common\NetTemplate.Common\NetTemplate.Common.csproj" />
+	  <ProjectReference Include="..\NetTemplate.Shared.ApplicationCore.Domains\NetTemplate.Shared.ApplicationCore.Domains.csproj" />
+	  <ProjectReference Include="..\NetTemplate.Shared.ClientSDK\NetTemplate.Shared.ClientSDK.csproj" />
+	  <ProjectReference Include="..\NetTemplate.Shared.Infrastructure\NetTemplate.Shared.Infrastructure.csproj" />
+	</ItemGroup>
+
 </Project>

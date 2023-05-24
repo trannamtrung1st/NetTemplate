@@ -6,7 +6,7 @@ using System.Net;
 
 namespace NetTemplate.Shared.Infrastructure.Resilience.Utils
 {
-    public static class ResiliencePolicy
+    public static class PollyHelper
     {
         public const string TransientErrorPolicy = nameof(TransientErrorPolicy);
         public const string TransientHttpErrorPolicy = nameof(TransientHttpErrorPolicy);
