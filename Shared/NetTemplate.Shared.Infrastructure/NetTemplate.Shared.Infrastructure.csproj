@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -8,17 +8,31 @@
 	<ItemGroup>
 		<ProjectReference Include="..\NetTemplate.Shared.ApplicationCore.Domains\NetTemplate.Shared.ApplicationCore.Domains.csproj" />
 		<ProjectReference Include="..\NetTemplate.Shared.ApplicationCore\NetTemplate.Shared.ApplicationCore.csproj" />
+		<ProjectReference Include="..\NetTemplate.Shared.ClientSDK\NetTemplate.Shared.ClientSDK.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Autofac" Version="7.0.1" />
+		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.1" />
 		<PackageReference Include="EasyCaching.Core" Version="1.9.0" />
-		<PackageReference Include="Hangfire.Core" Version="1.8.1" />
+		<PackageReference Include="EasyCaching.InMemory" Version="1.9.0" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+		<PackageReference Include="Scrutor" Version="4.2.2" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.16" />
 		<PackageReference Include="Polly" Version="7.2.3" />
+		<PackageReference Include="Hangfire" Version="1.8.1" />
 		<PackageReference Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
 		<PackageReference Include="TimeZoneConverter" Version="6.1.0" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Persistence\Implementations\" />
+		<Folder Include="Persistence\Models\" />
 	</ItemGroup>
 
 </Project>

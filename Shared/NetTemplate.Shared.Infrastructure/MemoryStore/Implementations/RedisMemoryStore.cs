@@ -1,4 +1,4 @@
-﻿using NetTemplate.Shared.ApplicationCore.MemoryStore.Interfaces;
+﻿using NetTemplate.Common.MemoryStore.Interfaces;
 
 namespace NetTemplate.Shared.Infrastructure.MemoryStore.Implementations
 {

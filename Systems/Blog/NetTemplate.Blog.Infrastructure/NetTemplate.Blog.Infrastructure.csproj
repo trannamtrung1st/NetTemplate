@@ -14,4 +14,12 @@
 		<ProjectReference Include="..\NetTemplate.Blog.ApplicationCore\NetTemplate.Blog.ApplicationCore.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Persistence\Extensions\" />
+	  <Folder Include="Persistence\Interfaces\" />
+	  <Folder Include="Persistence\Models\" />
+	  <Folder Include="Persistence\QueryFilters\" />
+	  <Folder Include="Persistence\Repositories\" />
+	</ItemGroup>
+
 </Project>

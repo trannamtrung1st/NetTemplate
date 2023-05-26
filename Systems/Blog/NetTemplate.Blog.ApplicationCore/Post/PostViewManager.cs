@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
-using NetTemplate.Shared.ApplicationCore.MemoryStore.Interfaces;
+using NetTemplate.Common.MemoryStore.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.Post
 {

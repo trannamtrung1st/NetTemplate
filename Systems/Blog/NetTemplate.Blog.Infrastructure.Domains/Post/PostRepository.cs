@@ -1,12 +1,12 @@
 ﻿using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.Infrastructure.Persistence;
-using NetTemplate.Blog.Infrastructure.Persistence.Repositories;
 using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Shared.Infrastructure.Persistence.Repositories;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.Post
 {
     [ScopedService]
-    public class PostRepository : EFCoreRepository<PostEntity>, IPostRepository
+    public class PostRepository : EFCoreRepository<PostEntity, MainDbContext>, IPostRepository
     {
         public PostRepository(MainDbContext dbContext) : base(dbContext)
         {

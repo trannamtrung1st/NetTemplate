@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -7,26 +7,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Autofac" Version="7.0.1" />
-		<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-		<PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.1" />
-		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-		<PackageReference Include="EasyCaching.Core" Version="1.9.0" />
-		<PackageReference Include="EasyCaching.InMemory" Version="1.9.0" />
-		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.16" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-		<PackageReference Include="Scrutor" Version="4.2.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
-		<PackageReference Include="Hangfire" Version="1.8.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Common\NetTemplate.Common.Web\NetTemplate.Common.Web.csproj" />
 		<ProjectReference Include="..\NetTemplate.Shared.Infrastructure.Domains\NetTemplate.Shared.Infrastructure.Domains.csproj" />
+		<ProjectReference Include="..\NetTemplate.Shared.Infrastructure\NetTemplate.Shared.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Logging\Models\" />
 	</ItemGroup>
 
 </Project>
