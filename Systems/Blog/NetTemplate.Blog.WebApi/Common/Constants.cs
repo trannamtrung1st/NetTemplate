@@ -1,6 +1,6 @@
 ﻿namespace NetTemplate.Blog.WebApi.Common
 {
-    public static class ApiCommonConstants
+    public static class Constants
     {
         public static class ApiRoutes
         {

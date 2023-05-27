@@ -1,4 +1,4 @@
-﻿using NetTemplate.Shared.ApplicationCore.Common.Constants;
+﻿using FilterDefaults = NetTemplate.Shared.ApplicationCore.Common.Constants.Filter;
 
 namespace NetTemplate.Shared.ApplicationCore.Common.Models
 {
@@ -8,7 +8,7 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Models
         public int Skip { get; set; }
         public int? Take { get; set; }
 
-        public virtual int GetTakeOrDefault() => Take ?? FilterDefaults.DefaultTake;
+        public virtual int GetTakeOrDefault() => Take ?? FilterDefaults.Take;
 
         public abstract bool CanGetAll();
     }

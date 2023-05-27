@@ -12,11 +12,11 @@ namespace NetTemplate.Shared.ClientSDK.Common.Extensions
         }
 
         public static IHttpClientBuilder AddTokenManagement(this IServiceCollection services,
-            ClientConfiguration config)
+            ClientConfig config)
         {
             if (config?.IdentityServerUrl == null) throw new ArgumentNullException(nameof(config));
 
-            services.Configure<ClientConfiguration>(opt =>
+            services.Configure<ClientConfig>(opt =>
             {
                 opt.ClientId = config.ClientId;
                 opt.ClientSecret = config.ClientSecret;

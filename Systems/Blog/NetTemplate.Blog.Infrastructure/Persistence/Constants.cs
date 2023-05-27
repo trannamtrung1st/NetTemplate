@@ -1,6 +1,6 @@
 ﻿namespace NetTemplate.Blog.Infrastructure.Persistence
 {
-    public static class PersistenceConstants
+    public static class Constants
     {
     }
 }

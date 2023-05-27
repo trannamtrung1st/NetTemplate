@@ -2,7 +2,7 @@
 
 namespace NetTemplate.Blog.ApplicationCore.Post
 {
-    public static class PostConstants
+    public static class ApplicationEnums
     {
         public enum SortBy
         {

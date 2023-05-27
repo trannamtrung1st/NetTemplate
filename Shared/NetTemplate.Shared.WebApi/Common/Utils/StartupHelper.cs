@@ -20,7 +20,7 @@ namespace NetTemplate.Shared.WebApi.Common.Utils
     {
         public static void AddDefaultServices<T>(this IServiceCollection services,
             IWebHostEnvironment environment,
-            DefaultServicesConfiguration config) where T : DbContext
+            DefaultServicesConfig config) where T : DbContext
         {
             services
                 .AddDbContextDefaults<T>(config.DbContextConnectionString, config.DbContextDebugEnabled)
@@ -35,7 +35,7 @@ namespace NetTemplate.Shared.WebApi.Common.Utils
                 .AddCaching()
                 .AddResilience()
                 .AddApiVersioningDefaults()
-                .AddClientSdkServices(config.ClientConfiguration);
+                .AddClientSdkServices(config.ClientConfig);
 
             if (!environment.IsProduction())
             {

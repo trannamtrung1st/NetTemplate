@@ -10,9 +10,9 @@ namespace NetTemplate.Common.Logging.Extensions
             [CallerFilePath] string fileName = "",
             [CallerLineNumber] int lineNumber = 0)
         {
-            return logger.ForContext(LoggingConstants.LogProperties.CallerMemberName, memberName)
-                .ForContext(LoggingConstants.LogProperties.CallerFilePath, fileName)
-                .ForContext(LoggingConstants.LogProperties.CallerLineNumber, lineNumber);
+            return logger.ForContext(Constants.LogProperties.CallerMemberName, memberName)
+                .ForContext(Constants.LogProperties.CallerFilePath, fileName)
+                .ForContext(Constants.LogProperties.CallerLineNumber, lineNumber);
         }
     }
 }

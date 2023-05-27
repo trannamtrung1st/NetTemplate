@@ -1,6 +1,6 @@
 ﻿namespace NetTemplate.Shared.Infrastructure.Persistence
 {
-    public static class SharedPersistenceConstants
+    public static class Constants
     {
         public static class SqlServerColumnTypes
         {

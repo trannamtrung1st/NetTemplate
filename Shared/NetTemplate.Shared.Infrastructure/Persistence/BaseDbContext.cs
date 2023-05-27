@@ -49,7 +49,7 @@ namespace NetTemplate.Shared.Infrastructure.Persistence
             modelBuilder.ApplyConfigurationsFromAssembly(dbContextAssembly);
 
             modelBuilder.RestrictDeleteBehaviour(fkPredicate:
-                fk => !fk.GetConstraintName().Contains(SharedPersistenceConstants.ConstraintNames.NoRestrictForeignKeyConstraintPostfix));
+                fk => !fk.GetConstraintName().Contains(Constants.ConstraintNames.NoRestrictForeignKeyConstraintPostfix));
 
             modelBuilder.AddGlobalQueryFilter(new[] { dbContextAssembly });
         }

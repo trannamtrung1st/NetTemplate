@@ -1,6 +1,6 @@
 ﻿namespace NetTemplate.Common.Logging
 {
-    public static class LoggingConstants
+    public static class Constants
     {
         internal static class LogProperties
         {

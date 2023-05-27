@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using NetTemplate.Blog.ApplicationCore.Post.Models;
-using SharedConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
+using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Validators
 {
@@ -10,7 +10,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Validators
         {
             RuleFor(e => e.CategoryId).GreaterThan(0);
 
-            RuleFor(e => e.Title).NotEmpty().MaximumLength(SharedConstraints.Common.MaxStringLength);
+            RuleFor(e => e.Title).NotEmpty().MaximumLength(CommonConstraints.MaxStringLength);
 
             RuleFor(e => e.Content).NotEmpty();
         }

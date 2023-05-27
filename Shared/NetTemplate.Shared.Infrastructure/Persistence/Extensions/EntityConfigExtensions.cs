@@ -165,7 +165,7 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Extensions
                 {
                     var strProps = entityType.GetProperties()
                         .Where(o => o.ClrType == typeof(string)
-                            && !SharedPersistenceConstants.SqlServerColumnTypes.TextColumnTypes.Contains(o.GetColumnType()));
+                            && !Constants.SqlServerColumnTypes.TextColumnTypes.Contains(o.GetColumnType()));
 
                     if (unboundNormalColumnsOnly)
                         strProps = strProps.Where(IsUnboundLength)

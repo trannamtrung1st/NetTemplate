@@ -1,6 +1,6 @@
 ﻿namespace NetTemplate.Shared.ClientSDK.Identity
 {
-    public static class IdentitySDKConstants
+    public static class Constants
     {
         public const string ClientName = "Identity";
 

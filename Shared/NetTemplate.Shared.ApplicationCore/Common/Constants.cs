@@ -1,10 +1,21 @@
-﻿namespace NetTemplate.Shared.ApplicationCore.Common.Constants
+﻿namespace NetTemplate.Shared.ApplicationCore.Common
 {
-    public static class Messages
+    public static class Constants
     {
-        public static class Common
+        public static class Constraints
         {
-            public static readonly string InvalidMaxLength = $"Field(s) has invalid length ({Constraints.Common.MaxStringLength})";
+            public const int MaxStringLength = 255;
+            public const int IdMaxLength = 50;
+        }
+
+        public static class Filter
+        {
+            public const int Take = 10;
+        }
+
+        public static class Messages
+        {
+            public static readonly string InvalidMaxLength = $"Field(s) has invalid length ({Constraints.MaxStringLength})";
             public const string MissingRequiredFields = "Missing required fields";
             public const string ObjectResult = "Object result";
             public const string NotFound = "Not found";

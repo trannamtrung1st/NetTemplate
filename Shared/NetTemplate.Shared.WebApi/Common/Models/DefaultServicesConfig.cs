@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace NetTemplate.Shared.WebApi.Common.Models
 {
-    public class DefaultServicesConfiguration
+    public class DefaultServicesConfig
     {
         // Common
         public Assembly[] ScanningAssemblies { get; set; }
@@ -32,6 +32,6 @@ namespace NetTemplate.Shared.WebApi.Common.Models
         public HangfireConfig HangfireConfig { get; set; }
 
         // Client SDK
-        public ClientConfiguration ClientConfiguration { get; set; }
+        public ClientConfig ClientConfig { get; set; }
     }
 }

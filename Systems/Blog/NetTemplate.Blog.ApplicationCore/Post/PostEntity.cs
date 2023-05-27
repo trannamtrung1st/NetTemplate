@@ -2,10 +2,10 @@
 using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.ApplicationCore.User;
 using NetTemplate.Common.Validation;
-using NetTemplate.Shared.ApplicationCore.Common.Constants;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Utils;
+using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messages;
 
 namespace NetTemplate.Blog.ApplicationCore.Post
 {
@@ -133,12 +133,12 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 
             if (!ApplicationValidation.ValidateMaxLength(new[] { title }))
             {
-                invalidFields.Add(Messages.Common.InvalidMaxLength);
+                invalidFields.Add(CommonMessages.InvalidMaxLength);
             }
 
             if (!CommonValidation.StringNotEmptyOrWhitespace(new[] { title, content }))
             {
-                invalidFields.Add(Messages.Common.MissingRequiredFields);
+                invalidFields.Add(CommonMessages.MissingRequiredFields);
             }
 
             if (categoryId <= 0)

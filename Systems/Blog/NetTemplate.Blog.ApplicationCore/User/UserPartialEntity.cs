@@ -1,9 +1,9 @@
 ﻿using NetTemplate.Blog.ApplicationCore.User.Events;
 using NetTemplate.Common.Validation;
-using NetTemplate.Shared.ApplicationCore.Common.Constants;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Utils;
+using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messages;
 
 namespace NetTemplate.Blog.ApplicationCore.User
 {
@@ -85,12 +85,12 @@ namespace NetTemplate.Blog.ApplicationCore.User
 
             if (!ApplicationValidation.ValidateMaxLength(new[] { firstName, lastName }))
             {
-                invalidFields.Add(Messages.Common.InvalidMaxLength);
+                invalidFields.Add(CommonMessages.InvalidMaxLength);
             }
 
             if (!CommonValidation.StringNotEmptyOrWhitespace(new[] { firstName, lastName }))
             {
-                invalidFields.Add(Messages.Common.MissingRequiredFields);
+                invalidFields.Add(CommonMessages.MissingRequiredFields);
             }
 
             return invalidFields;

@@ -28,7 +28,7 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
         }
 
         public static IServiceCollection AddClientSdkServices(this IServiceCollection services,
-            ClientConfiguration clientConfig)
+            ClientConfig clientConfig)
         {
             services.AddClientSdkHandlers()
                 .AddTokenManagement(clientConfig);

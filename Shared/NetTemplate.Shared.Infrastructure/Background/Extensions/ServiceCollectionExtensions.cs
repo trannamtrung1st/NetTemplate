@@ -20,8 +20,8 @@ namespace NetTemplate.Shared.Infrastructure.Background.Extensions
                     .UseRecommendedSerializerSettings()
                     .UseFilter(new AutomaticRetryAttribute()
                     {
-                        Attempts = BackgroundConstants.Defaults.DefaultRetryAttempts,
-                        DelayInSecondsByAttemptFunc = (attempt) => (int)(BackgroundConstants.Defaults.DefaultSecondsFactor * attempt)
+                        Attempts = Constants.Configurations.RetryAttempts,
+                        DelayInSecondsByAttemptFunc = (attempt) => (int)(Constants.Configurations.SecondsFactor * attempt)
                     })
                     .UseFilter(new JobLoggingFilter())
                     .UseSerilogLogProvider()

@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using NetTemplate.Shared.WebApi.Common.Extensions;
+using NetTemplate.Shared.WebApi.Common.Models;
 using NetTemplate.Shared.WebApi.Identity.Schemes.ClientAuthentication;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -21,11 +23,13 @@ namespace NetTemplate.Shared.WebApi.Swagger.Options
 
         public void Configure(SwaggerGenOptions options)
         {
+            WebInfoConfig webInfoConfig = _configuration.GetWebInfoConfigDefaults();
+
             foreach (var description in _provider.ApiVersionDescriptions)
             {
                 options.SwaggerDoc(
                     description.GroupName,
-                    CreateVersionInfo(description));
+                    CreateVersionInfo(description, webInfoConfig));
             }
 
             options.CustomSchemaIds(type => type.FullName.Replace('+', '.'));
@@ -86,13 +90,14 @@ namespace NetTemplate.Shared.WebApi.Swagger.Options
             Configure(options);
         }
 
-        private OpenApiInfo CreateVersionInfo(ApiVersionDescription description)
+        private OpenApiInfo CreateVersionInfo(ApiVersionDescription description,
+            WebInfoConfig webInfoConfig)
         {
             var apiInfo = new OpenApiInfo()
             {
-                Title = _configuration.GetValue<string>("WebApiConfig:ApiTitle"),
-                Version = description.GroupName,
-                Description = _configuration.GetValue<string>("WebApiConfig:ApiDescription")
+                Title = webInfoConfig.ApiTitle,
+                Description = webInfoConfig.ApiDescription,
+                Version = description.GroupName
             };
 
             if (description.IsDeprecated)

@@ -13,12 +13,12 @@ namespace NetTemplate.Shared.ClientSDK.Identity.Extensions
         {
             services.AddSingleton<IIdentityClient, IdentityClient>();
 
-            var identityClientBuilder = services.AddHttpClient(IdentitySDKConstants.ClientName, (provider, httpClient) =>
+            var identityClientBuilder = services.AddHttpClient(Constants.ClientName, (provider, httpClient) =>
             {
-                var config = provider.GetRequiredService<IOptions<ClientConfiguration>>();
+                var config = provider.GetRequiredService<IOptions<ClientConfig>>();
                 httpClient.BaseAddress = new Uri(config.Value.IdentityServerUrl);
             })
-                .AddClientCredentials(IdentitySDKConstants.ApiScopes.Identity)
+                .AddClientCredentials(Constants.ApiScopes.Identity)
                 .AddHttpMessageHandler<WrapHttpErrorResponseHandler>();
 
             return identityClientBuilder;

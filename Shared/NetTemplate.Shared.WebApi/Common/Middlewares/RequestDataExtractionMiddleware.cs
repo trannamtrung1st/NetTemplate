@@ -1,6 +1,6 @@
 ﻿using NetTemplate.Shared.ApplicationCore.Identity.Interfaces;
-using NetTemplate.Shared.WebApi.Common.Constants;
 using Serilog.Context;
+using LogProperties = NetTemplate.Shared.WebApi.Common.Constants.LogProperties;
 
 namespace NetTemplate.Shared.WebApi.Common.Middlewares
 {
@@ -17,7 +17,7 @@ namespace NetTemplate.Shared.WebApi.Common.Middlewares
         {
             if (_currentUserProvider.UserCode != null)
             {
-                LogContext.PushProperty(SharedApiConstants.LogProperties.UserCode, _currentUserProvider.UserCode);
+                LogContext.PushProperty(LogProperties.UserCode, _currentUserProvider.UserCode);
             }
 
             await next(context);

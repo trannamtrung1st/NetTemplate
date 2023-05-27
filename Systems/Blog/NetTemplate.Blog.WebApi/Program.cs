@@ -4,14 +4,11 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
-using NetTemplate.Blog.ApplicationCore.Cross;
 using NetTemplate.Blog.Infrastructure.Persistence;
-using NetTemplate.Blog.WebApi.Common;
 using NetTemplate.Blog.WebApi.Common.Models;
 using NetTemplate.Common.Web.Middlewares;
 using NetTemplate.Shared.ApplicationCore.Common.Events;
 using NetTemplate.Shared.ClientSDK.Common.Models;
-using NetTemplate.Shared.Infrastructure.Background;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.Common.Extensions;
@@ -19,7 +16,6 @@ using NetTemplate.Shared.Infrastructure.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.Extensions;
 using NetTemplate.Shared.Infrastructure.PubSub.Models;
-using NetTemplate.Shared.WebApi.Common.Constants;
 using NetTemplate.Shared.WebApi.Common.Extensions;
 using NetTemplate.Shared.WebApi.Common.Models;
 using NetTemplate.Shared.WebApi.Common.Utils;
@@ -30,6 +26,9 @@ using NetTemplate.Shared.WebApi.Swagger.Extensions;
 using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
 using System.Reflection;
+using CacheProfiles = NetTemplate.Blog.WebApi.Common.Constants.CacheProfiles;
+using ApiRoutes = NetTemplate.Blog.WebApi.Common.Constants.ApiRoutes;
+using ConfigurationSections = NetTemplate.Shared.WebApi.Common.Constants.ConfigurationSections;
 
 using Serilog.Core.Logger seriLogger = WebApplicationHelper.CreateHostLogger();
 ILogger logger = new SerilogLoggerFactory(seriLogger).CreateLogger(nameof(Program));
@@ -43,7 +42,7 @@ try
 
     BindConfigurations(builder.Configuration);
 
-    DefaultServicesConfiguration defaultConfig = GetDefaultServicesConfiguration(
+    DefaultServicesConfig defaultConfig = GetDefaultServicesConfig(
         builder.Configuration,
         AppConfig.Instance);
 
@@ -72,19 +71,19 @@ catch (Exception ex)
     return 1;
 }
 
-static DefaultServicesConfiguration GetDefaultServicesConfiguration(
+static DefaultServicesConfig GetDefaultServicesConfig(
     IConfiguration configuration,
     AppConfig appConfig)
 {
-    ClientConfiguration clientConfiguration = configuration.GetClientConfigurationDefaults();
+    ClientConfig clientConfiguration = configuration.GetClientConfigurationDefaults();
 
     ClientsConfig clientsConfig = configuration.GetClientsConfigDefaults();
 
     string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
 
     HangfireConfig hangfireConfig = configuration.GetHangfireConfigDefaults();
-    string hangfireConnStr = configuration.GetConnectionString(BackgroundConstants.DefaultConnectionNames.Hangfire);
-    string masterConnStr = configuration.GetConnectionString(BackgroundConstants.DefaultConnectionNames.Master);
+    string hangfireConnStr = configuration.GetConnectionString(NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames.Hangfire);
+    string masterConnStr = configuration.GetConnectionString(NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames.Master);
 
     IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
 
@@ -101,13 +100,13 @@ static DefaultServicesConfiguration GetDefaultServicesConfiguration(
     };
     Assembly[] assemblies = representativeTypes.Select(t => t.Assembly).ToArray();
 
-    return new DefaultServicesConfiguration
+    return new DefaultServicesConfig
     {
-        ClientConfiguration = clientConfiguration,
+        ClientConfig = clientConfiguration,
         ClientsConfig = clientsConfig,
         ControllerConfigureAction = (opt) =>
         {
-            opt.CacheProfiles.Add(ApiCommonConstants.CacheProfiles.Sample, new CacheProfile
+            opt.CacheProfiles.Add(CacheProfiles.Sample, new CacheProfile
             {
                 VaryByQueryKeys = new[] { "*" },
                 Duration = appConfig.ResponseCacheTtl
@@ -131,7 +130,7 @@ static void BindConfigurations(IConfiguration configuration)
 }
 
 static void ConfigureServices(IServiceCollection services,
-    IWebHostEnvironment env, DefaultServicesConfiguration defaultConfig)
+    IWebHostEnvironment env, DefaultServicesConfig defaultConfig)
 {
     services.AddDefaultServices<MainDbContext>(env, defaultConfig);
 }
@@ -154,8 +153,8 @@ static void ConfigurePipeline(WebApplication app,
     IApiVersionDescriptionProvider apiVersionProvider = serviceProvider.GetRequiredService<IApiVersionDescriptionProvider>();
 
     app.UseExceptionHandler(
-        $"/{ApiCommonConstants.ApiRoutes.Error.Base}" +
-        $"/{ApiCommonConstants.ApiRoutes.Error.HandleException}");
+        $"/{ApiRoutes.Error.Base}" +
+        $"/{ApiRoutes.Error.HandleException}");
 
     if (app.Environment.IsProduction())
     {
@@ -192,7 +191,7 @@ static void ConfigurePipeline(WebApplication app,
     app.UseRequestDataExtraction();
 
     app.UseRequestLogging(app.Configuration,
-        requestLoggingSection: SharedApiConstants.ConfigKeys.Logging.RequestLogging,
+        requestLoggingSection: ConfigurationSections.Logging.RequestLogging,
         out IDisposable customRequestLogger);
 
     if (customRequestLogger != null) resources.Add(customRequestLogger);
@@ -240,11 +239,11 @@ static void RunJobs(WebApplication app, HangfireConfig config)
         {
             switch (job.Name)
             {
-                case CrossConstants.JobNames.Sample:
+                case NetTemplate.Blog.Infrastructure.Persistence.Constants.JobNames.Sample:
                     {
                         var serializedData = JsonConvert.SerializeObject(job.JobData);
                         var jobData = JsonConvert.DeserializeObject(serializedData);
-                        var finalName = CrossConstants.JobNames.Sample + (count++);
+                        var finalName = NetTemplate.Blog.Infrastructure.Persistence.Constants.JobNames.Sample + (count++);
 
                         recurringJobManager.AddOrUpdate(finalName,
                             () => Console.WriteLine("Sample Job Run"),

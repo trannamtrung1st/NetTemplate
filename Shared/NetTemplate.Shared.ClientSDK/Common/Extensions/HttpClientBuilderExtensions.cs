@@ -13,7 +13,7 @@ namespace NetTemplate.Shared.ClientSDK.Common.Extensions
             return builder
                 .AddHttpMessageHandler((provider) =>
                 {
-                    var config = provider.GetRequiredService<IOptions<ClientConfiguration>>();
+                    var config = provider.GetRequiredService<IOptions<ClientConfig>>();
                     var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
                     var httpClient = httpClientFactory.CreateClient(nameof(ClientCredentialsTokenRequestHandler));
                     var options = new ClientCredentialsOptions()

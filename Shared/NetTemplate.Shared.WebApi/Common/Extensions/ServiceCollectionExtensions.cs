@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
-using NetTemplate.Shared.WebApi.Common.Constants;
 using NetTemplate.Shared.WebApi.Common.Filters;
+using VersioningConstants = NetTemplate.Shared.WebApi.Common.Constants.Versioning;
 
 namespace NetTemplate.Shared.WebApi.Common.Extensions
 {
@@ -18,7 +18,7 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
             })
                 .AddVersionedApiExplorer(opt =>
                 {
-                    opt.GroupNameFormat = SharedApiConstants.Versioning.GroupNameFormat;
+                    opt.GroupNameFormat = VersioningConstants.GroupNameFormat;
                     //opt.SubstituteApiVersionInUrl = true;
                 });
         }

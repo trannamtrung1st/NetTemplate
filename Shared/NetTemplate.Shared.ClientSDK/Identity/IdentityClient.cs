@@ -10,12 +10,12 @@ namespace NetTemplate.Shared.ClientSDK.Identity
 
         public IdentityClient(IHttpClientFactory httpClientFactory)
         {
-            _client = httpClientFactory.CreateClient(IdentitySDKConstants.ClientName);
+            _client = httpClientFactory.CreateClient(Constants.ClientName);
         }
 
         public async Task<IEnumerable<IdentityUserModel>> GetUsers(CancellationToken cancellationToken = default)
         {
-            var apiEndpoint = new PathString(IdentitySDKConstants.ApiEndpoints.User.GetUsers);
+            var apiEndpoint = new PathString(Constants.ApiEndpoints.User.GetUsers);
             var response = await _client.GetAsync(apiEndpoint, cancellationToken);
             response = response.EnsureSuccessStatusCode();
 

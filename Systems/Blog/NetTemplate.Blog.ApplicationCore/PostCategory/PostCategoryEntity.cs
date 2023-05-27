@@ -1,10 +1,10 @@
 ﻿using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
 using NetTemplate.Blog.ApplicationCore.User;
-using NetTemplate.Shared.ApplicationCore.Common.Constants;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Utils;
+using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messages;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory
 {
@@ -44,7 +44,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
 
             if (!ApplicationValidation.ValidateMaxLength(new[] { name }))
             {
-                invalidFields.Add(Messages.Common.InvalidMaxLength);
+                invalidFields.Add(CommonMessages.InvalidMaxLength);
             }
 
             if (string.IsNullOrWhiteSpace(name))

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using NetTemplate.Shared.WebApi.Common.Constants;
 
 namespace NetTemplate.Shared.WebApi.Swagger.Extensions
 {

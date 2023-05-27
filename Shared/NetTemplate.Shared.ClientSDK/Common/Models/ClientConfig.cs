@@ -1,6 +1,6 @@
 ﻿namespace NetTemplate.Shared.ClientSDK.Common.Models
 {
-    public class ClientConfiguration
+    public class ClientConfig
     {
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }

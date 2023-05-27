@@ -134,7 +134,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             if (!_isAvailable) throw new InvalidOperationException();
         }
 
-        static class Constants
+        private static class Constants
         {
             public static class CacheKey
             {

@@ -1,6 +1,6 @@
 ﻿namespace NetTemplate.Shared.ClientSDK.Common
 {
-    public static class ClientSDKConstants
+    public static class Constants
     {
         public static class AuthSchemes
         {
