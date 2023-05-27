@@ -1,8 +1,18 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.ClientSDK.Common.Extensions;
 using NetTemplate.Shared.ClientSDK.Common.Models;
+using NetTemplate.Shared.Infrastructure.Background.Extensions;
+using NetTemplate.Shared.Infrastructure.Caching.Extensions;
+using NetTemplate.Shared.Infrastructure.Common.Models;
+using NetTemplate.Shared.Infrastructure.Identity.Extensions;
+using NetTemplate.Shared.Infrastructure.Logging.Extensions;
+using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
+using NetTemplate.Shared.Infrastructure.PubSub.Extensions;
+using NetTemplate.Shared.Infrastructure.Resilience.Extensions;
+using NetTemplate.Shared.Infrastructure.Validation.Extensions;
 using System.Reflection;
 
 namespace NetTemplate.Shared.Infrastructure.Common.Extensions
@@ -69,6 +79,29 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
                 .AddClasses(classes => classes.WithAttribute<SelfSingletonServiceAttribute>())
                 .AsSelf()
                 .WithSingletonLifetime());
+        }
+
+        public static IServiceCollection AddDefaultServices<T>(this IServiceCollection services,
+            DefaultServicesConfig config, bool isProduction) where T : DbContext
+        {
+            services
+                .AddDbContextDefaults<T>(config.DbContextConnectionString, config.DbContextDebugEnabled)
+                .AddIdentityConfiguration(config.IdentityConfig)
+                .AddPubSubIntegration(config.PubSubConfig)
+                .AddHangfireDefaults(config.HangfireConfig, config.HangfireConnectionString, config.HangfireMasterConnectionString)
+                .AddMediator(config.ScanningAssemblies)
+                .AddMapper(config.ScanningAssemblies)
+                .AddValidationDefaults(config.ScanningAssemblies)
+                .AddCaching()
+                .AddResilience()
+                .AddClientSdkServices(config.ClientConfig);
+
+            if (!isProduction)
+            {
+                services.AddLoggingInterceptors();
+            }
+
+            return services;
         }
     }
 }

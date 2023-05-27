@@ -9,6 +9,12 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
 {
     public static class ContainerBuilderExtensions
     {
+        public static void ConfigureContainerDefaults(this ContainerBuilder builder,
+            Assembly[] scanningAssemblies)
+        {
+            builder.RegisterApplicationServices(scanningAssemblies);
+        }
+
         public static ContainerBuilder RegisterApplicationServices(this ContainerBuilder builder, Assembly[] assemblies)
         {
             var interceptorTypes = new[] { typeof(AttributeBasedLoggingInterceptor) };

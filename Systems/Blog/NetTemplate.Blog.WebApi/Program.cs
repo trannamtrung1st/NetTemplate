@@ -12,6 +12,7 @@ using NetTemplate.Shared.ClientSDK.Common.Models;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.Common.Extensions;
+using NetTemplate.Shared.Infrastructure.Common.Models;
 using NetTemplate.Shared.Infrastructure.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.Extensions;
@@ -27,6 +28,7 @@ using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
 using System.Reflection;
 using ApiRoutes = NetTemplate.Blog.WebApi.Common.Constants.ApiRoutes;
+using BackgroundConnectionNames = NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames;
 using CacheProfiles = NetTemplate.Blog.WebApi.Common.Constants.CacheProfiles;
 using CrossJobNames = NetTemplate.Blog.ApplicationCore.Cross.Constants.JobNames;
 using LoggingConfigurationSections = NetTemplate.Shared.WebApi.Logging.Constants.ConfigurationSections;
@@ -43,7 +45,7 @@ try
 
     BindConfigurations(builder.Configuration);
 
-    DefaultServicesConfig defaultConfig = GetDefaultServicesConfig(
+    ApiDefaultServicesConfig defaultConfig = GetApiDefaultServicesConfig(
         builder.Configuration,
         AppConfig.Instance);
 
@@ -72,7 +74,7 @@ catch (Exception ex)
     return 1;
 }
 
-static DefaultServicesConfig GetDefaultServicesConfig(
+static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
     IConfiguration configuration,
     AppConfig appConfig)
 {
@@ -83,8 +85,8 @@ static DefaultServicesConfig GetDefaultServicesConfig(
     string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
 
     HangfireConfig hangfireConfig = configuration.GetHangfireConfigDefaults();
-    string hangfireConnStr = configuration.GetConnectionString(NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames.Hangfire);
-    string masterConnStr = configuration.GetConnectionString(NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames.Master);
+    string hangfireConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Hangfire);
+    string masterConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Master);
 
     IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
 
@@ -101,7 +103,7 @@ static DefaultServicesConfig GetDefaultServicesConfig(
     };
     Assembly[] assemblies = representativeTypes.Select(t => t.Assembly).ToArray();
 
-    return new DefaultServicesConfig
+    return new ApiDefaultServicesConfig
     {
         ClientConfig = clientConfiguration,
         ClientsConfig = clientsConfig,
@@ -131,9 +133,9 @@ static void BindConfigurations(IConfiguration configuration)
 }
 
 static void ConfigureServices(IServiceCollection services,
-    IWebHostEnvironment env, DefaultServicesConfig defaultConfig)
+    IWebHostEnvironment env, ApiDefaultServicesConfig defaultConfig)
 {
-    services.AddDefaultServices<MainDbContext>(env, defaultConfig);
+    services.AddApiDefaultServices<MainDbContext>(env, defaultConfig);
 }
 
 static void ConfigureContainer(IHostBuilder hostBuilder,
@@ -141,7 +143,7 @@ static void ConfigureContainer(IHostBuilder hostBuilder,
 {
     hostBuilder.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     {
-        containerBuilder.ConfigureAutofacContainerDefaults(scanningAssemblies);
+        containerBuilder.ConfigureApiContainerDefaults(scanningAssemblies);
     });
 }
 
@@ -268,5 +270,5 @@ static void OnApplicationStarted()
 
 static void OnApplicationStopped(IEnumerable<IDisposable> resources)
 {
-    StartupHelper.CleanResources(resources);
+    WebApplicationHelper.CleanResources(resources);
 }

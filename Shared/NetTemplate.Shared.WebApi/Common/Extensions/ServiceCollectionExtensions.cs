@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
+using NetTemplate.Shared.Infrastructure.Common.Extensions;
 using NetTemplate.Shared.WebApi.Common.Filters;
+using NetTemplate.Shared.WebApi.Common.Models;
+using NetTemplate.Shared.WebApi.Identity.Extensions;
+using NetTemplate.Shared.WebApi.Swagger.Extensions;
 using VersioningConstants = NetTemplate.Shared.WebApi.Common.Constants.Versioning;
 
 namespace NetTemplate.Shared.WebApi.Common.Extensions
@@ -43,6 +48,35 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
 
                 extraAction(opt);
             });
+        }
+
+        public static IServiceCollection AddApiDefaultServices<T>(this IServiceCollection services,
+            IWebHostEnvironment environment,
+            ApiDefaultServicesConfig config) where T : DbContext
+        {
+            bool isProduction = environment.IsProduction();
+
+            services.AddDefaultServices<T>(config, isProduction)
+                .AddHttpContextAccessor()
+                .AddResponseCaching() // [OPTIONAL]
+                .AddApiVersioningDefaults();
+
+            if (!isProduction)
+            {
+                services.AddSwaggerDefaults();
+            }
+
+            services
+                .AddAuthenticationDefaults(config.JwtConfig, config.ClientsConfig, environment)
+                .AddAuthorizationDefaults();
+
+            services
+                .AddEndpointsApiExplorer()
+                .ConfigureApiBehavior()
+                .AddControllersDefaults(config.ControllerConfigureAction)
+                .AddNewtonsoftJson();
+
+            return services;
         }
     }
 }

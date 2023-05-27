@@ -1,18 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NetTemplate.Shared.ClientSDK.Common.Models;
+﻿using NetTemplate.Shared.ClientSDK.Common.Models;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.Models;
-using NetTemplate.Shared.WebApi.Identity.Models;
 using System.Reflection;
 
-namespace NetTemplate.Shared.WebApi.Common.Models
+namespace NetTemplate.Shared.Infrastructure.Common.Models
 {
     public class DefaultServicesConfig
     {
         // Common
         public Assembly[] ScanningAssemblies { get; set; }
-        public Action<MvcOptions> ControllerConfigureAction { get; set; }
 
         // DbContext
         public string DbContextConnectionString { get; set; }
@@ -20,8 +17,6 @@ namespace NetTemplate.Shared.WebApi.Common.Models
 
         // Identity
         public IdentityConfig IdentityConfig { get; set; }
-        public JwtConfig JwtConfig { get; set; }
-        public ClientsConfig ClientsConfig { get; set; }
 
         // PubSubConfig
         public PubSubConfig PubSubConfig { get; set; }

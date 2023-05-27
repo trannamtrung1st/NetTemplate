@@ -47,5 +47,11 @@ namespace NetTemplate.Shared.WebApi.Common.Utils
                 .Enrich.WithUtcTimestamp()
                 .WriteTo.HostLevelLog()
                 .CreateLogger();
+
+        public static void CleanResources(IEnumerable<IDisposable> resources)
+        {
+            foreach (var resource in resources)
+                resource.Dispose();
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using NetTemplate.Shared.Infrastructure.Identity.Models;
 using NetTemplate.Shared.WebApi.Identity.Implementations;
 using NetTemplate.Shared.WebApi.Identity.Models;
 using NetTemplate.Shared.WebApi.Identity.Schemes.ClientAuthentication;
@@ -12,13 +11,6 @@ namespace NetTemplate.Shared.WebApi.Identity.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IdentityConfig identityConfig)
-        {
-            // [TODO]
-
-            return services;
-        }
-
         public static IServiceCollection AddAuthenticationDefaults(this IServiceCollection services,
             JwtConfig jwtConfig, ClientsConfig clientsConfig, IWebHostEnvironment environment)
         {
