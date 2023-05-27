@@ -19,7 +19,7 @@
 
         public static class CacheProfiles
         {
-            public const string Sample = "sample";
+            public const string Sample = nameof(Sample);
         }
     }
 }
