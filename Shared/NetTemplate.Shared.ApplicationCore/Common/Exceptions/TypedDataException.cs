@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using NetTemplate.Shared.ApplicationCore.Common.Constants;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Shared.ApplicationCore.Common.Exceptions
 {

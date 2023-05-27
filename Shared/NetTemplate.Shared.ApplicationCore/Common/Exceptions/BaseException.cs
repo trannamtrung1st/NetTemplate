@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using NetTemplate.Common.Enumerations;
-using NetTemplate.Shared.ApplicationCore.Common.Constants;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Shared.ApplicationCore.Common.Exceptions
 {
@@ -24,9 +23,7 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Exceptions
             {
                 if (_messages != null) return _messages;
 
-                string represent = Code.GetDescription() ?? Code.GetDisplayName() ?? Code.GetName();
-
-                return new[] { represent };
+                return new[] { Code.Description };
             }
         }
 

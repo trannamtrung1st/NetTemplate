@@ -7,7 +7,7 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
     {
         public static WebInfoConfig GetWebInfoConfigDefaults(this IConfiguration configuration)
             => configuration
-                .GetSection(ConfigurationSections.Common.WebInfo)
+                .GetSection(ConfigurationSections.WebInfo)
                 .Get<WebInfoConfig>();
     }
 }

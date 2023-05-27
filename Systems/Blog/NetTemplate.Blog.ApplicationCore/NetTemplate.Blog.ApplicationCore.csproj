@@ -6,6 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Folder Include="Common\" />
 		<Folder Include="Cross\Commands\" />
 		<Folder Include="Cross\Events\" />
 		<Folder Include="Cross\Exceptions\" />

@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using Serilog.Configuration;
 using Serilog.Events;
+using EnvironmentConstants = NetTemplate.Shared.WebApi.Common.Constants.Environment;
 
 namespace NetTemplate.Shared.WebApi.Logging.Extensions
 {
@@ -12,9 +13,9 @@ namespace NetTemplate.Shared.WebApi.Logging.Extensions
         public static LoggerConfiguration HostLevelLog(this LoggerSinkConfiguration writeTo)
         {
             var template = HostLevelLogTemplate;
-            var env = Environment.GetEnvironmentVariable(SharedApiConstants.Environment.VariableName);
+            var env = Environment.GetEnvironmentVariable(EnvironmentConstants.VariableName);
 
-            if (env != SharedApiConstants.Environment.Production)
+            if (env != EnvironmentConstants.Production)
             {
                 return writeTo.Console(restrictedToMinimumLevel: LogEventLevel.Information, outputTemplate: template);
             }

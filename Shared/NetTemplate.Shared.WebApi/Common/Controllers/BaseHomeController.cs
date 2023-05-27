@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NetTemplate.Shared.WebApi.Common.Constants;
 using System.Text;
+using CommonMessages = NetTemplate.Shared.WebApi.Common.Constants.Messages;
 
 namespace NetTemplate.Shared.WebApi.Common.Controllers
 {
@@ -24,7 +24,7 @@ namespace NetTemplate.Shared.WebApi.Common.Controllers
             {
                 finalMessage
                     .AppendLine()
-                    .Append(SharedApiMessages.Swagger.Instruction);
+                    .Append(CommonMessages.SwaggerInstruction);
             }
 
             return finalMessage.ToString();

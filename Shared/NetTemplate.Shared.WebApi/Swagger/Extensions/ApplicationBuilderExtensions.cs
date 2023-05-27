@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using SwaggerConstants = NetTemplate.Shared.WebApi.Swagger.Constants;
 
 namespace NetTemplate.Shared.WebApi.Swagger.Extensions
 {
@@ -15,11 +16,11 @@ namespace NetTemplate.Shared.WebApi.Swagger.Extensions
                     {
                         var versionStr = description.GroupName;
                         options.SwaggerEndpoint(
-                            string.Format(SharedApiConstants.SwaggerDefaults.DocEndpointFormat, versionStr),
+                            string.Format(SwaggerConstants.DocEndpointFormat, versionStr),
                             versionStr);
                     }
 
-                    options.RoutePrefix = SharedApiConstants.SwaggerDefaults.Prefix;
+                    options.RoutePrefix = SwaggerConstants.Prefix;
                 });
         }
     }

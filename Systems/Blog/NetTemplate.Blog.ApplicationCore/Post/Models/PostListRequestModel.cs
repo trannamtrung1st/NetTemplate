@@ -2,7 +2,7 @@
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Models
 {
-    public class PostListRequestModel : BaseSortableFilterQuery<ApplicationEnums.SortBy>
+    public class PostListRequestModel : BaseSortableFilterQuery<Enums.SortBy>
     {
         public int? CategoryId { get; set; }
 

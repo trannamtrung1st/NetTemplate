@@ -26,9 +26,10 @@ using NetTemplate.Shared.WebApi.Swagger.Extensions;
 using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
 using System.Reflection;
-using CacheProfiles = NetTemplate.Blog.WebApi.Common.Constants.CacheProfiles;
 using ApiRoutes = NetTemplate.Blog.WebApi.Common.Constants.ApiRoutes;
-using ConfigurationSections = NetTemplate.Shared.WebApi.Common.Constants.ConfigurationSections;
+using CacheProfiles = NetTemplate.Blog.WebApi.Common.Constants.CacheProfiles;
+using CrossJobNames = NetTemplate.Blog.ApplicationCore.Cross.Constants.JobNames;
+using LoggingConfigurationSections = NetTemplate.Shared.WebApi.Logging.Constants.ConfigurationSections;
 
 using Serilog.Core.Logger seriLogger = WebApplicationHelper.CreateHostLogger();
 ILogger logger = new SerilogLoggerFactory(seriLogger).CreateLogger(nameof(Program));
@@ -191,7 +192,7 @@ static void ConfigurePipeline(WebApplication app,
     app.UseRequestDataExtraction();
 
     app.UseRequestLogging(app.Configuration,
-        requestLoggingSection: ConfigurationSections.Logging.RequestLogging,
+        requestLoggingSection: LoggingConfigurationSections.RequestLogging,
         out IDisposable customRequestLogger);
 
     if (customRequestLogger != null) resources.Add(customRequestLogger);
@@ -239,11 +240,11 @@ static void RunJobs(WebApplication app, HangfireConfig config)
         {
             switch (job.Name)
             {
-                case NetTemplate.Blog.Infrastructure.Persistence.Constants.JobNames.Sample:
+                case CrossJobNames.Sample:
                     {
                         var serializedData = JsonConvert.SerializeObject(job.JobData);
                         var jobData = JsonConvert.DeserializeObject(serializedData);
-                        var finalName = NetTemplate.Blog.Infrastructure.Persistence.Constants.JobNames.Sample + (count++);
+                        var finalName = CrossJobNames.Sample + (count++);
 
                         recurringJobManager.AddOrUpdate(finalName,
                             () => Console.WriteLine("Sample Job Run"),
