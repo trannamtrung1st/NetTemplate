@@ -11,4 +11,11 @@
 		<ProjectReference Include="..\NetTemplate.Blog.Infrastructure\NetTemplate.Blog.Infrastructure.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Folder Include="Comment\" />
+		<Folder Include="PostCategory\Models\" />
+		<Folder Include="User\" />
+		<Folder Include="Post\" />
+	</ItemGroup>
+
 </Project>

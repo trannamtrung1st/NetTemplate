@@ -4,10 +4,13 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 {
     public static class Enums
     {
-        public enum SortBy
+        public enum PostSortBy
         {
             [Description("Title")]
-            Title = 1
+            Title = 1,
+
+            [Description("Category name")]
+            CategoryName = 2
         }
     }
 }

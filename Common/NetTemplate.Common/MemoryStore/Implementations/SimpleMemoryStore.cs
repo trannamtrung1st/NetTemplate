@@ -55,24 +55,20 @@ namespace NetTemplate.Common.MemoryStore.Implementations
 
         public Task<bool> HashSet<T>(string key, string itemKey, T item, CancellationToken cancellationToken = default)
         {
-            if (_map.TryGetValue(key, out ConcurrentDictionary<string, string> itemMap))
-            {
-                itemMap[itemKey] = JsonConvert.SerializeObject(item);
+            ConcurrentDictionary<string, string> itemMap = _map.GetOrAdd(key, (_) => new ConcurrentDictionary<string, string>());
 
-                return Task.FromResult(true);
-            }
+            itemMap[itemKey] = JsonConvert.SerializeObject(item);
 
-            return Task.FromResult(false);
+            return Task.FromResult(true);
         }
 
         public Task HashSet<T>(string key, string[] itemKeys, T[] items, CancellationToken cancellationToken = default)
         {
-            if (_map.TryGetValue(key, out ConcurrentDictionary<string, string> itemMap))
+            ConcurrentDictionary<string, string> itemMap = _map.GetOrAdd(key, (_) => new ConcurrentDictionary<string, string>());
+
+            for (int i = 0; i < itemKeys.Length; i++)
             {
-                for (int i = 0; i < itemKeys.Length; i++)
-                {
-                    itemMap[itemKeys[i]] = JsonConvert.SerializeObject(items[i]);
-                }
+                itemMap[itemKeys[i]] = JsonConvert.SerializeObject(items[i]);
             }
 
             return Task.CompletedTask;

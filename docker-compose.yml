@@ -15,7 +15,7 @@ services:
       - SA_PASSWORD=z@123456!
     ports:
       - target: 1433
-        published: 1433
+        published: 1434
 
 networks:
   default:

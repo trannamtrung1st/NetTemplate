@@ -25,6 +25,7 @@
             public const string PersistenceError = "Persistence error";
             public const string InvalidPagination = "Invalid pagination";
             public const string InvalidData = "Invalid data";
+            public const string IsDescAndSortByMismatch = "IsDesc and SortBy data mismatch";
         }
     }
 }

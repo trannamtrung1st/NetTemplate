@@ -1,13 +1,12 @@
-﻿namespace NetTemplate.Shared.Infrastructure.Common
+﻿using NetTemplate.Shared.ClientSDK.Common.Models;
+
+namespace NetTemplate.Shared.Infrastructure.Common
 {
     public static class Constants
     {
-        public static class ConfigKeys
+        public static class ConfigurationSections
         {
-            public static class ClientSDK
-            {
-                public const string ClientConfiguration = nameof(ClientConfiguration);
-            }
+            public const string ClientSDK = nameof(ClientConfig);
         }
     }
 }

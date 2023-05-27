@@ -1,12 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using NetTemplate.Blog.ApplicationCore.Comment;
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.ApplicationCore.User;
-using NetTemplate.Common.Mediator;
-using NetTemplate.Shared.ApplicationCore.Identity.Implementations;
 using NetTemplate.Shared.ApplicationCore.Identity.Interfaces;
 using NetTemplate.Shared.Infrastructure.Persistence;
 using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
@@ -65,20 +62,6 @@ namespace NetTemplate.Blog.Infrastructure.Persistence
 
                 await transaction.CommitAsync();
             }
-        }
-    }
-
-    public class MainDbContextFactory : IDesignTimeDbContextFactory<MainDbContext>
-    {
-        public MainDbContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<MainDbContext>()
-                .UseSqlServer("Server=.;Database=NetTemplateBlog;Trusted_Connection=False;User Id=sa;Password=z@123456!;MultipleActiveResultSets=true");
-
-            return new MainDbContext(
-                optionsBuilder.Options,
-                new NullMediator(),
-                new NullCurrentUserProvider());
         }
     }
 }

@@ -6,7 +6,7 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Entities
     {
     }
 
-    public abstract class AppEntity<TId> : AppEntity
+    public abstract class AppEntity<TId> : AppEntity, IHasId<TId>
     {
         public abstract TId TransientIdValue();
 

@@ -12,5 +12,6 @@ namespace NetTemplate.Shared.WebApi.Common.Models
         // Identity
         public JwtConfig JwtConfig { get; set; }
         public ClientsConfig ClientsConfig { get; set; }
+        public SimulatedAuthConfig SimulatedAuthConfig { get; set; }
     }
 }

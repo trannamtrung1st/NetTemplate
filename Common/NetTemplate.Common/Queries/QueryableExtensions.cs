@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using NetTemplate.Common.Expressions;
+using System.Linq.Expressions;
 
 namespace System.Linq
 {
@@ -36,6 +37,30 @@ namespace System.Linq
             return isDesc
                 ? query.SequentialOrderByDesc(expr)
                 : query.SequentialOrderBy(expr);
+        }
+
+        public static IQueryable<T> SequentialOrderBy<T>(this IQueryable<T> query,
+            string property)
+        {
+            Expression<Func<T, object>> expr = typeof(T).BuildPropertySelectorExpression<T, object>(property);
+
+            return query.SequentialOrderBy(expr);
+        }
+
+        public static IQueryable<T> SequentialOrderByDesc<T>(this IQueryable<T> query,
+            string property)
+        {
+            Expression<Func<T, object>> expr = typeof(T).BuildPropertySelectorExpression<T, object>(property);
+
+            return query.SequentialOrderByDesc(expr);
+        }
+
+        public static IQueryable<TEntity> SortSequential<TEntity>(this IQueryable<TEntity> query,
+            string property, bool isDesc)
+        {
+            return isDesc
+                ? query.SequentialOrderByDesc(property)
+                : query.SequentialOrderBy(property);
         }
     }
 }

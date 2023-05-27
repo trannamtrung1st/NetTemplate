@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Blog.ApplicationCore.Post.Models;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
+using NetTemplate.Common.Enumerations;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
@@ -44,28 +45,45 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
         {
             PostListRequestModel model = request.Model;
 
-            IQueryable<PostView> views = (await _postViewManager.GetPostViews()).AsQueryable();
+            IQueryable<PostView> query = (await _postViewManager.GetPostViews()).AsQueryable();
 
             if (!string.IsNullOrEmpty(model.Terms))
             {
-                views = views.Where(e => e.Title.Contains(model.Terms));
+                query = query.Where(e => e.Title.Contains(model.Terms));
             }
 
             if (model.CategoryId != null)
             {
-                views = views.Where(e => e.CategoryId == model.CategoryId);
+                query = query.Where(e => e.CategoryId == model.CategoryId);
             }
 
-            int total = views.Count();
+            int total = query.Count();
 
-            views = views.Skip(model.Skip);
+            // [TODO] refactor
+            for (int i = 0; i < model.SortBy.Length; i++)
+            {
+                Enums.PostSortBy currentSort = model.SortBy[i];
+                bool currentIsDesc = model.IsDesc[i];
+
+                switch (currentSort)
+                {
+                    default:
+                        {
+                            string columnName = currentSort.GetName();
+                            query = query.SortSequential(columnName, currentIsDesc);
+                            break;
+                        }
+                }
+            }
+
+            query = query.Skip(model.Skip);
 
             if (!model.CanGetAll() || model.Take != null)
             {
-                views = views.Take(model.GetTakeOrDefault());
+                query = query.Take(model.GetTakeOrDefault());
             }
 
-            PostListItemModel[] list = _mapper.ProjectTo<PostListItemModel>(views).ToArray();
+            PostListItemModel[] list = _mapper.ProjectTo<PostListItemModel>(query).ToArray();
 
             return new ListResponseModel<PostListItemModel>(total, list);
         }
@@ -75,29 +93,51 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
         {
             PostListRequestModel model = request.Model;
 
-            IQueryable<PostEntity> views = _postRepository.GetQuery();
+            IQueryable<PostEntity> query = _postRepository.GetQuery();
 
             if (!string.IsNullOrEmpty(model.Terms))
             {
-                views = views.Where(e => e.Title.Contains(model.Terms));
+                query = query.Where(e => e.Title.Contains(model.Terms));
             }
 
             if (model.CategoryId != null)
             {
-                views = views.Where(e => e.Category.Id == model.CategoryId);
+                query = query.Where(e => e.Category.Id == model.CategoryId);
             }
 
-            int total = views.Count();
+            int total = query.Count();
 
-            views = views.Skip(model.Skip);
+            // [TODO] refactor
+            for (int i = 0; i < model.SortBy.Length; i++)
+            {
+                Enums.PostSortBy currentSort = model.SortBy[i];
+                bool currentIsDesc = model.IsDesc[i];
+
+                switch (currentSort)
+                {
+                    case Enums.PostSortBy.CategoryName:
+                        {
+                            query = query.SortSequential(e => e.Category.Name, currentIsDesc);
+                            break;
+                        }
+                    default:
+                        {
+                            string columnName = currentSort.GetName();
+                            query = query.SortSequential(columnName, currentIsDesc);
+                            break;
+                        }
+                }
+            }
+
+            query = query.Skip(model.Skip);
 
             if (!model.CanGetAll() || model.Take != null)
             {
-                views = views.Take(model.GetTakeOrDefault());
+                query = query.Take(model.GetTakeOrDefault());
             }
 
             PostListItemModel[] list = await _mapper
-                .ProjectTo<PostListItemModel>(views)
+                .ProjectTo<PostListItemModel>(query)
                 .ToArrayAsync(cancellationToken);
 
             return new ListResponseModel<PostListItemModel>(total, list);

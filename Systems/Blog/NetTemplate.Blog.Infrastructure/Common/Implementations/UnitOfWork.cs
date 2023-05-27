@@ -1,8 +1,10 @@
 ﻿using NetTemplate.Blog.Infrastructure.Persistence;
+using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.Infrastructure.Common.Implementations
 {
+    [ScopedService]
     public class UnitOfWork : IUnitOfWork
     {
         private readonly MainDbContext _mainDbContext;

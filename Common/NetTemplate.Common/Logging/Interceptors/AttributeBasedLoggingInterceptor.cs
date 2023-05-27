@@ -3,9 +3,11 @@ using Microsoft.Extensions.Logging;
 using NetTemplate.Common.Logging.Attributes;
 using NetTemplate.Common.Logging.Extensions;
 using NetTemplate.Common.Reflection;
+using System.Diagnostics;
 
 namespace NetTemplate.Common.Logging.Interceptors
 {
+    [DebuggerStepThrough]
     public class AttributeBasedLoggingInterceptor : IInterceptor
     {
         private readonly ILogger<AttributeBasedLoggingInterceptor> _logger;

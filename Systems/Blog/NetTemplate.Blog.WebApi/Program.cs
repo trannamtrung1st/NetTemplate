@@ -23,14 +23,15 @@ using NetTemplate.Shared.WebApi.Identity.Extensions;
 using NetTemplate.Shared.WebApi.Identity.Models;
 using NetTemplate.Shared.WebApi.Logging.Extensions;
 using NetTemplate.Shared.WebApi.Swagger.Extensions;
-using Newtonsoft.Json;
 using Serilog.Extensions.Logging;
+using System.Dynamic;
 using System.Reflection;
 using ApiRoutes = NetTemplate.Blog.WebApi.Common.Constants.ApiRoutes;
 using BackgroundConnectionNames = NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames;
 using CacheProfiles = NetTemplate.Blog.WebApi.Common.Constants.CacheProfiles;
-using CrossJobNames = NetTemplate.Blog.ApplicationCore.Cross.Constants.JobNames;
 using LoggingConfigurationSections = NetTemplate.Shared.WebApi.Logging.Constants.ConfigurationSections;
+
+// ===== APPLICATION START =====
 
 using Serilog.Core.Logger seriLogger = WebApplicationHelper.CreateHostLogger();
 ILogger logger = new SerilogLoggerFactory(seriLogger).CreateLogger(nameof(Program));
@@ -56,11 +57,7 @@ try
 
     ConfigurePipeline(app, resources, defaultConfig.HangfireConfig);
 
-    await Initialize(app);
-
-    RunJobs(app, defaultConfig.HangfireConfig);
-
-    StartConsumers(app);
+    await Initialize(app, defaultConfig.HangfireConfig);
 
     app.Run();
 
@@ -77,8 +74,7 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
     IConfiguration configuration,
     AppConfig appConfig)
 {
-    ClientConfig clientConfiguration = configuration.GetClientConfigurationDefaults();
-
+    ClientConfig clientConfiguration = configuration.GetClientConfigDefaults();
     ClientsConfig clientsConfig = configuration.GetClientsConfigDefaults();
 
     string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
@@ -88,8 +84,8 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
     string masterConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Master);
 
     IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
-
     JwtConfig jwtConfig = configuration.GetJwtConfigDefaults();
+    SimulatedAuthConfig simulatedAuthConfig = configuration.GetSimulatedAuthConfigDefaults();
 
     PubSubConfig pubSubConfig = configuration.GetPubSubConfigDefaults();
 
@@ -121,6 +117,7 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
         HangfireMasterConnectionString = masterConnStr,
         IdentityConfig = identityConfig,
         JwtConfig = jwtConfig,
+        SimulatedAuthConfig = simulatedAuthConfig,
         PubSubConfig = pubSubConfig,
         ScanningAssemblies = assemblies
     };
@@ -211,56 +208,19 @@ static void ConfigurePipeline(WebApplication app,
     app.Lifetime.ApplicationStopped.Register(() => OnApplicationStopped(resources));
 }
 
-static async Task Initialize(WebApplication app)
+static async Task Initialize(WebApplication app,
+    HangfireConfig hangfireConfig)
 {
     using IServiceScope serviceScope = app.Services.CreateScope();
 
-    // Database
-    MainDbContext context = serviceScope.ServiceProvider.GetRequiredService<MainDbContext>();
-    await context.Database.MigrateAsync();
-    await context.SeedMigrationsAsync(serviceScope.ServiceProvider);
+    dynamic dynamicData = new ExpandoObject();
+    dynamicData.HangfireConfig = hangfireConfig;
 
     IMediator mediator = serviceScope.ServiceProvider.GetRequiredService<IMediator>();
-    await mediator.Publish(new ApplicationStartingEvent());
-}
-
-static void RunJobs(WebApplication app, HangfireConfig config)
-{
-    IEnumerable<CronJob> jobs = config.Jobs;
-
-    if (jobs?.Any() != true) return;
-
-    using var serviceScope = app.Services.CreateScope();
-    var recurringJobManager = serviceScope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-    var defaultTimeZone = config.TimeZoneInfo;
-
-    foreach (var job in config.Jobs)
+    await mediator.Publish(new ApplicationStartingEvent()
     {
-        var count = 1;
-        foreach (var cronExpr in job.CronExpressions)
-        {
-            switch (job.Name)
-            {
-                case CrossJobNames.Sample:
-                    {
-                        var serializedData = JsonConvert.SerializeObject(job.JobData);
-                        var jobData = JsonConvert.DeserializeObject(serializedData);
-                        var finalName = CrossJobNames.Sample + (count++);
-
-                        recurringJobManager.AddOrUpdate(finalName,
-                            () => Console.WriteLine("Sample Job Run"),
-                            cronExpr,
-                            new RecurringJobOptions { TimeZone = defaultTimeZone });
-                        break;
-                    }
-            }
-        }
-    }
-}
-
-static void StartConsumers(WebApplication app)
-{
-    // [TODO]
+        Data = dynamicData
+    });
 }
 
 static void OnApplicationStarted()

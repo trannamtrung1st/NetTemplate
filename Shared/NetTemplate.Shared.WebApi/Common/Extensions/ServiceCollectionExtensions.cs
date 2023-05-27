@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using NetTemplate.Shared.Infrastructure.Common.Extensions;
 using NetTemplate.Shared.WebApi.Common.Filters;
+using NetTemplate.Shared.WebApi.Common.Middlewares;
 using NetTemplate.Shared.WebApi.Common.Models;
 using NetTemplate.Shared.WebApi.Identity.Extensions;
 using NetTemplate.Shared.WebApi.Swagger.Extensions;
@@ -12,6 +13,9 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        public static IServiceCollection AddRequestDataExtraction(this IServiceCollection services)
+            => services.AddScoped<RequestDataExtractionMiddleware>();
+
         public static IServiceCollection AddApiVersioningDefaults(this IServiceCollection services)
         {
             return services.AddApiVersioning(opt =>
@@ -57,6 +61,7 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
             bool isProduction = environment.IsProduction();
 
             services.AddDefaultServices<T>(config, isProduction)
+                .AddRequestDataExtraction()
                 .AddHttpContextAccessor()
                 .AddResponseCaching() // [OPTIONAL]
                 .AddApiVersioningDefaults();
@@ -67,7 +72,8 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
             }
 
             services
-                .AddAuthenticationDefaults(config.JwtConfig, config.ClientsConfig, environment)
+                .AddRequestCurrentUserProvider()
+                .AddAuthenticationDefaults(config.JwtConfig, config.ClientsConfig, environment, config.SimulatedAuthConfig)
                 .AddAuthorizationDefaults();
 
             services

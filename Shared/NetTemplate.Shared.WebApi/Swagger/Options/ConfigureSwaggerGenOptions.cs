@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using NetTemplate.Common.Reflection;
 using NetTemplate.Shared.WebApi.Common.Extensions;
 using NetTemplate.Shared.WebApi.Common.Models;
 using NetTemplate.Shared.WebApi.Identity.Schemes.ClientAuthentication;
@@ -32,7 +33,7 @@ namespace NetTemplate.Shared.WebApi.Swagger.Options
                     CreateVersionInfo(description, webInfoConfig));
             }
 
-            options.CustomSchemaIds(type => type.FullName.Replace('+', '.'));
+            options.CustomSchemaIds(type => type.GetGenericTypeName().Replace('+', '.'));
 
             options.EnableAnnotations();
 

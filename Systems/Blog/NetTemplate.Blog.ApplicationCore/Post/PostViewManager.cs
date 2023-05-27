@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
+using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Common.MemoryStore.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.Post
@@ -20,9 +21,15 @@ namespace NetTemplate.Blog.ApplicationCore.Post
         Task<IEnumerable<PostView>> GetPostViews();
     }
 
+    [ScopedService]
     public class PostViewManager : IPostViewManager
     {
         private static bool _isAvailable;
+
+        static PostViewManager()
+        {
+            _isAvailable = false;
+        }
 
         private readonly IMemoryStore _memoryStore;
         private readonly IPostRepository _postRepository;
@@ -33,8 +40,6 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             IPostRepository postRepository,
             IMapper mapper)
         {
-            _isAvailable = false;
-
             _memoryStore = memoryStore;
             _postRepository = postRepository;
             _mapper = mapper;

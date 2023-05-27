@@ -8,6 +8,7 @@ namespace NetTemplate.Shared.WebApi.Identity
         {
             public const string Jwt = nameof(JwtConfig);
             public const string Clients = nameof(ClientsConfig);
+            public const string SimulatedAuth = nameof(SimulatedAuthConfig);
         }
     }
 }

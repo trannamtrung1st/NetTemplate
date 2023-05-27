@@ -15,11 +15,22 @@
                 public const string Base = "error";
                 public const string HandleException = "";
             }
+
+            public static class PostCategory
+            {
+                public const string Base = "api/post-categories";
+                public const string GetPostCategories = "";
+            }
         }
 
         public static class CacheProfiles
         {
             public const string Sample = nameof(Sample);
+        }
+
+        public static class Messages
+        {
+            public const string ApiWelcome = "({0}) API {1} is running!";
         }
     }
 }
