@@ -2,6 +2,7 @@
 
 namespace NetTemplate.Shared.Infrastructure.Background
 {
+    // [TODO] refactor constants
     public static class BackgroundConstants
     {
         public static class DefaultConnectionNames

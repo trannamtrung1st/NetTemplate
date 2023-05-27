@@ -3,6 +3,9 @@
     // [IMPORTANT] should only use this as arguments if possible
     public class AppConfig
     {
+        public int ResponseCacheTtl { get; set; }
+        public bool DbContextDebugEnabled { get; set; }
+
         private AppConfig() { }
 
         private static AppConfig _instance;

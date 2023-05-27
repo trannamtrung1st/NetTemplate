@@ -18,7 +18,7 @@ namespace NetTemplate.Shared.WebApi.Common.Utils
 {
     public static class StartupHelper
     {
-        public static void AddDefaultServices<T>(IServiceCollection services,
+        public static void AddDefaultServices<T>(this IServiceCollection services,
             IWebHostEnvironment environment,
             DefaultServicesConfiguration config) where T : DbContext
         {
@@ -49,15 +49,16 @@ namespace NetTemplate.Shared.WebApi.Common.Utils
                 .AddAuthorizationDefaults();
 
             services
+                .AddEndpointsApiExplorer()
                 .ConfigureApiBehavior()
                 .AddControllersDefaults(config.ControllerConfigureAction)
                 .AddNewtonsoftJson();
         }
 
-        public static void ConfigureAutofacContainerDefaults(ContainerBuilder builder,
-            Assembly[] allAssembliesForScanning)
+        public static void ConfigureAutofacContainerDefaults(this ContainerBuilder builder,
+            Assembly[] scanningAssemblies)
         {
-            builder.RegisterApplicationServices(allAssembliesForScanning);
+            builder.RegisterApplicationServices(scanningAssemblies);
         }
 
         public static void CleanResources(IEnumerable<IDisposable> resources)

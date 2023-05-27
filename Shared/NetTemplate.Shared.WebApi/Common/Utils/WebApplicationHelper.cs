@@ -7,14 +7,17 @@ using Serilog.Events;
 
 namespace NetTemplate.Shared.WebApi.Common.Utils
 {
-    public static class ProgramHelper
+    public static class WebApplicationHelper
     {
         const string SupportedLoggers = nameof(SupportedLoggers);
         const string FileLoggerSectionName = nameof(Serilog) + ":" + SupportedLoggers + ":FileLogger";
         const string ConsoleLoggerSectionName = nameof(Serilog) + ":" + SupportedLoggers + ":ConsoleLogger";
 
-        public static IHostBuilder CreateHostBuilder<TStartup>(string[] args) where TStartup : class =>
-            Host.CreateDefaultBuilder(args)
+        public static WebApplicationBuilder CreateBuilder(string[] args)
+        {
+            WebApplicationBuilder webBuilder = WebApplication.CreateBuilder(args);
+
+            IHostBuilder builder = webBuilder.Host
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseSerilog((context, services, configuration) =>
                 {
@@ -34,11 +37,10 @@ namespace NetTemplate.Shared.WebApi.Common.Utils
                                 context.Configuration,
                                 sectionName: ConsoleLoggerSectionName));
                     }
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<TStartup>();
                 });
+
+            return webBuilder;
+        }
 
         public static Logger CreateHostLogger() => new LoggerConfiguration()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
