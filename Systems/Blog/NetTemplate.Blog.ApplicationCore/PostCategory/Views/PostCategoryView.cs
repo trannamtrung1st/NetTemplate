@@ -9,5 +9,8 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Views
         public string Name { get; set; }
         public int? CreatorId { get; set; }
         public UserView Creator { get; set; }
+        public int? LastModifyUserId { get; set; }
+        public DateTimeOffset CreatedTime { get; set; }
+        public DateTimeOffset? LastModifiedTime { get; set; }
     }
 }

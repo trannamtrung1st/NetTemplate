@@ -5,6 +5,7 @@ using NetTemplate.Common.Validation;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Utils;
+using System.Linq.Expressions;
 using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messages;
 
 namespace NetTemplate.Blog.ApplicationCore.Post
@@ -152,6 +153,22 @@ namespace NetTemplate.Blog.ApplicationCore.Post
         #endregion
 
         public override int TransientIdValue() => default;
+
+        // [NOTE] exclude big data: Content
+        public static Expression<Func<PostEntity, PostEntity>> SelectBasicInfoExpression
+            => e => new PostEntity
+            {
+                Id = e.Id,
+                CategoryId = e.CategoryId,
+                CreatedTime = e.CreatedTime,
+                CreatorId = e.CreatorId,
+                DeletedTime = e.DeletedTime,
+                DeletorId = e.DeletorId,
+                IsDeleted = e.IsDeleted,
+                LastModifiedTime = e.LastModifiedTime,
+                LastModifyUserId = e.LastModifyUserId,
+                Title = e.Title
+            };
 
         public static class Constraints
         {

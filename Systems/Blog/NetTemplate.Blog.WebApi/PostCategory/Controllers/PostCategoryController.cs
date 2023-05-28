@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NetTemplate.Blog.ApplicationCore.PostCategory.Commands.CreatePostCategory;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategories;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
@@ -32,6 +33,17 @@ namespace NetTemplate.Blog.WebApi.PostCategory.Controllers
             ListResponseModel<PostCategoryListItemModel> response = await _mediator.Send(query);
 
             return Ok(response);
+        }
+
+        [HttpPost(Routes.CreatePostCategory)]
+        [SwaggerResponse((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> CreatePostCategory([FromBody] CreatePostCategoryModel model)
+        {
+            CreatePostCategoryCommand command = new CreatePostCategoryCommand(model);
+
+            await _mediator.Send(command);
+
+            return NoContent();
         }
     }
 }

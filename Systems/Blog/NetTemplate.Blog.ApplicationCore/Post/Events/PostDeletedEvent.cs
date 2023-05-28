@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace NetTemplate.Blog.ApplicationCore.Post.Events
+﻿namespace NetTemplate.Blog.ApplicationCore.Post.Events
 {
-    public class PostDeletedEvent : INotification
+    public class PostDeletedEvent
     {
         public int EntityId { get; }
 

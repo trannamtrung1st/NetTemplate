@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using NetTemplate.Blog.ApplicationCore.Post.Models;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Commands.CreatePost
@@ -28,7 +29,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.CreatePost
         {
             _validator.ValidateAndThrow(request);
 
-            Models.CreatePostModel model = request.Model;
+            CreatePostModel model = request.Model;
 
             PostTagEntity[] tags = model.Tags?.Select(value => new PostTagEntity(value)).ToArray();
 

@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace NetTemplate.Blog.ApplicationCore.Comment.Events
+﻿namespace NetTemplate.Blog.ApplicationCore.Comment.Events
 {
-    public class CommentCreatedEvent : INotification
+    public class CommentCreatedEvent
     {
         public CommentEntity Entity { get; }
 

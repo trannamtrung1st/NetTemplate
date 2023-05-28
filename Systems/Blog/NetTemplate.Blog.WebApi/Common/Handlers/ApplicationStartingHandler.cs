@@ -9,13 +9,13 @@ using CommonJobNames = NetTemplate.Blog.ApplicationCore.Common.Constants.JobName
 
 namespace NetTemplate.Blog.WebApi.Common.Handlers
 {
-    public class ApplicationStartingEventHandler : INotificationHandler<ApplicationStartingEvent>
+    public class ApplicationStartingHandler : INotificationHandler<ApplicationStartingEvent>
     {
         private readonly MainDbContext _dbContext;
         private readonly IServiceProvider _provider;
         private readonly IRecurringJobManager _recurringJobManager;
 
-        public ApplicationStartingEventHandler(
+        public ApplicationStartingHandler(
             MainDbContext dbContext,
             IServiceProvider provider,
             IRecurringJobManager recurringJobManager)

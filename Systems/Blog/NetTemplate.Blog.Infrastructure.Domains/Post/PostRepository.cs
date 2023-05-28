@@ -1,4 +1,5 @@
-﻿using NetTemplate.Blog.ApplicationCore.Post;
+﻿using Microsoft.EntityFrameworkCore;
+using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.Infrastructure.Persistence.Repositories;
@@ -10,6 +11,23 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
     {
         public PostRepository(MainDbContext dbContext) : base(dbContext)
         {
+        }
+
+        // [TODO] add cancellation tokens
+        public override async Task<PostEntity> FindById(params object[] keys)
+        {
+            if (keys?.Length != 1 || keys[0] is not int id)
+            {
+                throw new ArgumentException(nameof(keys));
+            }
+
+            PostEntity entity = await dbContext.Post.ById(id)
+                .Select(PostEntity.SelectBasicInfoExpression)
+                .FirstOrDefaultAsync();
+
+            await LoadAggregate(entity);
+
+            return entity;
         }
 
         protected override async Task LoadAggregate(PostEntity entity)

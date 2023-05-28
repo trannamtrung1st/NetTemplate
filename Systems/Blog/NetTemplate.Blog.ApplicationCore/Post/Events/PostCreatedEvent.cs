@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace NetTemplate.Blog.ApplicationCore.Post.Events
+﻿namespace NetTemplate.Blog.ApplicationCore.Post.Events
 {
-    public class PostCreatedEvent : INotification
+    public class PostCreatedEvent
     {
         public PostEntity Entity { get; }
 

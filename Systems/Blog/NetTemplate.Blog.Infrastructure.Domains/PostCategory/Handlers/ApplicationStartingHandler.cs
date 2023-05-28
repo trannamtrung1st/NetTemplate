@@ -4,11 +4,11 @@ using NetTemplate.Shared.ApplicationCore.Common.Events;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory.Handlers
 {
-    public class ApplicationStartingEventHandler : INotificationHandler<ApplicationStartingEvent>
+    public class ApplicationStartingHandler : INotificationHandler<ApplicationStartingEvent>
     {
         private readonly IPostCategoryViewManager _postCategoryViewManager;
 
-        public ApplicationStartingEventHandler(IPostCategoryViewManager postCategoryViewManager)
+        public ApplicationStartingHandler(IPostCategoryViewManager postCategoryViewManager)
         {
             _postCategoryViewManager = postCategoryViewManager;
         }

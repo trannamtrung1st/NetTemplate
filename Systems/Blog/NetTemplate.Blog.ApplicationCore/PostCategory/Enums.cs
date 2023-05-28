@@ -21,6 +21,10 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
             [Column("Creator.UserCode")]
             [Description("Creator code")]
             CreatorCode = 4,
+
+            [Column("CreatedTime")]
+            [Description("Created time")]
+            CreatedTime = 5,
         }
     }
 }

@@ -1,31 +1,41 @@
-﻿using MediatR;
+﻿using NetTemplate.Shared.ApplicationCore.Common.Events;
 
 namespace NetTemplate.Shared.ApplicationCore.Common.Entities
 {
     public abstract class DomainEntity
     {
-        private Queue<INotification> _preEvents;
-        private Queue<INotification> _postEvents;
+        private Queue<EntityEvent> _preEvents;
+        private Queue<EntityEvent> _postEvents;
 
-        public IEnumerable<INotification> TakePreEvents() => TakeEvents(GetSet(ref _preEvents));
-        public IEnumerable<INotification> TakePostvents() => TakeEvents(GetSet(ref _postEvents));
+        public IEnumerable<EntityEvent> TakePreEvents() => TakeEvents(GetSet(ref _preEvents));
+        public IEnumerable<EntityEvent> TakePostvents() => TakeEvents(GetSet(ref _postEvents));
         public bool HasPreEvents() => GetSet(ref _preEvents).Count > 0;
         public bool HasPostEvents() => GetSet(ref _postEvents).Count > 0;
 
-        protected void QueueEvent(INotification notification, bool isPost = false)
+        protected void QueueEvent(EntityEvent notification, bool isPost = false)
         {
-            Queue<INotification> events = isPost ? GetSet(ref _postEvents) : GetSet(ref _preEvents);
+            Queue<EntityEvent> events = isPost ? GetSet(ref _postEvents) : GetSet(ref _preEvents);
 
             events.Enqueue(notification);
         }
 
-        protected void QueuePipelineEvent(INotification notification)
+        protected void QueuePreEvent<TEventData>(TEventData eventData)
         {
-            QueueEvent(notification, isPost: false);
-            QueueEvent(notification, isPost: true);
+            QueueEvent(new PreEntityEvent<TEventData>(eventData), isPost: false);
         }
 
-        private IEnumerable<INotification> TakeEvents(Queue<INotification> events)
+        protected void QueuePostEvent<TEventData>(TEventData eventData)
+        {
+            QueueEvent(new PostEntityEvent<TEventData>(eventData), isPost: true);
+        }
+
+        protected void QueuePipelineEvent<TEventData>(TEventData data)
+        {
+            QueuePreEvent(data);
+            QueuePostEvent(data);
+        }
+
+        private IEnumerable<EntityEvent> TakeEvents(Queue<EntityEvent> events)
         {
             while (events.Count > 0)
             {
@@ -33,9 +43,9 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Entities
             }
         }
 
-        private Queue<INotification> GetSet(ref Queue<INotification> events)
+        private Queue<EntityEvent> GetSet(ref Queue<EntityEvent> events)
         {
-            events ??= new Queue<INotification>();
+            events ??= new Queue<EntityEvent>();
 
             return events;
         }

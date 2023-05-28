@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace NetTemplate.Blog.ApplicationCore.User.Events
+﻿namespace NetTemplate.Blog.ApplicationCore.User.Events
 {
-    public class UserCreatedEvent : INotification
+    public class UserCreatedEvent
     {
         public UserPartialEntity Entity { get; }
 

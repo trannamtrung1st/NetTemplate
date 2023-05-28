@@ -20,6 +20,7 @@
             {
                 public const string Base = "api/post-categories";
                 public const string GetPostCategories = "";
+                public const string CreatePostCategory = "";
             }
         }
 
