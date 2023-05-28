@@ -1,4 +1,6 @@
-﻿using NetTemplate.Shared.ApplicationCore.Common.Entities;
+﻿using NetTemplate.Common.Enumerations;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace System.Linq
 {
@@ -19,6 +21,82 @@ namespace System.Linq
             where T : IHasId<TId>
         {
             return query.Where(e => ids.Contains(e.Id));
+        }
+
+        public static IQueryable<T> ByIdsIfAny<T, TId>(this IQueryable<T> query, IEnumerable<TId> ids)
+            where T : IHasId<TId>
+        {
+            if (ids?.Any() == true)
+            {
+                return ByIds(query, ids);
+            }
+
+            return query;
+        }
+
+        public static IQueryable<T> Paging<T, TModel>(this IQueryable<T> query, TModel model)
+            where TModel : IPagingQuery
+        {
+            query = query.Skip(model.Skip);
+
+            if (!model.CanGetAll() || model.Take != null)
+            {
+                query = query.Take(model.GetTakeOrDefault());
+            }
+
+            return query;
+        }
+
+        /// <summary>
+        /// [NOTE] If Process return null, default will be applied
+        /// </summary>
+        public static IQueryable<T> SortBy<T, TModel, TSortBy>(this IQueryable<T> query, TModel model,
+            Func<IQueryable<T>, TSortBy, bool, IQueryable<T>> Process = null,
+            Func<TSortBy, bool> IsUseColumn = null,
+            string lastSortDefault = "Id",
+            bool lastSortDefaultDesc = false)
+            where TModel : ISortableQuery<TSortBy>
+            where TSortBy : struct, Enum
+        {
+            if (model.SortBy != null)
+            {
+                for (int i = 0; i < model.SortBy.Length; i++)
+                {
+                    TSortBy currentSort = model.SortBy[i];
+                    bool currentIsDesc = model.IsDesc[i];
+                    IQueryable<T> processedQuery = null;
+
+                    if (Process != null)
+                    {
+                        processedQuery = Process(query, currentSort, currentIsDesc);
+                    }
+
+                    if (processedQuery == null)
+                    {
+                        string columnName;
+
+                        if (IsUseColumn == null || IsUseColumn(currentSort))
+                        {
+                            columnName = currentSort.GetColumn() ?? currentSort.GetName();
+                        }
+                        else
+                        {
+                            columnName = currentSort.GetName();
+                        }
+
+                        processedQuery = query.SortSequential(columnName, currentIsDesc);
+                    }
+
+                    query = processedQuery;
+                }
+            }
+
+            if (lastSortDefault != null)
+            {
+                query = query.SortSequential(lastSortDefault, lastSortDefaultDesc);
+            }
+
+            return query;
         }
     }
 }

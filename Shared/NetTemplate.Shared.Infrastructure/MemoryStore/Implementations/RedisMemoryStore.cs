@@ -34,7 +34,17 @@ namespace NetTemplate.Shared.Infrastructure.MemoryStore.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveHash(string key, CancellationToken cancellationToken = default)
+        public Task<bool> RemoveKey(string key, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<T> StringGet<T>(string key, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> StringSet(string key, string value, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

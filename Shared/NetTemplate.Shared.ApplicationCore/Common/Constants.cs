@@ -27,5 +27,10 @@
             public const string InvalidData = "Invalid data";
             public const string IsDescAndSortByMismatch = "IsDesc and SortBy data mismatch";
         }
+
+        public static class ViewPreservedKeys
+        {
+            public const string Version = "@version";
+        }
     }
 }

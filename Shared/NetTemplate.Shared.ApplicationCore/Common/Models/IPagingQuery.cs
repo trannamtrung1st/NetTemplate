@@ -5,5 +5,6 @@
         int Skip { get; set; }
         int? Take { get; set; }
         bool CanGetAll();
+        int GetTakeOrDefault();
     }
 }

@@ -6,18 +6,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Common\" />
+		<Folder Include="Common\Commands\" />
+		<Folder Include="Common\Events\" />
+		<Folder Include="Common\Exceptions\" />
+		<Folder Include="Common\Handlers\" />
+		<Folder Include="Common\Implementations\" />
+		<Folder Include="Common\Interfaces\" />
+		<Folder Include="Common\Jobs\" />
+		<Folder Include="Common\Mapping\" />
+		<Folder Include="Common\Queries\" />
+		<Folder Include="Common\Utils\" />
 		<Folder Include="Cross\Commands\" />
-		<Folder Include="Cross\Events\" />
-		<Folder Include="Cross\Exceptions\" />
-		<Folder Include="Cross\Handlers\" />
-		<Folder Include="Cross\Implementations\" />
-		<Folder Include="Cross\Interfaces\" />
-		<Folder Include="Cross\Jobs\" />
-		<Folder Include="Cross\Mapping\" />
-		<Folder Include="Cross\Models\" />
 		<Folder Include="Cross\Queries\" />
-		<Folder Include="Cross\Utils\" />
 		<Folder Include="PostCategory\Commands\UpdatePostCategory\" />
 		<Folder Include="PostCategory\Commands\DeletePostCategory\" />
 		<Folder Include="PostCategory\Commands\CreatePostCategory\" />
@@ -25,7 +25,6 @@
 		<Folder Include="User\Exceptions\" />
 		<Folder Include="User\Models\" />
 		<Folder Include="User\Handlers\" />
-		<Folder Include="User\Mapping\" />
 		<Folder Include="User\Queries\" />
 	</ItemGroup>
 

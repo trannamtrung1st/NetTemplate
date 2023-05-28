@@ -5,7 +5,7 @@ using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Shared.ApplicationCore.Common.Events;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using Newtonsoft.Json;
-using CrossJobNames = NetTemplate.Blog.ApplicationCore.Cross.Constants.JobNames;
+using CommonJobNames = NetTemplate.Blog.ApplicationCore.Common.Constants.JobNames;
 
 namespace NetTemplate.Blog.WebApi.Common.Handlers
 {
@@ -57,11 +57,11 @@ namespace NetTemplate.Blog.WebApi.Common.Handlers
                 {
                     switch (job.Name)
                     {
-                        case CrossJobNames.Sample:
+                        case CommonJobNames.Sample:
                             {
                                 var serializedData = JsonConvert.SerializeObject(job.JobData);
                                 var jobData = JsonConvert.DeserializeObject(serializedData);
-                                var finalName = CrossJobNames.Sample + (count++);
+                                var finalName = CommonJobNames.Sample + (count++);
 
                                 _recurringJobManager.AddOrUpdate(finalName,
                                     () => Console.WriteLine("Sample Job Run"),

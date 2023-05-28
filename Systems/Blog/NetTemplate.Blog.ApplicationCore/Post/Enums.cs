@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NetTemplate.Blog.ApplicationCore.Post
 {
@@ -9,8 +10,13 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             [Description("Title")]
             Title = 1,
 
+            [Column("Category.Name")]
             [Description("Category name")]
-            CategoryName = 2
+            CategoryName = 2,
+
+            [Column("Creator.UserCode")]
+            [Description("Creator code")]
+            CreatorCode = 3,
         }
     }
 }

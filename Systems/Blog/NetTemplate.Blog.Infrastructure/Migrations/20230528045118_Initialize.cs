@@ -14,9 +14,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserCode = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     CreatorId = table.Column<int>(type: "int", nullable: true),
                     LastModifyUserId = table.Column<int>(type: "int", nullable: true),
@@ -37,7 +37,7 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     CreatorId = table.Column<int>(type: "int", nullable: true),
                     LastModifyUserId = table.Column<int>(type: "int", nullable: true),
                     CreatedTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -63,8 +63,8 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     CreatorId = table.Column<int>(type: "int", nullable: true),
                     LastModifyUserId = table.Column<int>(type: "int", nullable: true),
@@ -97,7 +97,7 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     OnPostId = table.Column<int>(type: "int", nullable: false),
                     CreatorId = table.Column<int>(type: "int", nullable: true),
                     LastModifyUserId = table.Column<int>(type: "int", nullable: true),
@@ -130,9 +130,8 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Value = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     PostId = table.Column<int>(type: "int", nullable: false),
-                    PostEntityId = table.Column<int>(type: "int", nullable: true),
                     CreatorId = table.Column<int>(type: "int", nullable: true),
                     LastModifyUserId = table.Column<int>(type: "int", nullable: true),
                     CreatedTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
@@ -142,9 +141,15 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_PostTag", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostTag_Post_PostEntityId",
-                        column: x => x.PostEntityId,
+                        name: "FK_PostTag_Post_PostId",
+                        column: x => x.PostId,
                         principalTable: "Post",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PostTag_UserPartial_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "UserPartial",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -175,9 +180,14 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostTag_PostEntityId",
+                name: "IX_PostTag_CreatorId",
                 table: "PostTag",
-                column: "PostEntityId");
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostTag_PostId",
+                table: "PostTag",
+                column: "PostId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

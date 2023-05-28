@@ -1,6 +1,7 @@
 ﻿using EnumsNET;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NetTemplate.Common.Enumerations
 {
@@ -47,6 +48,11 @@ namespace NetTemplate.Common.Enumerations
         public static string GetName<T>(this T enumVal) where T : struct, Enum
         {
             return Enums.GetName(enumVal);
+        }
+
+        public static string GetColumn<T>(this T enumVal) where T : struct, Enum
+        {
+            return enumVal.GetAttributes().OfType<ColumnAttribute>().SingleOrDefault()?.Name;
         }
 
         public static string ToStringF(this Enum enumVal)

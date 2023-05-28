@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
-using NetTemplate.Shared.Infrastructure.Common.Extensions;
 using NetTemplate.Shared.WebApi.Common.Filters;
 using NetTemplate.Shared.WebApi.Common.Middlewares;
 using NetTemplate.Shared.WebApi.Common.Models;
 using NetTemplate.Shared.WebApi.Identity.Extensions;
 using NetTemplate.Shared.WebApi.Swagger.Extensions;
+using Newtonsoft.Json.Converters;
 using VersioningConstants = NetTemplate.Shared.WebApi.Common.Constants.Versioning;
 
 namespace NetTemplate.Shared.WebApi.Common.Extensions
@@ -55,12 +55,12 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
         }
 
         public static IServiceCollection AddApiDefaultServices<T>(this IServiceCollection services,
-            IWebHostEnvironment environment,
-            ApiDefaultServicesConfig config) where T : DbContext
+            ApiDefaultServicesConfig config,
+            IWebHostEnvironment environment) where T : DbContext
         {
             bool isProduction = environment.IsProduction();
 
-            services.AddDefaultServices<T>(config, isProduction)
+            services
                 .AddRequestDataExtraction()
                 .AddHttpContextAccessor()
                 .AddResponseCaching() // [OPTIONAL]
@@ -80,7 +80,10 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
                 .AddEndpointsApiExplorer()
                 .ConfigureApiBehavior()
                 .AddControllersDefaults(config.ControllerConfigureAction)
-                .AddNewtonsoftJson();
+                .AddNewtonsoftJson(opt =>
+                {
+                    opt.SerializerSettings.Converters.Add(new StringEnumConverter());
+                });
 
             return services;
         }

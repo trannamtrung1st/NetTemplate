@@ -6,20 +6,22 @@ namespace NetTemplate.Common.MemoryStore.Implementations
 {
     public class SimpleMemoryStore : IMemoryStore
     {
-        private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, string>> _map;
+        private readonly ConcurrentDictionary<string, object> _map;
 
         public SimpleMemoryStore()
         {
-            _map = new ConcurrentDictionary<string, ConcurrentDictionary<string, string>>();
+            _map = new ConcurrentDictionary<string, object>();
         }
 
         public Task<T> HashGet<T>(string key, string itemKey, CancellationToken cancellationToken = default)
         {
             T obj = default;
 
-            if (_map.TryGetValue(key, out ConcurrentDictionary<string, string> item))
+            if (_map.TryGetValue(key, out object item))
             {
-                if (item.TryGetValue(itemKey, out string value))
+                ConcurrentDictionary<string, string> hash = (ConcurrentDictionary<string, string>)item;
+
+                if (hash.TryGetValue(itemKey, out string value))
                 {
                     obj = JsonConvert.DeserializeObject<T>(value);
                 }
@@ -32,9 +34,11 @@ namespace NetTemplate.Common.MemoryStore.Implementations
         {
             T[] list = default;
 
-            if (_map.TryGetValue(key, out ConcurrentDictionary<string, string> item))
+            if (_map.TryGetValue(key, out object item))
             {
-                list = item.Values.Select(v => JsonConvert.DeserializeObject<T>(v)).ToArray();
+                ConcurrentDictionary<string, string> hash = (ConcurrentDictionary<string, string>)item;
+
+                list = hash.Values.Select(v => JsonConvert.DeserializeObject<T>(v)).ToArray();
             }
 
             return Task.FromResult(list);
@@ -42,9 +46,11 @@ namespace NetTemplate.Common.MemoryStore.Implementations
 
         public Task<bool> HashRemove(string key, string itemKey, CancellationToken cancellationToken = default)
         {
-            if (_map.TryGetValue(key, out ConcurrentDictionary<string, string> item))
+            if (_map.TryGetValue(key, out object item))
             {
-                if (item.TryRemove(itemKey, out _))
+                ConcurrentDictionary<string, string> hash = (ConcurrentDictionary<string, string>)item;
+
+                if (hash.TryRemove(itemKey, out _))
                 {
                     return Task.FromResult(true);
                 }
@@ -55,20 +61,24 @@ namespace NetTemplate.Common.MemoryStore.Implementations
 
         public Task<bool> HashSet<T>(string key, string itemKey, T item, CancellationToken cancellationToken = default)
         {
-            ConcurrentDictionary<string, string> itemMap = _map.GetOrAdd(key, (_) => new ConcurrentDictionary<string, string>());
+            object itemMap = _map.GetOrAdd(key, (_) => new ConcurrentDictionary<string, string>());
 
-            itemMap[itemKey] = JsonConvert.SerializeObject(item);
+            ConcurrentDictionary<string, string> hash = (ConcurrentDictionary<string, string>)itemMap;
+
+            hash[itemKey] = JsonConvert.SerializeObject(item);
 
             return Task.FromResult(true);
         }
 
         public Task HashSet<T>(string key, string[] itemKeys, T[] items, CancellationToken cancellationToken = default)
         {
-            ConcurrentDictionary<string, string> itemMap = _map.GetOrAdd(key, (_) => new ConcurrentDictionary<string, string>());
+            object itemMap = _map.GetOrAdd(key, (_) => new ConcurrentDictionary<string, string>());
+
+            ConcurrentDictionary<string, string> hash = (ConcurrentDictionary<string, string>)itemMap;
 
             for (int i = 0; i < itemKeys.Length; i++)
             {
-                itemMap[itemKeys[i]] = JsonConvert.SerializeObject(items[i]);
+                hash[itemKeys[i]] = JsonConvert.SerializeObject(items[i]);
             }
 
             return Task.CompletedTask;
@@ -79,9 +89,28 @@ namespace NetTemplate.Common.MemoryStore.Implementations
             return Task.FromResult(_map.ContainsKey(key));
         }
 
-        public Task<bool> RemoveHash(string key, CancellationToken cancellationToken = default)
+        public Task<bool> RemoveKey(string key, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(_map.TryRemove(key, out _));
+        }
+
+        public Task<T> StringGet<T>(string key, CancellationToken cancellationToken = default)
+        {
+            T obj = default;
+
+            if (_map.TryGetValue(key, out object item))
+            {
+                obj = (T)item;
+            }
+
+            return Task.FromResult(obj);
+        }
+
+        public Task<bool> StringSet(string key, string value, CancellationToken cancellationToken = default)
+        {
+            _map[key] = value;
+
+            return Task.FromResult(true);
         }
     }
 }

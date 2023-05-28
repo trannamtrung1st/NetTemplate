@@ -1,68 +1,70 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Common.MemoryStore.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Common.Implementations;
 
 namespace NetTemplate.Blog.ApplicationCore.Post
 {
     public interface IPostViewManager
     {
-        bool IsAvailable { get; }
-
         Task Initialize();
         Task RebuildAllViews();
 
         Task UpdateViewsOnEvent(PostCreatedEvent @event);
         Task UpdateViewsOnEvent(PostUpdatedEvent @event);
         Task UpdateViewsOnEvent(PostDeletedEvent @event);
+
+        bool IsPostAvailable { get; }
         Task RebuildPostViews();
         Task<IEnumerable<PostView>> GetPostViews();
     }
 
     [ScopedService]
-    public class PostViewManager : IPostViewManager
+    public class PostViewManager : BaseViewManager, IPostViewManager
     {
-        private static bool _isAvailable;
+        private static bool _isPostAvailable;
 
         static PostViewManager()
         {
-            _isAvailable = false;
+            _isPostAvailable = false;
         }
 
         private readonly IMemoryStore _memoryStore;
+        private readonly IOptions<ViewsConfig> _viewsOptions;
         private readonly IPostRepository _postRepository;
         private readonly IMapper _mapper;
 
         public PostViewManager(
             IMemoryStore memoryStore,
+            IOptions<ViewsConfig> viewsOptions,
             IPostRepository postRepository,
-            IMapper mapper)
+            IMapper mapper) : base(memoryStore)
         {
             _memoryStore = memoryStore;
+            _viewsOptions = viewsOptions;
             _postRepository = postRepository;
             _mapper = mapper;
         }
 
-        public bool IsAvailable => _isAvailable;
+        public bool IsPostAvailable => _isPostAvailable;
 
         public async Task<IEnumerable<PostView>> GetPostViews()
         {
             ThrowIfNotAvailable();
 
-            PostView[] views = await _memoryStore.HashGetAll<PostView>(Constants.CacheKey.PostView);
+            PostView[] views = await _memoryStore.HashGetAll<PostView>(Constants.CacheKeys.PostView);
 
             return views;
         }
 
         public async Task Initialize()
         {
-            if (_isAvailable) throw new InvalidOperationException();
-
-            await Initialize(Constants.CacheKey.PostView, RebuildPostViews);
-
-            _isAvailable = true;
+            await Initialize(Constants.CacheKeys.PostView, _viewsOptions.Value.PostViewVersion, RebuildPostViews);
         }
 
         public async Task RebuildAllViews()
@@ -72,31 +74,21 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 
         public async Task RebuildPostViews()
         {
-            _isAvailable = false;
+            _isPostAvailable = false;
 
             IQueryable<PostEntity> query = _postRepository.GetQuery();
 
             PostView[] views = await _mapper.ProjectTo<PostView>(query).ToArrayAsync();
 
-            string setKey = Constants.CacheKey.PostView;
+            string setKey = Constants.CacheKeys.PostView;
 
-            await _memoryStore.RemoveHash(setKey);
+            await _memoryStore.RemoveKey(setKey);
 
             await _memoryStore.HashSet(setKey,
                 itemKeys: views.Select(v => v.Id.ToString()).ToArray(),
                 items: views);
 
-            _isAvailable = true;
-        }
-
-        private async Task Initialize(string cacheKey, Func<Task> action)
-        {
-            bool exists = await _memoryStore.KeyExists(cacheKey);
-
-            if (!exists)
-            {
-                await action();
-            }
+            _isPostAvailable = true;
         }
 
         public async Task UpdateViewsOnEvent(PostCreatedEvent @event)
@@ -105,7 +97,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 
             PostView view = await ConstructPostViewById(@event.Entity.Id);
 
-            await _memoryStore.HashSet(Constants.CacheKey.PostView, view.Id.ToString(), view);
+            await _memoryStore.HashSet(Constants.CacheKeys.PostView, view.Id.ToString(), view);
         }
 
         public async Task UpdateViewsOnEvent(PostUpdatedEvent @event)
@@ -114,14 +106,14 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 
             PostView view = await ConstructPostViewById(@event.EntityId);
 
-            await _memoryStore.HashSet(Constants.CacheKey.PostView, view.Id.ToString(), view);
+            await _memoryStore.HashSet(Constants.CacheKeys.PostView, view.Id.ToString(), view);
         }
 
         public async Task UpdateViewsOnEvent(PostDeletedEvent @event)
         {
             ThrowIfNotAvailable();
 
-            await _memoryStore.HashRemove(Constants.CacheKey.PostView, @event.EntityId.ToString());
+            await _memoryStore.HashRemove(Constants.CacheKeys.PostView, @event.EntityId.ToString());
         }
 
         private async Task<PostView> ConstructPostViewById(int id)
@@ -136,12 +128,12 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 
         private void ThrowIfNotAvailable()
         {
-            if (!_isAvailable) throw new InvalidOperationException();
+            if (!_isPostAvailable) throw new InvalidOperationException();
         }
 
         private static class Constants
         {
-            public static class CacheKey
+            public static class CacheKeys
             {
                 public const string PostView = $"{nameof(PostViewManager)}_{nameof(PostView)}";
             }

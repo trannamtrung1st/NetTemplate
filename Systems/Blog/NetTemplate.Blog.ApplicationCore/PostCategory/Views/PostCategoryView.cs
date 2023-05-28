@@ -1,4 +1,5 @@
-﻿using NetTemplate.Shared.ApplicationCore.Common.Entities;
+﻿using NetTemplate.Blog.ApplicationCore.User.Views;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory.Views
 {
@@ -7,6 +8,6 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Views
         public int Id { get; set; }
         public string Name { get; set; }
         public int? CreatorId { get; set; }
-        public string CreatorName { get; set; }
+        public UserView Creator { get; set; }
     }
 }

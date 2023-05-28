@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
-using NetTemplate.Common.Enumerations;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategories
@@ -36,7 +35,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
         {
             _validator.ValidateAndThrow(request);
 
-            return _postCategoryViewManager.IsAvailable
+            return _postCategoryViewManager.IsPostCategoryAvailable
                 ? await HandleUsingView(request, cancellationToken)
                 : await HandleUsingRepository(request, cancellationToken);
         }
@@ -47,42 +46,24 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
 
             IQueryable<PostCategoryView> query = (await _postCategoryViewManager.GetPostCategoryViews()).AsQueryable();
 
+            // Filtering
             if (!string.IsNullOrEmpty(model.Terms))
             {
-                query = query.Where(e => e.Name.Contains(model.Terms));
+                query = query.Where(e => e.Name.Contains(model.Terms, StringComparison.OrdinalIgnoreCase));
             }
 
-            if (model.Ids?.Any() == true)
-            {
-                query = query.ByIds(model.Ids);
-            }
+            query = query.ByIdsIfAny(model.Ids);
 
+            // Counting
             int total = query.Count();
 
-            // [TODO] refactor
-            for (int i = 0; i < model.SortBy.Length; i++)
-            {
-                Enums.PostCategorySortBy currentSort = model.SortBy[i];
-                bool currentIsDesc = model.IsDesc[i];
+            // Sorting
+            query = query.SortBy<PostCategoryView, PostCategoryListRequestModel, Enums.PostCategorySortBy>(model);
 
-                switch (currentSort)
-                {
-                    default:
-                        {
-                            string columnName = currentSort.GetName();
-                            query = query.SortSequential(columnName, currentIsDesc);
-                            break;
-                        }
-                }
-            }
+            // Paging
+            query = query.Paging(model);
 
-            query = query.Skip(model.Skip);
-
-            if (!model.CanGetAll() || model.Take != null)
-            {
-                query = query.Take(model.GetTakeOrDefault());
-            }
-
+            // Projecting
             PostCategoryListItemModel[] list = _mapper
                 .ProjectTo<PostCategoryListItemModel>(query)
                 .ToArray();
@@ -97,42 +78,29 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
 
             IQueryable<PostCategoryEntity> query = _postCategoryRepository.GetQuery();
 
+            // Filtering
             if (!string.IsNullOrEmpty(model.Terms))
             {
                 query = query.Where(e => e.Name.Contains(model.Terms));
             }
 
-            if (model.Ids?.Any() == true)
-            {
-                query = query.ByIds(model.Ids);
-            }
+            query = query.ByIdsIfAny(model.Ids);
 
+            // Counting
             int total = query.Count();
 
-            // [TODO] refactor
-            for (int i = 0; i < model.SortBy.Length; i++)
-            {
-                Enums.PostCategorySortBy currentSort = model.SortBy[i];
-                bool currentIsDesc = model.IsDesc[i];
-
-                switch (currentSort)
+            // Sorting
+            query = query.SortBy<PostCategoryEntity, PostCategoryListRequestModel, Enums.PostCategorySortBy>(model,
+                Process: (query, sort, isDesc) => sort switch
                 {
-                    default:
-                        {
-                            string columnName = currentSort.GetName();
-                            query = query.SortSequential(columnName, currentIsDesc);
-                            break;
-                        }
-                }
-            }
+                    Enums.PostCategorySortBy.CreatorFullName => query.SortSequential(PostCategoryEntity.CreatorFullNameExpression, isDesc),
+                    _ => null,
+                });
 
-            query = query.Skip(model.Skip);
+            // Paging
+            query = query.Paging(model);
 
-            if (!model.CanGetAll() || model.Take != null)
-            {
-                query = query.Take(model.GetTakeOrDefault());
-            }
-
+            // Projecting
             PostCategoryListItemModel[] list = await _mapper
                 .ProjectTo<PostCategoryListItemModel>(query)
                 .ToArrayAsync(cancellationToken);

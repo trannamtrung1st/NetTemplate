@@ -31,7 +31,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTimeOffset>("CreatedTime")
                         .HasColumnType("datetimeoffset");
@@ -78,6 +80,7 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("CreatedTime")
@@ -102,7 +105,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -133,18 +138,19 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                     b.Property<int?>("LastModifyUserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PostEntityId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostEntityId");
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("PostId");
 
                     b.ToTable("PostTag");
                 });
@@ -179,7 +185,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -212,7 +220,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -224,10 +234,14 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("UserCode")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -272,10 +286,16 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
 
             modelBuilder.Entity("NetTemplate.Blog.ApplicationCore.Post.PostTagEntity", b =>
                 {
+                    b.HasOne("NetTemplate.Blog.ApplicationCore.User.UserPartialEntity", null)
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("NetTemplate.Blog.ApplicationCore.Post.PostEntity", null)
                         .WithMany("Tags")
-                        .HasForeignKey("PostEntityId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("NetTemplate.Blog.ApplicationCore.PostCategory.PostCategoryEntity", b =>

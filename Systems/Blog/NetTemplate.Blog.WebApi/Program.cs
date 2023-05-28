@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using NetTemplate.Blog.Infrastructure.Common.Extensions;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Blog.WebApi.Common.Models;
 using NetTemplate.Common.Web.Middlewares;
@@ -49,7 +50,7 @@ try
         builder.Configuration,
         AppConfig.Instance);
 
-    ConfigureServices(builder.Services, builder.Environment, defaultConfig);
+    ConfigureServices(builder.Services, defaultConfig, builder.Environment, builder.Configuration);
 
     ConfigureContainer(builder.Host, defaultConfig.ScanningAssemblies);
 
@@ -129,9 +130,12 @@ static void BindConfigurations(IConfiguration configuration)
 }
 
 static void ConfigureServices(IServiceCollection services,
-    IWebHostEnvironment env, ApiDefaultServicesConfig defaultConfig)
+    ApiDefaultServicesConfig defaultConfig,
+    IWebHostEnvironment env, IConfiguration configuration)
 {
-    services.AddApiDefaultServices<MainDbContext>(env, defaultConfig);
+    services
+        .AddInfrastructureServices(defaultConfig, configuration, env.IsProduction())
+        .AddApiDefaultServices<MainDbContext>(defaultConfig, env);
 }
 
 static void ConfigureContainer(IHostBuilder hostBuilder,
@@ -217,10 +221,7 @@ static async Task Initialize(WebApplication app,
     dynamicData.HangfireConfig = hangfireConfig;
 
     IMediator mediator = serviceScope.ServiceProvider.GetRequiredService<IMediator>();
-    await mediator.Publish(new ApplicationStartingEvent()
-    {
-        Data = dynamicData
-    });
+    await mediator.Publish(new ApplicationStartingEvent(dynamicData));
 }
 
 static void OnApplicationStarted()

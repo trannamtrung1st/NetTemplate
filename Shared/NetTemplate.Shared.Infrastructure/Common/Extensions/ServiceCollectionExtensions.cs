@@ -82,7 +82,7 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
                 .WithSingletonLifetime());
         }
 
-        public static IServiceCollection AddDefaultServices<T>(this IServiceCollection services,
+        public static IServiceCollection AddInfrastructureDefaultServices<T>(this IServiceCollection services,
             DefaultServicesConfig config, bool isProduction) where T : DbContext
         {
             services
