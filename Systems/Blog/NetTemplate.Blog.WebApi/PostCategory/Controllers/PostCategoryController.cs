@@ -5,6 +5,7 @@ using NetTemplate.Blog.ApplicationCore.PostCategory.Commands.DeletePostCategory;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Commands.UpdatePostCategory;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategories;
+using NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategoryDetails;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
 using NetTemplate.Shared.WebApi.Common.Controllers;
 using Swashbuckle.AspNetCore.Annotations;
@@ -33,6 +34,17 @@ namespace NetTemplate.Blog.WebApi.PostCategory.Controllers
             GetPostCategoriesQuery query = new GetPostCategoriesQuery(model);
 
             ListResponseModel<PostCategoryListItemModel> response = await _mediator.Send(query);
+
+            return Ok(response);
+        }
+
+        [HttpGet(Routes.GetPostCategoryDetails)]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PostCategoryDetailsModel))]
+        public async Task<IActionResult> GetPostCategoryDetails([FromRoute] int id)
+        {
+            GetPostCategoryDetailsQuery query = new GetPostCategoryDetailsQuery(id);
+
+            PostCategoryDetailsModel response = await _mediator.Send(query);
 
             return Ok(response);
         }

@@ -22,6 +22,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
         bool IsPostCategoryAvailable { get; }
         Task RebuildPostCategoryViews();
         Task<IEnumerable<PostCategoryView>> GetPostCategoryViews();
+        Task<PostCategoryView> GetPostCategoryView(int id);
     }
 
     [ScopedService]
@@ -60,6 +61,17 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
             PostCategoryView[] views = await _memoryStore.HashGetAll<PostCategoryView>(Constants.CacheKeys.PostCategoryView);
 
             return views;
+        }
+
+        public async Task<PostCategoryView> GetPostCategoryView(int id)
+        {
+            ThrowIfNotAvailable();
+
+            PostCategoryView view = await _memoryStore.HashGet<PostCategoryView>(
+                key: Constants.CacheKeys.PostCategoryView,
+                itemKey: id.ToString());
+
+            return view;
         }
 
         public async Task Initialize()

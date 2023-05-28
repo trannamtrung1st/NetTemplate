@@ -13,6 +13,8 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Mapping
             CreateMap<PostCategoryEntity, PostCategoryListItemModel>();
 
             CreateMap<PostCategoryView, PostCategoryListItemModel>();
+
+            CreateMap<PostCategoryView, PostCategoryDetailsModel>();
         }
     }
 }
