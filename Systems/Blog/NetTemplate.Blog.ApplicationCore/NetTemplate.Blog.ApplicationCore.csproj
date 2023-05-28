@@ -18,7 +18,6 @@
 		<Folder Include="Common\Utils\" />
 		<Folder Include="Cross\Commands\" />
 		<Folder Include="Cross\Queries\" />
-		<Folder Include="PostCategory\Commands\UpdatePostCategory\" />
 		<Folder Include="PostCategory\Commands\DeletePostCategory\" />
 		<Folder Include="Post\Queries\GetPostDetails\" />
 		<Folder Include="User\Exceptions\" />

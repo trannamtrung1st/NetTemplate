@@ -7,6 +7,8 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdatePost
     {
         public UpdatePostCommandValidator(IValidator<UpdatePostModel> updatePostModelValidator)
         {
+            RuleFor(e => e.Id).GreaterThan(0);
+
             RuleFor(e => e.Model).NotNull().SetValidator(updatePostModelValidator);
         }
     }

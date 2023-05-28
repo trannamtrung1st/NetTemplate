@@ -7,8 +7,6 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Validators
     {
         public UpdatePostTagsModelValidator()
         {
-            RuleFor(e => e.Id).GreaterThan(0);
-
             RuleFor(e => e.Tags).NotNull();
         }
     }

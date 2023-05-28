@@ -5,10 +5,12 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdateTags
 {
     public class UpdateTagsCommand : ITransactionalCommand
     {
+        public int Id { get; }
         public UpdatePostTagsModel Model { get; }
 
-        public UpdateTagsCommand(UpdatePostTagsModel model)
+        public UpdateTagsCommand(int id, UpdatePostTagsModel model)
         {
+            Id = id;
             Model = model;
         }
     }

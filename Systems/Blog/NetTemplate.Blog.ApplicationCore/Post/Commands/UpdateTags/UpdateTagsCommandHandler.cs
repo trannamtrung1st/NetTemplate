@@ -31,7 +31,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdateTags
 
             Models.UpdatePostTagsModel model = request.Model;
 
-            PostEntity entity = await _postRepository.FindById(model.Id);
+            PostEntity entity = await _postRepository.FindById(request.Id);
 
             if (entity == null) throw new NotFoundException();
 

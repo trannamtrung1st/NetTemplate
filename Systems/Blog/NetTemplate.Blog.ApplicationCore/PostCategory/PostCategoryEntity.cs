@@ -1,6 +1,7 @@
 ﻿using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
 using NetTemplate.Blog.ApplicationCore.User;
+using NetTemplate.Common.Validation;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Utils;
@@ -37,9 +38,40 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
             QueuePipelineEvent(new PostCategoryCreatedEvent(this));
         }
 
+        public void Update(string name)
+        {
+            object _ = ValidateUpdate(name, out Exception ex) ? null : throw ex;
+
+            Name = name;
+
+            QueuePipelineEvent(new PostCategoryUpdatedEvent(this.Id, name));
+        }
+
         #region Validation rules
 
+        private bool ValidateUpdate(string name, out Exception ex)
+        {
+            List<string> invalidFields = new List<string>();
+
+            invalidFields.AddRange(ValidateCommon(name));
+
+            ex = invalidFields.Count > 0 ? new InvalidEntityDataException(invalidFields.ToArray()) : null;
+
+            return ex == null;
+        }
+
         private bool ValidateNew(string name, out Exception ex)
+        {
+            List<string> invalidFields = new List<string>();
+
+            invalidFields.AddRange(ValidateCommon(name));
+
+            ex = invalidFields.Count > 0 ? new InvalidEntityDataException(invalidFields.ToArray()) : null;
+
+            return ex == null;
+        }
+
+        private List<string> ValidateCommon(string name)
         {
             List<string> invalidFields = new List<string>();
 
@@ -48,14 +80,12 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
                 invalidFields.Add(CommonMessages.InvalidMaxLength);
             }
 
-            if (string.IsNullOrWhiteSpace(name))
+            if (!CommonValidation.StringNotEmptyOrWhitespace(new[] { name }))
             {
-                invalidFields.Add(nameof(Name));
+                invalidFields.Add(CommonMessages.MissingRequiredFields);
             }
 
-            ex = invalidFields.Count > 0 ? new InvalidEntityDataException(invalidFields.ToArray()) : null;
-
-            return ex == null;
+            return invalidFields;
         }
 
         #endregion

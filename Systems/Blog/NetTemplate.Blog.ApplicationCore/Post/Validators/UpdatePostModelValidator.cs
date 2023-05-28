@@ -8,8 +8,6 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Validators
         public UpdatePostModelValidator(IValidator<BasePostModel> baseValidator)
         {
             Include(baseValidator);
-
-            RuleFor(e => e.Id).GreaterThan(0);
         }
     }
 }

@@ -2,7 +2,6 @@
 {
     public class UpdatePostTagsModel
     {
-        public int Id { get; set; }
         public IEnumerable<string> Tags { get; set; }
     }
 }

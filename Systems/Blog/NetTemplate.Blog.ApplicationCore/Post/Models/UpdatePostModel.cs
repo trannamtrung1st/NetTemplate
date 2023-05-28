@@ -2,6 +2,5 @@
 {
     public class UpdatePostModel : BasePostModel
     {
-        public int Id { get; set; }
     }
 }
