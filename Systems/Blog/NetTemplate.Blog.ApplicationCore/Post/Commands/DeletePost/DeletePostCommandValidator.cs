@@ -6,7 +6,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.DeletePost
     {
         public DeletePostCommandValidator()
         {
-            RuleFor(e => e.PostId).GreaterThan(0);
+            RuleFor(e => e.Id).GreaterThan(0);
         }
     }
 }

@@ -42,7 +42,13 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Extensions
                 typeof(IQueryFilterProvider), assemblies).Select(o => o.CreateInstance<IQueryFilterProvider>())
                     .ToArray();
 
-            if (!filterProviders.Any()) return builder;
+            return builder.AddGlobalQueryFilter(filterProviders);
+        }
+
+        public static ModelBuilder AddGlobalQueryFilter(this ModelBuilder builder,
+            params IQueryFilterProvider[] filterProviders)
+        {
+            if (filterProviders.Length == 0) return builder;
 
             var eTypes = builder.Model.GetEntityTypes();
 

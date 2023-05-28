@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Commands.CreatePostCategory;
+using NetTemplate.Blog.ApplicationCore.PostCategory.Commands.DeletePostCategory;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Commands.UpdatePostCategory;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategories;
@@ -53,6 +54,17 @@ namespace NetTemplate.Blog.WebApi.PostCategory.Controllers
             [FromRoute] int id, [FromBody] UpdatePostCategoryModel model)
         {
             UpdatePostCategoryCommand command = new UpdatePostCategoryCommand(id, model);
+
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpDelete(Routes.DeletePostCategory)]
+        [SwaggerResponse((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> DeletePostCategory([FromRoute] int id)
+        {
+            DeletePostCategoryCommand command = new DeletePostCategoryCommand(id);
 
             await _mediator.Send(command);
 

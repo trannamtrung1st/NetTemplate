@@ -25,7 +25,12 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
                 .Select(PostEntity.SelectBasicInfoExpression)
                 .FirstOrDefaultAsync();
 
-            await LoadAggregate(entity);
+            if (entity != null)
+            {
+                await Track(entity);
+
+                await LoadAggregate(entity);
+            }
 
             return entity;
         }

@@ -22,6 +22,7 @@
                 public const string GetPostCategories = "";
                 public const string CreatePostCategory = "";
                 public const string UpdatePostCategory = "{id}";
+                public const string DeletePostCategory = "{id}";
             }
         }
 

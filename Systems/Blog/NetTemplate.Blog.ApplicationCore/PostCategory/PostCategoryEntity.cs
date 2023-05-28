@@ -29,6 +29,11 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
         {
         }
 
+        public PostCategoryEntity(int id)
+        {
+            Id = id;
+        }
+
         public PostCategoryEntity(string name) : this()
         {
             object _ = ValidateNew(name, out Exception ex) ? null : throw ex;
@@ -47,7 +52,23 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
             QueuePipelineEvent(new PostCategoryUpdatedEvent(this.Id, name));
         }
 
+        public override void SoftDelete()
+        {
+            object _ = ValidateDelete(out Exception ex) ? null : throw ex;
+
+            base.SoftDelete();
+
+            QueuePipelineEvent(new PostCategoryDeletedEvent(this.Id));
+        }
+
         #region Validation rules
+
+        private bool ValidateDelete(out Exception ex)
+        {
+            ex = null;
+
+            return ex == null;
+        }
 
         private bool ValidateUpdate(string name, out Exception ex)
         {

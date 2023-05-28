@@ -4,11 +4,11 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.DeletePost
 {
     public class DeletePostCommand : ITransactionalCommand
     {
-        public int PostId { get; }
+        public int Id { get; }
 
-        public DeletePostCommand(int postId)
+        public DeletePostCommand(int id)
         {
-            PostId = postId;
+            Id = id;
         }
     }
 }

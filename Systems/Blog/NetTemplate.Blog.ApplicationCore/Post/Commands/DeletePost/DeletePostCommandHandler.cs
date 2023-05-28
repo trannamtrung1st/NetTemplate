@@ -30,11 +30,13 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.DeletePost
             _validator.ValidateAndThrow(request);
 
             PostEntity entity = _postRepository.GetQuery()
-                .Where(e => e.Id == request.PostId)
+                .ById(request.Id)
                 .Select(e => new PostEntity(e.Id))
                 .FirstOrDefault();
 
             if (entity == null) throw new NotFoundException();
+
+            await _postRepository.Track(entity);
 
             entity.SoftDelete();
 

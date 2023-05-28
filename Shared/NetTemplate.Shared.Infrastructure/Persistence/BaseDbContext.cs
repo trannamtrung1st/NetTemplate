@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Identity.Interfaces;
 using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
+using NetTemplate.Shared.Infrastructure.Persistence.QueryFilters;
 
 namespace NetTemplate.Shared.Infrastructure.Persistence
 {
@@ -50,6 +51,8 @@ namespace NetTemplate.Shared.Infrastructure.Persistence
 
             modelBuilder.RestrictDeleteBehaviour(fkPredicate:
                 fk => !fk.GetConstraintName().Contains(Constants.ConstraintNames.NoRestrictForeignKeyConstraintPostfix));
+
+            modelBuilder.AddGlobalQueryFilter(new NotDeletedQueryFilter());
 
             modelBuilder.AddGlobalQueryFilter(new[] { dbContextAssembly });
         }
