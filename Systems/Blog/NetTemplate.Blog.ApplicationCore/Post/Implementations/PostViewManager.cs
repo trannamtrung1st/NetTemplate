@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NetTemplate.Blog.ApplicationCore.Common.Models;
-using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.Post.Interfaces;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
 using NetTemplate.Common.DependencyInjection;
@@ -30,11 +29,6 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Implementations
             _postCache = postCache;
             _viewsOptions = viewsOptions;
             _mapper = mapper;
-        }
-
-        public async Task UpdateViewsOnEvent(PostDeletedEvent @event)
-        {
-            await _postCache.RemoveEntry(@event.EntityId);
         }
 
         public async Task<PostView> GetPostView(int id)

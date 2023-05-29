@@ -18,6 +18,7 @@
 		<Folder Include="Common\Utils\" />
 		<Folder Include="Cross\Commands\" />
 		<Folder Include="Cross\Queries\" />
+		<Folder Include="Post\Handlers\" />
 		<Folder Include="User\Exceptions\" />
 		<Folder Include="User\Models\" />
 		<Folder Include="User\Handlers\" />

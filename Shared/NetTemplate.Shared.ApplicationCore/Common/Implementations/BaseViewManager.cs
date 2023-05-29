@@ -3,7 +3,6 @@ using ViewPreservedKeys = NetTemplate.Shared.ApplicationCore.Common.Constants.Vi
 
 namespace NetTemplate.Shared.ApplicationCore.Common.Implementations
 {
-    // [TODO] refactor to reuse cache based and memory based manager
     public abstract class BaseViewManager
     {
         private readonly IMemoryStore _memoryStore;

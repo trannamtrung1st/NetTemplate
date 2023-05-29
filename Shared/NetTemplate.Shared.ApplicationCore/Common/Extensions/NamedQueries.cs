@@ -4,7 +4,7 @@ using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace System.Linq
 {
-    public static class NamedQueries
+    public static partial class NamedQueries
     {
         public static IQueryable<T> IsNotDeleted<T>(this IQueryable<T> query) where T : ISoftDeleteEntity
         {

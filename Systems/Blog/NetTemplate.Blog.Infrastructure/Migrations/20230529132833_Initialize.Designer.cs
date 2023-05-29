@@ -12,7 +12,7 @@ using NetTemplate.Blog.Infrastructure.Persistence;
 namespace NetTemplate.Blog.Infrastructure.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20230528045118_Initialize")]
+    [Migration("20230529132833_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -296,8 +296,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                     b.HasOne("NetTemplate.Blog.ApplicationCore.Post.PostEntity", null)
                         .WithMany("Tags")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostTag_Post_PostId__NoRestrict__");
                 });
 
             modelBuilder.Entity("NetTemplate.Blog.ApplicationCore.PostCategory.PostCategoryEntity", b =>

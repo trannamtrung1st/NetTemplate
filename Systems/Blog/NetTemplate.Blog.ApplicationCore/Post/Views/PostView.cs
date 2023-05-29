@@ -1,10 +1,10 @@
 ﻿using NetTemplate.Blog.ApplicationCore.User.Views;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
-using NetTemplate.Shared.ApplicationCore.Common.Views;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Views
 {
-    public class PostView : VersionedView, IHasId<int>
+    public class PostView : VersionedModel, IHasId<int>
     {
         public int Id { get; set; }
         public string Title { get; set; }

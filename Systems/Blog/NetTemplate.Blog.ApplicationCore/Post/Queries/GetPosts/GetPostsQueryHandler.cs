@@ -47,7 +47,9 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
             }
 
             // Counting
-            int total = query.Count();
+            int total = await query
+                .JoinRequiredRelationships()
+                .CountAsync();
 
             // Sorting
             query = query.SortBy(model.SortBy, model.IsDesc);

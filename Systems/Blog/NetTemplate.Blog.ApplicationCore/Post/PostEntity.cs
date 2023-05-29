@@ -92,7 +92,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 
             _tags.AddRange(newTags);
 
-            // [NOTE] fire event if necessary
+            QueuePipelineEvent(new PostTagsUpdatedEvent(this.Id, updatedTags));
         }
 
         #region Validation rules
@@ -171,7 +171,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             };
 
         public static Expression<Func<PostEntity, string>> CreatorFullNameExpression
-            => (e) => e.Creator.FirstName + " " + e.Creator.LastName;
+            => (e) => e.Creator.Id > 0 ? e.Creator.FirstName + " " + e.Creator.LastName : null;
 
         public static class Constraints
         {

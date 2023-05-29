@@ -20,7 +20,7 @@ namespace NetTemplate.Blog.ApplicationCore.Cross.Implementations
 
             string newVersion = GetNewVersion();
 
-            await _applicationCache.TrySet(cacheKey, newVersion);
+            await _applicationCache.Set(cacheKey, newVersion);
 
             return newVersion;
         }

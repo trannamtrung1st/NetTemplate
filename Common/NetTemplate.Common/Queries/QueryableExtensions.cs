@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace System.Linq
 {
-    public static class QueryableExtensions
+    public static partial class QueryableExtensions
     {
         public static bool IsOrdered<T>(this IQueryable<T> query)
         {

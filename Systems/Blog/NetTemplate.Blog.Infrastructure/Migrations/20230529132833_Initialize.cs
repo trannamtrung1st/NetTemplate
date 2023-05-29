@@ -141,11 +141,11 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_PostTag", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostTag_Post_PostId",
+                        name: "FK_PostTag_Post_PostId__NoRestrict__",
                         column: x => x.PostId,
                         principalTable: "Post",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PostTag_UserPartial_CreatorId",
                         column: x => x.CreatorId,

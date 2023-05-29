@@ -294,8 +294,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                     b.HasOne("NetTemplate.Blog.ApplicationCore.Post.PostEntity", null)
                         .WithMany("Tags")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostTag_Post_PostId__NoRestrict__");
                 });
 
             modelBuilder.Entity("NetTemplate.Blog.ApplicationCore.PostCategory.PostCategoryEntity", b =>

@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.User;
+using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
+using CommonConstraintNames = NetTemplate.Shared.Infrastructure.Persistence.Constants.ConstraintNames;
 using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence.EntityConfigs.Post
@@ -16,7 +18,9 @@ namespace NetTemplate.Blog.Infrastructure.Persistence.EntityConfigs.Post
 
             builder.HasOne<PostEntity>()
                 .WithMany(e => e.Tags)
-                .HasForeignKey(e => e.PostId);
+                .HasForeignKey(e => e.PostId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasDefaultConstraintName(postfix: CommonConstraintNames.NoRestrictForeignKeyConstraintPostfix);
 
             builder.HasOne<UserPartialEntity>()
                 .WithMany()

@@ -56,7 +56,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
             query = query.ByIdsIfAny(model.Ids);
 
             // Counting
-            int total = query.Count();
+            int total = await query.CountAsync();
 
             // Sorting
             query = query.SortBy(model.SortBy, model.IsDesc);
@@ -88,7 +88,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
             query = query.ByIdsIfAny(model.Ids);
 
             // Counting
-            int total = query.Count();
+            int total = await query.CountAsync();
 
             // Sorting
             query = query.SortBy(model.SortBy, model.IsDesc,

@@ -118,6 +118,6 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
         }
 
         public static Expression<Func<PostCategoryEntity, string>> CreatorFullNameExpression
-            => (e) => e.Creator.FirstName + " " + e.Creator.LastName;
+            => (e) => e.Creator.Id > 0 ? e.Creator.FirstName + " " + e.Creator.LastName : null;
     }
 }

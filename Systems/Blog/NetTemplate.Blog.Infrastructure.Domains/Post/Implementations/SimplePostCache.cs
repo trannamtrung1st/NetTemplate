@@ -56,8 +56,6 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.Implementations
                         needUpdate = true;
                     }
                 }
-
-                // [NOTE] Others
             }
             else
             {
@@ -71,6 +69,10 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.Implementations
                 if (entry != null)
                 {
                     await UpdateEntry(entry, currentVersion, postVersion, categoryVersion, expiration);
+                }
+                else
+                {
+                    await RemoveEntry(id);
                 }
             }
 
@@ -95,15 +97,15 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.Implementations
             string postVersion, string categoryVersion,
             TimeSpan? expiration = null)
         {
-            entry.Version = await GetVersionIfNull(nameof(PostEntity), entry.Id.ToString(), postVersion);
+            entry.SetVersion(await GetVersionIfNull(nameof(PostEntity), entry.Id.ToString(), postVersion));
 
             if (entry.Category != null)
             {
-                entry.Category.Version = await GetVersionIfNull(nameof(PostCategoryEntity), entry.CategoryId.ToString(), categoryVersion);
+                entry.Category.SetVersion(await GetVersionIfNull(nameof(PostCategoryEntity), entry.CategoryId.ToString(), categoryVersion));
             }
 
-            await _applicationCache.TrySet(GetCacheVersionKey(entry.Id), currentVersion, expiration);
-            await _applicationCache.TrySet(GetCacheKey(entry.Id), entry, expiration);
+            await _applicationCache.Set(GetCacheVersionKey(entry.Id), currentVersion, expiration);
+            await _applicationCache.Set(GetCacheKey(entry.Id), entry, expiration);
 
             return true;
         }

@@ -3,7 +3,7 @@ using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces
 {
-    // [TODO] NoSQL/Memory store style
+    // [NOTE] NoSQL/Memory store style
     public interface IPostCategoryViewManager
     {
         Task Initialize();

@@ -8,13 +8,13 @@ using NetTemplate.Shared.ApplicationCore.Common.Events;
 
 namespace NetTemplate.Blog.ApplicationCore.Cross.Handlers
 {
-    // [TODO] retest events
     public class UpdateEntityVersionHandler :
         INotificationHandler<PostEntityEvent<PostCategoryCreatedEvent>>,
         INotificationHandler<PostEntityEvent<PostCategoryUpdatedEvent>>,
         INotificationHandler<PostEntityEvent<PostCategoryDeletedEvent>>,
         INotificationHandler<PostEntityEvent<PostCreatedEvent>>,
         INotificationHandler<PostEntityEvent<PostUpdatedEvent>>,
+        INotificationHandler<PostEntityEvent<PostTagsUpdatedEvent>>,
         INotificationHandler<PostEntityEvent<PostDeletedEvent>>
     {
         private readonly IEntityVersionManager _manager;
@@ -35,6 +35,11 @@ namespace NetTemplate.Blog.ApplicationCore.Cross.Handlers
         }
 
         public async Task Handle(PostEntityEvent<PostUpdatedEvent> notification, CancellationToken cancellationToken)
+        {
+            await UpdatePost(notification.Data.EntityId);
+        }
+
+        public async Task Handle(PostEntityEvent<PostTagsUpdatedEvent> notification, CancellationToken cancellationToken)
         {
             await UpdatePost(notification.Data.EntityId);
         }

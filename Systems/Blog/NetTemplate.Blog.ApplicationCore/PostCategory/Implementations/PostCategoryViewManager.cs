@@ -44,7 +44,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         public async Task<IEnumerable<PostCategoryView>> GetPostCategoryViews()
         {
-            ThrowIfNotAvailable();
+            ThrowIfPostCategoryNotAvailable();
 
             PostCategoryView[] views = await _memoryStore.HashGetAll<PostCategoryView>(
                 key: Constants.CacheKeys.PostCategoryView,
@@ -55,7 +55,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         public async Task<PostCategoryView> GetPostCategoryView(int id)
         {
-            ThrowIfNotAvailable();
+            ThrowIfPostCategoryNotAvailable();
 
             PostCategoryView view = await _memoryStore.HashGet<PostCategoryView>(
                 key: Constants.CacheKeys.PostCategoryView,
@@ -95,7 +95,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         public async Task UpdateViewsOnEvent(PostCategoryCreatedEvent @event)
         {
-            ThrowIfNotAvailable();
+            ThrowIfPostCategoryNotAvailable();
 
             PostCategoryView view = await ConstructPostCategoryViewById(@event.Entity.Id);
 
@@ -104,7 +104,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         public async Task UpdateViewsOnEvent(PostCategoryUpdatedEvent @event)
         {
-            ThrowIfNotAvailable();
+            ThrowIfPostCategoryNotAvailable();
 
             PostCategoryView view = await ConstructPostCategoryViewById(@event.EntityId);
 
@@ -113,7 +113,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         public async Task UpdateViewsOnEvent(PostCategoryDeletedEvent @event)
         {
-            ThrowIfNotAvailable();
+            ThrowIfPostCategoryNotAvailable();
 
             await _memoryStore.HashRemove(Constants.CacheKeys.PostCategoryView, @event.EntityId.ToString());
         }
@@ -128,7 +128,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
             return view;
         }
 
-        private void ThrowIfNotAvailable()
+        private void ThrowIfPostCategoryNotAvailable()
         {
             if (!_isPostCategoryAvailable) throw new InvalidOperationException();
         }

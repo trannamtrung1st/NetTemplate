@@ -14,9 +14,9 @@ namespace NetTemplate.Shared.Infrastructure.Caching.Implementations
             _easyCachingProvider = easyCachingProvider;
         }
 
-        public Task<bool> TrySet<T>(string cacheKey, T cacheValue, TimeSpan? expiration = null)
+        public Task Set<T>(string cacheKey, T cacheValue, TimeSpan? expiration = null)
         {
-            return _easyCachingProvider.TrySetAsync(cacheKey, cacheValue, expiration ?? DefaultExpiration);
+            return _easyCachingProvider.SetAsync(cacheKey, cacheValue, expiration ?? DefaultExpiration);
         }
 
         public async Task<T> GetOrAdd<T>(string cacheKey, Func<Task<T>> createFunc, TimeSpan? expiration = null)
