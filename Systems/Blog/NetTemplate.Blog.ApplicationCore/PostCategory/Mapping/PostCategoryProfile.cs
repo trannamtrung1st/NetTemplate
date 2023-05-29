@@ -8,9 +8,15 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Mapping
     {
         public PostCategoryProfile()
         {
-            CreateMap<PostCategoryEntity, PostCategoryView>();
+            CreateMap<PostCategoryEntity, BasePostCategoryResponseModel>()
+                .ForMember(e => e.CreatorFullName, opt => opt.MapFrom(PostCategoryEntity.CreatorFullNameExpression))
+                .IncludeAllDerived();
 
             CreateMap<PostCategoryEntity, PostCategoryListItemModel>();
+
+            CreateMap<PostCategoryEntity, PostCategoryView>();
+
+            CreateMap<PostCategoryEntity, Post.Views.PostCategoryView>();
 
             CreateMap<PostCategoryView, PostCategoryListItemModel>();
 

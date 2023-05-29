@@ -25,6 +25,17 @@
                 public const string UpdatePostCategory = "{id}";
                 public const string DeletePostCategory = "{id}";
             }
+
+            public static class Post
+            {
+                public const string Base = "api/posts";
+                public const string GetPosts = "";
+                public const string GetPostDetails = "{id}";
+                public const string CreatePost = "";
+                public const string UpdatePost = "{id}";
+                public const string UpdatePostTags = "{id}/tags";
+                public const string DeletePost = "{id}";
+            }
         }
 
         public static class CacheProfiles

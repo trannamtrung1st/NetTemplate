@@ -12,7 +12,6 @@ namespace NetTemplate.Blog.ApplicationCore.User
         public string UserCode { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
-        public string FullName => $"{FirstName} {LastName}";
         public bool Active { get; private set; }
 
         protected UserPartialEntity() : base()
@@ -30,6 +29,8 @@ namespace NetTemplate.Blog.ApplicationCore.User
 
             QueuePipelineEvent(new UserCreatedEvent(this));
         }
+
+        public string GetFullName() => $"{FirstName} {LastName}";
 
         public void SetActive(bool isActive)
         {

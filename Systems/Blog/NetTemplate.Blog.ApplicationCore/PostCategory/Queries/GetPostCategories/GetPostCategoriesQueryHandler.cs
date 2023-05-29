@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
@@ -58,7 +59,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
             int total = query.Count();
 
             // Sorting
-            query = query.SortBy<PostCategoryView, PostCategoryListRequestModel, Enums.PostCategorySortBy>(model);
+            query = query.SortBy(model.SortBy, model.IsDesc);
 
             // Paging
             query = query.Paging(model);
@@ -90,7 +91,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
             int total = query.Count();
 
             // Sorting
-            query = query.SortBy<PostCategoryEntity, PostCategoryListRequestModel, Enums.PostCategorySortBy>(model,
+            query = query.SortBy(model.SortBy, model.IsDesc,
                 Process: (query, sort, isDesc) => sort switch
                 {
                     Enums.PostCategorySortBy.CreatorFullName => query.SortSequential(PostCategoryEntity.CreatorFullNameExpression, isDesc),

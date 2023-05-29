@@ -50,7 +50,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
             int total = query.Count();
 
             // Sorting
-            query = query.SortBy<PostEntity, PostListRequestModel, Enums.PostSortBy>(model);
+            query = query.SortBy(model.SortBy, model.IsDesc);
 
             // Paging
             query = query.Paging(model);

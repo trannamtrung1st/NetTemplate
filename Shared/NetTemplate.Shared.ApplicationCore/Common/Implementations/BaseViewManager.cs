@@ -3,6 +3,7 @@ using ViewPreservedKeys = NetTemplate.Shared.ApplicationCore.Common.Constants.Vi
 
 namespace NetTemplate.Shared.ApplicationCore.Common.Implementations
 {
+    // [TODO] refactor to reuse cache based and memory based manager
     public abstract class BaseViewManager
     {
         private readonly IMemoryStore _memoryStore;
@@ -16,15 +17,13 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Implementations
         {
             if (!string.IsNullOrWhiteSpace(currentVersion))
             {
-                string versionKey = $"{cacheKey}{ViewPreservedKeys.Version}";
-
-                string storedVersion = await _memoryStore.StringGet<string>(versionKey);
+                string storedVersion = await _memoryStore.HashGet<string>(cacheKey, ViewPreservedKeys.Version);
 
                 if (storedVersion != currentVersion)
                 {
                     await action();
 
-                    await _memoryStore.StringSet(versionKey, currentVersion);
+                    await _memoryStore.HashSet(cacheKey, ViewPreservedKeys.Version, currentVersion);
                 }
             }
         }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Events;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory.Handlers

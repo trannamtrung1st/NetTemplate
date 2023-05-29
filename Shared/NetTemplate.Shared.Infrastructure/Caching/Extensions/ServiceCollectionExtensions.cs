@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NetTemplate.Shared.ApplicationCore.Caching.Interfaces;
 using NetTemplate.Shared.Infrastructure.Caching.Implementations;
-using NetTemplate.Shared.Infrastructure.Caching.Interfaces;
 
 namespace NetTemplate.Shared.Infrastructure.Caching.Extensions
 {

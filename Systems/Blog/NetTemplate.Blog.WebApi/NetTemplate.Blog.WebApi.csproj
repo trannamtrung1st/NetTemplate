@@ -14,8 +14,8 @@
 	<ItemGroup>
 		<Folder Include="Comment\" />
 		<Folder Include="PostCategory\Models\" />
+		<Folder Include="Post\Models\" />
 		<Folder Include="User\" />
-		<Folder Include="Post\" />
 	</ItemGroup>
 
 </Project>

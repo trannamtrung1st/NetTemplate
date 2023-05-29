@@ -3,28 +3,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
+using NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Common.MemoryStore.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Implementations;
+using ViewPreservedKeys = NetTemplate.Shared.ApplicationCore.Common.Constants.ViewPreservedKeys;
 
-namespace NetTemplate.Blog.ApplicationCore.PostCategory
+namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 {
-    public interface IPostCategoryViewManager
-    {
-        Task Initialize();
-        Task RebuildAllViews();
-
-        Task UpdateViewsOnEvent(PostCategoryCreatedEvent @event);
-        Task UpdateViewsOnEvent(PostCategoryUpdatedEvent @event);
-        Task UpdateViewsOnEvent(PostCategoryDeletedEvent @event);
-
-        bool IsPostCategoryAvailable { get; }
-        Task RebuildPostCategoryViews();
-        Task<IEnumerable<PostCategoryView>> GetPostCategoryViews();
-        Task<PostCategoryView> GetPostCategoryView(int id);
-    }
-
     [ScopedService]
     public class PostCategoryViewManager : BaseViewManager, IPostCategoryViewManager
     {
@@ -35,6 +22,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
             _isPostCategoryAvailable = false;
         }
 
+        // [NOTE] can be a NoSQL data store instead of memory store
         private readonly IMemoryStore _memoryStore;
         private readonly IOptions<ViewsConfig> _viewsOptions;
         private readonly IPostCategoryRepository _postCategoryRepository;
@@ -58,7 +46,9 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
         {
             ThrowIfNotAvailable();
 
-            PostCategoryView[] views = await _memoryStore.HashGetAll<PostCategoryView>(Constants.CacheKeys.PostCategoryView);
+            PostCategoryView[] views = await _memoryStore.HashGetAll<PostCategoryView>(
+                key: Constants.CacheKeys.PostCategoryView,
+                exceptKeys: ViewPreservedKeys.All);
 
             return views;
         }

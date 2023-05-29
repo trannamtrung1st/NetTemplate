@@ -4,20 +4,20 @@ using Microsoft.Extensions.Logging;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
-namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdateTags
+namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdatePostTags
 {
-    public class UpdateTagsCommandHandler : IRequestHandler<UpdateTagsCommand>
+    public class UpdatePostTagsCommandHandler : IRequestHandler<UpdatePostTagsCommand>
     {
-        private readonly IValidator<UpdateTagsCommand> _validator;
+        private readonly IValidator<UpdatePostTagsCommand> _validator;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPostRepository _postRepository;
-        private readonly ILogger<UpdateTagsCommandHandler> _logger;
+        private readonly ILogger<UpdatePostTagsCommandHandler> _logger;
 
-        public UpdateTagsCommandHandler(
-            IValidator<UpdateTagsCommand> validator,
+        public UpdatePostTagsCommandHandler(
+            IValidator<UpdatePostTagsCommand> validator,
             IUnitOfWork unitOfWork,
             IPostRepository postRepository,
-            ILogger<UpdateTagsCommandHandler> logger)
+            ILogger<UpdatePostTagsCommandHandler> logger)
         {
             _validator = validator;
             _unitOfWork = unitOfWork;
@@ -25,7 +25,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdateTags
             _logger = logger;
         }
 
-        public async Task Handle(UpdateTagsCommand request, CancellationToken cancellationToken)
+        public async Task Handle(UpdatePostTagsCommand request, CancellationToken cancellationToken)
         {
             _validator.ValidateAndThrow(request);
 

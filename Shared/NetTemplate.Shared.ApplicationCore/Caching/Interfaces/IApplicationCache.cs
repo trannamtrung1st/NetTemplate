@@ -1,4 +1,4 @@
-﻿namespace NetTemplate.Shared.Infrastructure.Caching.Interfaces
+﻿namespace NetTemplate.Shared.ApplicationCore.Caching.Interfaces
 {
     public interface IApplicationCache
     {

@@ -20,8 +20,6 @@ namespace NetTemplate.Blog.Infrastructure.Persistence.EntityConfigs.User
             builder.Property(e => e.LastName)
                 .HasMaxLength(CommonConstraints.MaxStringLength)
                 .IsRequired();
-
-            builder.Ignore(e => e.FullName);
         }
     }
 }

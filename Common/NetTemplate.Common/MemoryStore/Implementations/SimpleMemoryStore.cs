@@ -30,7 +30,7 @@ namespace NetTemplate.Common.MemoryStore.Implementations
             return Task.FromResult(obj);
         }
 
-        public Task<T[]> HashGetAll<T>(string key, CancellationToken cancellationToken = default)
+        public Task<T[]> HashGetAll<T>(string key, string[] exceptKeys = null, CancellationToken cancellationToken = default)
         {
             T[] list = default;
 
@@ -38,7 +38,17 @@ namespace NetTemplate.Common.MemoryStore.Implementations
             {
                 ConcurrentDictionary<string, string> hash = (ConcurrentDictionary<string, string>)item;
 
-                list = hash.Values.Select(v => JsonConvert.DeserializeObject<T>(v)).ToArray();
+                List<T> results = new List<T>();
+
+                foreach (KeyValuePair<string, string> kvp in hash)
+                {
+                    if (exceptKeys == null || exceptKeys.Length == 0 || !exceptKeys.Contains(kvp.Key))
+                    {
+                        results.Add(JsonConvert.DeserializeObject<T>(kvp.Value));
+                    }
+                }
+
+                list = results.ToArray();
             }
 
             return Task.FromResult(list);

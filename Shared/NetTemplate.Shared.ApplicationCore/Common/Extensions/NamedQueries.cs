@@ -50,20 +50,19 @@ namespace System.Linq
         /// <summary>
         /// [NOTE] If Process return null, default will be applied
         /// </summary>
-        public static IQueryable<T> SortBy<T, TModel, TSortBy>(this IQueryable<T> query, TModel model,
+        public static IQueryable<T> SortBy<T, TSortBy>(this IQueryable<T> query, TSortBy[] sortBy, bool[] isDesc,
             Func<IQueryable<T>, TSortBy, bool, IQueryable<T>> Process = null,
             Func<TSortBy, bool> IsUseColumn = null,
             string lastSortDefault = "Id",
             bool lastSortDefaultDesc = false)
-            where TModel : ISortableQuery<TSortBy>
             where TSortBy : struct, Enum
         {
-            if (model.SortBy != null)
+            if (sortBy != null)
             {
-                for (int i = 0; i < model.SortBy.Length; i++)
+                for (int i = 0; i < sortBy.Length; i++)
                 {
-                    TSortBy currentSort = model.SortBy[i];
-                    bool currentIsDesc = model.IsDesc[i];
+                    TSortBy currentSort = sortBy[i];
+                    bool currentIsDesc = isDesc[i];
                     IQueryable<T> processedQuery = null;
 
                     if (Process != null)

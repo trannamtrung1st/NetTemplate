@@ -1,5 +1,5 @@
 ﻿using EasyCaching.Core;
-using NetTemplate.Shared.Infrastructure.Caching.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Caching.Interfaces;
 
 namespace NetTemplate.Shared.Infrastructure.Caching.Implementations
 {

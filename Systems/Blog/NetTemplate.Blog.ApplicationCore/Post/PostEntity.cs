@@ -170,6 +170,9 @@ namespace NetTemplate.Blog.ApplicationCore.Post
                 Title = e.Title
             };
 
+        public static Expression<Func<PostEntity, string>> CreatorFullNameExpression
+            => (e) => e.Creator.FirstName + " " + e.Creator.LastName;
+
         public static class Constraints
         {
         }

@@ -2,6 +2,7 @@
 
 namespace NetTemplate.Shared.Infrastructure.MemoryStore.Implementations
 {
+    // [TODO] redis
     public class RedisMemoryStore : IMemoryStore
     {
         public Task<T> HashGet<T>(string key, string itemKey, CancellationToken cancellationToken = default)
@@ -9,7 +10,7 @@ namespace NetTemplate.Shared.Infrastructure.MemoryStore.Implementations
             throw new NotImplementedException();
         }
 
-        public Task<T[]> HashGetAll<T>(string key, CancellationToken cancellationToken = default)
+        public Task<T[]> HashGetAll<T>(string key, string[] exceptKeys = null, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

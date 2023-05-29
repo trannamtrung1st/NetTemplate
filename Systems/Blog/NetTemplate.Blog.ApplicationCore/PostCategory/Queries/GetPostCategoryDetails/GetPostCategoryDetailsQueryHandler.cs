@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;

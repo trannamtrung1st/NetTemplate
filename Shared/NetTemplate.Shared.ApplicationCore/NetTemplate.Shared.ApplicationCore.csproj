@@ -12,6 +12,7 @@
 	<ItemGroup>
 	  <Folder Include="Common\Events\" />
 	  <Folder Include="Common\Validators\" />
+	  <Folder Include="Common\Views\" />
 	</ItemGroup>
 
 	<ItemGroup>
