@@ -68,7 +68,7 @@ namespace NetTemplate.Shared.WebApi.Identity.Extensions
         {
             return services.AddAuthorization(opt =>
             {
-                // [TODO]
+                // [TODO] authorize actions
             }).AddSingleton<IAuthorizationPolicyProvider, ApplicationPolicyProvider>();
         }
     }
