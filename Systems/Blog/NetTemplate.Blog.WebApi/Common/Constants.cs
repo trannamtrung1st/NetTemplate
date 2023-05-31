@@ -36,6 +36,16 @@
                 public const string UpdatePost = "{id}";
                 public const string UpdatePostTags = "{id}/tags";
                 public const string DeletePost = "{id}";
+                public const string GetPostComments = "{id}/comments";
+                public const string CreatePostComment = "{id}/comments";
+            }
+
+            public static class Comment
+            {
+                public const string Base = "api/comments";
+                public const string GetCommentDetails = "{id}";
+                public const string UpdateComment = "{id}";
+                public const string DeleteComment = "{id}";
             }
         }
 

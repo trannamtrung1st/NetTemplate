@@ -1,4 +1,5 @@
-﻿using NetTemplate.Blog.ApplicationCore.Post.Events;
+﻿using NetTemplate.Blog.ApplicationCore.Common.Models;
+using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.ApplicationCore.User;
 using NetTemplate.Common.Validation;
@@ -10,7 +11,7 @@ using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messa
 
 namespace NetTemplate.Blog.ApplicationCore.Post
 {
-    public class PostEntity : AppFullAuditableEntity<int>, IAggregateRoot
+    public class PostEntity : AppFullAuditableEntity<int>, IAggregateRoot, IHasCreator
     {
         public string Title { get; private set; }
         public string Content { get; private set; }
@@ -169,9 +170,6 @@ namespace NetTemplate.Blog.ApplicationCore.Post
                 LastModifyUserId = e.LastModifyUserId,
                 Title = e.Title
             };
-
-        public static Expression<Func<PostEntity, string>> CreatorFullNameExpression
-            => (e) => e.Creator.Id > 0 ? e.Creator.FirstName + " " + e.Creator.LastName : null;
 
         public static class Constraints
         {

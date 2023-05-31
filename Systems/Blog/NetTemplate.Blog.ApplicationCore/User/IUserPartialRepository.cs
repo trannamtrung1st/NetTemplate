@@ -9,7 +9,7 @@ namespace NetTemplate.Blog.ApplicationCore.User
             string terms = null,
             IEnumerable<string> userCodes = null,
             IEnumerable<int> ids = null,
-            IPagingQuery paging = null,
+            IOffsetPagingQuery paging = null,
             bool count = true);
 
         Task<UserPartialEntity> FindByCode(string userCode);

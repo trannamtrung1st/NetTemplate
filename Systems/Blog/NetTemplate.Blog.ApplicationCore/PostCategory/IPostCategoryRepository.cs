@@ -10,7 +10,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
             IEnumerable<int> ids = null,
             Enums.PostCategorySortBy[] sortBy = null,
             bool[] isDesc = null,
-            IPagingQuery paging = null,
+            IOffsetPagingQuery paging = null,
             bool count = true);
     }
 }

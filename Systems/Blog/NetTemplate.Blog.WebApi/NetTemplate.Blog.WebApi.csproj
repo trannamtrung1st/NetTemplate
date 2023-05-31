@@ -12,7 +12,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Comment\" />
+		<Folder Include="Comment\Models\" />
 		<Folder Include="PostCategory\Models\" />
 		<Folder Include="Post\Models\" />
 		<Folder Include="User\" />

@@ -43,7 +43,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
             IEnumerable<int> ids = null,
             Enums.PostCategorySortBy[] sortBy = null,
             bool[] isDesc = null,
-            IPagingQuery paging = null)
+            IOffsetPagingQuery paging = null)
         {
             ThrowIfPostCategoryNotAvailable();
 
@@ -64,7 +64,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
             query = query.SortBy(sortBy, isDesc);
 
-            query = query.Paging(paging);
+            query = query.OffsetPaging(paging);
 
             return new ListResponseModel<PostCategoryView>(total, query);
         }

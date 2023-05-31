@@ -15,7 +15,6 @@
 		<Folder Include="Common\Jobs\" />
 		<Folder Include="Common\Mapping\" />
 		<Folder Include="Common\Queries\" />
-		<Folder Include="Common\Utils\" />
 		<Folder Include="Cross\Commands\" />
 		<Folder Include="Cross\Queries\" />
 		<Folder Include="Post\Handlers\" />

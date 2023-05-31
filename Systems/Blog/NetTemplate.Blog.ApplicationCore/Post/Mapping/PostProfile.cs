@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using NetTemplate.Blog.ApplicationCore.Common.Utils;
 using NetTemplate.Blog.ApplicationCore.Post.Models;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
 using static NetTemplate.Blog.ApplicationCore.PostCategory.Models.PostCategoryDetailsExtraModel;
@@ -10,7 +11,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Mapping
         public PostProfile()
         {
             CreateMap<PostEntity, BasePostResponseModel>()
-                .ForMember(e => e.CreatorFullName, opt => opt.MapFrom(PostEntity.CreatorFullNameExpression))
+                .ForMember(e => e.CreatorFullName, opt => opt.MapFrom(EntityHelper.GetCreatorFullNameExpression<PostEntity>()))
                 .IncludeAllDerived();
 
             CreateMap<PostEntity, PostListItemModel>();

@@ -11,7 +11,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             int? categoryId = null,
             Enums.PostSortBy[] sortBy = null,
             bool[] isDesc = null,
-            IPagingQuery paging = null,
+            IOffsetPagingQuery paging = null,
             bool count = true);
 
         Task<int> CountByCategory(int id);

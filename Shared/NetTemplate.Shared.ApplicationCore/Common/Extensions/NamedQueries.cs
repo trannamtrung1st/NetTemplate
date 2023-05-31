@@ -34,12 +34,50 @@ namespace System.Linq
             return query;
         }
 
-        public static IQueryable<T> Paging<T, TModel>(this IQueryable<T> query, TModel model)
-            where TModel : IPagingQuery
+        public static IQueryable<T> CreatedBy<T, TUserId>(this IQueryable<T> query, TUserId creatorId)
+            where T : IAuditableEntity<TUserId> where TUserId : struct
+        {
+            return query.Where(e => Equals(e.CreatorId, creatorId));
+        }
+
+        public static IQueryable<T> CreatedAfter<T>(this IQueryable<T> query, DateTimeOffset time)
+            where T : IAuditableEntity
+            => query.Where(e => e.CreatedTime > time);
+
+        public static IQueryable<T> CreatedBefore<T>(this IQueryable<T> query, DateTimeOffset time)
+            where T : IAuditableEntity
+            => query.Where(e => e.CreatedTime < time);
+
+        public static IQueryable<T> OffsetPaging<T, TModel>(this IQueryable<T> query, TModel model)
+            where TModel : IOffsetPagingQuery
         {
             if (model == null) return query;
 
             query = query.Skip(model.Skip);
+
+            if (!model.CanGetAll() || model.Take != null)
+            {
+                query = query.Take(model.GetTakeOrDefault());
+            }
+
+            return query;
+        }
+
+        public static IQueryable<T> KeySetPaging<T, TModel>(this IQueryable<T> query, TModel model)
+            where TModel : IKeySetPagingQuery<DateTimeOffset>
+            where T : IAuditableEntity
+        {
+            if (model == null) return query;
+
+            if (model.KeyAfter != null)
+            {
+                query = query.CreatedAfter(model.KeyAfter.Value);
+            }
+
+            if (model.KeyBefore != null)
+            {
+                query = query.CreatedBefore(model.KeyBefore.Value);
+            }
 
             if (!model.CanGetAll() || model.Take != null)
             {

@@ -59,7 +59,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
             int? categoryId = null,
             Enums.PostSortBy[] sortBy = null,
             bool[] isDesc = null,
-            IPagingQuery paging = null,
+            IOffsetPagingQuery paging = null,
             bool count = true)
         {
             IQueryable<PostEntity> query = DbSet;
@@ -87,7 +87,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
 
             query = query.SortBy(sortBy, isDesc);
 
-            query = query.Paging(paging);
+            query = query.OffsetPaging(paging);
 
             IQueryable<TResult> result = mapper.CustomProjectTo<TResult>(query);
 

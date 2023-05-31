@@ -1,16 +1,16 @@
-﻿using NetTemplate.Blog.ApplicationCore.Post;
+﻿using NetTemplate.Blog.ApplicationCore.Common.Models;
+using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
 using NetTemplate.Blog.ApplicationCore.User;
 using NetTemplate.Common.Validation;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Utils;
-using System.Linq.Expressions;
 using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messages;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory
 {
-    public class PostCategoryEntity : AppFullAuditableEntity<int>, IAggregateRoot
+    public class PostCategoryEntity : AppFullAuditableEntity<int>, IAggregateRoot, IHasCreator
     {
         public string Name { get; private set; }
 
@@ -116,8 +116,5 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
         public static class Constraints
         {
         }
-
-        public static Expression<Func<PostCategoryEntity, string>> CreatorFullNameExpression
-            => (e) => e.Creator.Id > 0 ? e.Creator.FirstName + " " + e.Creator.LastName : null;
     }
 }

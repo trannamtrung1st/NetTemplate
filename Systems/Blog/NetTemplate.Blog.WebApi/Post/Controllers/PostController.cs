@@ -1,5 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using NetTemplate.Blog.ApplicationCore.Comment.Commands.CreatePostComment;
+using NetTemplate.Blog.ApplicationCore.Comment.Models;
+using NetTemplate.Blog.ApplicationCore.Comment.Queries.GetPostComments;
 using NetTemplate.Blog.ApplicationCore.Post.Commands.CreatePost;
 using NetTemplate.Blog.ApplicationCore.Post.Commands.DeletePost;
 using NetTemplate.Blog.ApplicationCore.Post.Commands.UpdatePost;
@@ -50,11 +53,34 @@ namespace NetTemplate.Blog.WebApi.Post.Controllers
             return Ok(response);
         }
 
+        [HttpGet(Routes.GetPostComments)]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ListResponseModel<CommentListItemModel>))]
+        public async Task<IActionResult> GetPostComments([FromRoute] int id, [FromQuery] CommentListRequestModel model)
+        {
+            GetPostCommentsQuery query = new GetPostCommentsQuery(id, model);
+
+            ListResponseModel<CommentListItemModel> response = await _mediator.Send(query);
+
+            return Ok(response);
+        }
+
         [HttpPost(Routes.CreatePost)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> CreatePost([FromBody] CreatePostModel model)
         {
             CreatePostCommand command = new CreatePostCommand(model);
+
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpPost(Routes.CreatePostComment)]
+        [SwaggerResponse((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> CreatePostComment(
+            [FromRoute] int id, [FromBody] CreateCommentModel model)
+        {
+            CreatePostCommentCommand command = new CreatePostCommentCommand(id, model);
 
             await _mediator.Send(command);
 

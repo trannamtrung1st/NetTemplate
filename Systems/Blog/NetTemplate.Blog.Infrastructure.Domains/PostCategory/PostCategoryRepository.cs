@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using NetTemplate.Blog.ApplicationCore.Common.Utils;
 using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Common.DependencyInjection;
@@ -20,7 +21,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory
             IEnumerable<int> ids = null,
             Enums.PostCategorySortBy[] sortBy = null,
             bool[] isDesc = null,
-            IPagingQuery paging = null,
+            IOffsetPagingQuery paging = null,
             bool count = true)
         {
             IQueryable<PostCategoryEntity> query = DbSet;
@@ -42,11 +43,11 @@ namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory
             query = query.SortBy(sortBy, isDesc,
                 Process: (query, sort, isDesc) => sort switch
                 {
-                    Enums.PostCategorySortBy.CreatorFullName => query.SortSequential(PostCategoryEntity.CreatorFullNameExpression, isDesc),
+                    Enums.PostCategorySortBy.CreatorFullName => query.SortSequential(EntityHelper.GetCreatorFullNameExpression<PostCategoryEntity>(), isDesc),
                     _ => null,
                 });
 
-            query = query.Paging(paging);
+            query = query.OffsetPaging(paging);
 
             IQueryable<TResult> result = mapper.CustomProjectTo<TResult>(query);
 
