@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
@@ -19,15 +20,25 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
         };
 
         protected readonly TDbContext dbContext;
+        protected readonly IMapper mapper;
 
-        public EFCoreRepository(TDbContext dbContext)
+        public EFCoreRepository(TDbContext dbContext,
+            IMapper mapper)
         {
             this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         protected DbSet<T> DbSet => dbContext.Set<T>();
 
-        public Task<IQueryable<T>> QueryAll() => Task.FromResult<IQueryable<T>>(dbContext.Set<T>());
+        public Task<IQueryable<TResult>> QueryAll<TResult>()
+        {
+            DbSet<T> query = dbContext.Set<T>();
+
+            IQueryable<TResult> result = mapper.CustomProjectTo<TResult>(query);
+
+            return Task.FromResult(result);
+        }
 
         protected abstract Task LoadAggregate(T entity);
 
@@ -78,14 +89,18 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
             return Task.FromResult(entity);
         }
 
-        public abstract Task<IQueryable<T>> QueryById(params object[] keys);
+        public abstract Task<IQueryable<TResult>> QueryById<TResult>(params object[] keys);
 
-        protected Task<IQueryable<TEntity>> QueryById<TEntity, TId>(params object[] keys)
+        protected Task<IQueryable<TResult>> QueryById<TEntity, TResult, TId>(params object[] keys)
             where TEntity : class, IHasId<TId>
         {
             TId id = GetIdFromKeys<TId>(keys);
 
-            return Task.FromResult(dbContext.Set<TEntity>().ById(id));
+            IQueryable<TEntity> query = dbContext.Set<TEntity>().ById(id);
+
+            IQueryable<TResult> result = mapper.CustomProjectTo<TResult>(query);
+
+            return Task.FromResult(result);
         }
 
         public static TId GetIdFromKeys<TId>(object[] keys)

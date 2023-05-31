@@ -38,7 +38,8 @@ namespace NetTemplate.Blog.ApplicationCore.User.Commands.SyncUsers
 
             string[] userCodes = identityUsers.Select(o => o.UserCode).ToArray();
 
-            QueryResponseModel<UserPartialEntity> response = await _userPartialRepository.Query(userCodes: userCodes);
+            QueryResponseModel<UserPartialEntity> response = await _userPartialRepository.Query<UserPartialEntity>(
+                userCodes: userCodes);
 
             Dictionary<string, UserPartialEntity> userMap = response.Query.ToDictionary(o => o.UserCode);
 

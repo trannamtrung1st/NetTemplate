@@ -29,7 +29,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Commands.DeletePostCateg
         {
             _validator.ValidateAndThrow(request);
 
-            PostCategoryEntity entity = (await _postCategoryRepository.QueryById())
+            PostCategoryEntity entity = (await _postCategoryRepository.QueryById<PostCategoryEntity>(request.Id))
                 .Select(e => new PostCategoryEntity(e.Id))
                 .FirstOrDefault();
 

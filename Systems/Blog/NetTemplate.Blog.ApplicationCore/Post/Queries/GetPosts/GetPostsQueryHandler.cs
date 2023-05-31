@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Blog.ApplicationCore.Post.Models;
@@ -11,18 +10,15 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
     {
         private readonly IValidator<GetPostsQuery> _validator;
         private readonly IPostRepository _postRepository;
-        private readonly IMapper _mapper;
         private readonly ILogger<GetPostsQueryHandler> _logger;
 
         public GetPostsQueryHandler(
             IValidator<GetPostsQuery> validator,
             IPostRepository postRepository,
-            IMapper mapper,
             ILogger<GetPostsQueryHandler> logger)
         {
             _validator = validator;
             _postRepository = postRepository;
-            _mapper = mapper;
             _logger = logger;
         }
 
@@ -32,7 +28,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
 
             PostListRequestModel model = request.Model;
 
-            QueryResponseModel<PostEntity> response = await _postRepository.Query(
+            QueryResponseModel<PostListItemModel> response = await _postRepository.Query<PostListItemModel>(
                 terms: model.Terms,
                 ids: model.Ids,
                 categoryId: model.CategoryId,
@@ -41,7 +37,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
                 paging: model,
                 count: true);
 
-            PostListItemModel[] list = _mapper.ProjectTo<PostListItemModel>(response.Query).ToArray();
+            PostListItemModel[] list = response.Query.ToArray();
 
             return new ListResponseModel<PostListItemModel>(response.Total.Value, list);
         }

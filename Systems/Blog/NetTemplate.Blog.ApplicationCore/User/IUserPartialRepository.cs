@@ -5,7 +5,7 @@ namespace NetTemplate.Blog.ApplicationCore.User
 {
     public interface IUserPartialRepository : IRepository<UserPartialEntity>
     {
-        Task<QueryResponseModel<UserPartialEntity>> Query(
+        Task<QueryResponseModel<TResult>> Query<TResult>(
             string terms = null,
             IEnumerable<string> userCodes = null,
             IEnumerable<int> ids = null,

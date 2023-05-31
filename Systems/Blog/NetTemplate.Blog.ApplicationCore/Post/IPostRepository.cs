@@ -5,7 +5,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 {
     public interface IPostRepository : IRepository<PostEntity>
     {
-        Task<QueryResponseModel<PostEntity>> Query(
+        Task<QueryResponseModel<TResult>> Query<TResult>(
             string terms = null,
             IEnumerable<int> ids = null,
             int? categoryId = null,
@@ -15,6 +15,6 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             bool count = true);
 
         Task<int> CountByCategory(int id);
-        Task<IQueryable<PostEntity>> GetLatestPostOfCategory(int id);
+        Task<TResult> GetLatestPostOfCategory<TResult>(int id);
     }
 }

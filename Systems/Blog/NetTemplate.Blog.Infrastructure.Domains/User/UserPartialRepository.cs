@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using NetTemplate.Blog.ApplicationCore.User;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Common.DependencyInjection;
@@ -10,7 +11,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
     [ScopedService]
     public class UserPartialRepository : EFCoreRepository<UserPartialEntity, MainDbContext>, IUserPartialRepository
     {
-        public UserPartialRepository(MainDbContext dbContext) : base(dbContext)
+        public UserPartialRepository(MainDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
@@ -26,7 +27,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
             return entity;
         }
 
-        public async Task<QueryResponseModel<UserPartialEntity>> Query(
+        public async Task<QueryResponseModel<TResult>> Query<TResult>(
             string terms = null,
             IEnumerable<string> userCodes = null,
             IEnumerable<int> ids = null,
@@ -58,11 +59,13 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
 
             query = query.Paging(paging);
 
-            return new QueryResponseModel<UserPartialEntity>(total, query);
+            IQueryable<TResult> result = mapper.CustomProjectTo<TResult>(query);
+
+            return new QueryResponseModel<TResult>(total, result);
         }
 
-        public override Task<IQueryable<UserPartialEntity>> QueryById(params object[] keys)
-            => QueryById<UserPartialEntity, int>(keys);
+        public override Task<IQueryable<TResult>> QueryById<TResult>(params object[] keys)
+            => QueryById<UserPartialEntity, TResult, int>(keys);
 
         protected override Task LoadAggregate(UserPartialEntity entity)
         {

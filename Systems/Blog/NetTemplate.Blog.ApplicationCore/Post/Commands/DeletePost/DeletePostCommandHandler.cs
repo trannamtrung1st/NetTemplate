@@ -29,7 +29,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.DeletePost
         {
             _validator.ValidateAndThrow(request);
 
-            PostEntity entity = (await _postRepository.QueryById(request.Id))
+            PostEntity entity = (await _postRepository.QueryById<PostEntity>(request.Id))
                 .Select(e => new PostEntity(e.Id))
                 .FirstOrDefault();
 

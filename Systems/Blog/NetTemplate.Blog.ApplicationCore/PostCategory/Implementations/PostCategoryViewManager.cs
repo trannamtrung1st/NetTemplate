@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces;
@@ -26,18 +25,15 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
         private readonly IMemoryStore _memoryStore;
         private readonly IOptions<ViewsConfig> _viewsOptions;
         private readonly IPostCategoryRepository _postCategoryRepository;
-        private readonly IMapper _mapper;
 
         public PostCategoryViewManager(
             IMemoryStore memoryStore,
             IOptions<ViewsConfig> viewsOptions,
-            IPostCategoryRepository postCategoryRepository,
-            IMapper mapper) : base(memoryStore)
+            IPostCategoryRepository postCategoryRepository) : base(memoryStore)
         {
             _memoryStore = memoryStore;
             _viewsOptions = viewsOptions;
             _postCategoryRepository = postCategoryRepository;
-            _mapper = mapper;
         }
 
         public bool IsPostCategoryAvailable => _isPostCategoryAvailable;
@@ -98,9 +94,9 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
         {
             _isPostCategoryAvailable = false;
 
-            IQueryable<PostCategoryEntity> query = await _postCategoryRepository.QueryAll();
+            IQueryable<PostCategoryView> query = await _postCategoryRepository.QueryAll<PostCategoryView>();
 
-            PostCategoryView[] views = _mapper.ProjectTo<PostCategoryView>(query).ToArray();
+            PostCategoryView[] views = query.ToArray();
 
             string setKey = Constants.CacheKeys.PostCategoryView;
 
@@ -140,9 +136,9 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         private async Task<PostCategoryView> ConstructPostCategoryViewById(int id)
         {
-            IQueryable<PostCategoryEntity> query = await _postCategoryRepository.QueryById(id);
+            IQueryable<PostCategoryView> query = await _postCategoryRepository.QueryById<PostCategoryView>(id);
 
-            PostCategoryView view = _mapper.ProjectTo<PostCategoryView>(query).FirstOrDefault();
+            PostCategoryView view = query.FirstOrDefault();
 
             return view;
         }

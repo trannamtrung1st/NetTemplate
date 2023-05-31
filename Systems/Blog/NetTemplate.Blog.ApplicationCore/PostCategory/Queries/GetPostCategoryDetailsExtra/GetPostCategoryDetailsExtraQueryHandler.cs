@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Blog.ApplicationCore.Post;
@@ -12,18 +11,15 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategoryD
     {
         private readonly IValidator<GetPostCategoryDetailsExtraQuery> _validator;
         private readonly IPostRepository _postRepository;
-        private readonly IMapper _mapper;
         private readonly ILogger<GetPostCategoryDetailsExtraQueryHandler> _logger;
 
         public GetPostCategoryDetailsExtraQueryHandler(
             IValidator<GetPostCategoryDetailsExtraQuery> validator,
             IPostRepository postRepository,
-            IMapper mapper,
             ILogger<GetPostCategoryDetailsExtraQueryHandler> logger)
         {
             _validator = validator;
             _postRepository = postRepository;
-            _mapper = mapper;
             _logger = logger;
         }
 
@@ -33,9 +29,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategoryD
 
             int postCount = await _postRepository.CountByCategory(request.Id);
 
-            IQueryable<PostEntity> latestPostQuery = await _postRepository.GetLatestPostOfCategory(request.Id);
-
-            LatestPostModel latestPost = _mapper.ProjectTo<LatestPostModel>(latestPostQuery).FirstOrDefault();
+            LatestPostModel latestPost = await _postRepository.GetLatestPostOfCategory<LatestPostModel>(request.Id);
 
             PostCategoryDetailsExtraModel model = new PostCategoryDetailsExtraModel()
             {

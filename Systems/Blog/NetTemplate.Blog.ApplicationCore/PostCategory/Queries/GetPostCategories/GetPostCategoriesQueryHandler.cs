@@ -52,7 +52,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
                 paging: model);
 
             PostCategoryListItemModel[] list = _mapper
-                .ProjectTo<PostCategoryListItemModel>(response.List.AsQueryable())
+                .Map<PostCategoryListItemModel[]>(response.List)
                 .ToArray();
 
             return new ListResponseModel<PostCategoryListItemModel>(response.Total, list);
@@ -63,7 +63,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
         {
             PostCategoryListRequestModel model = request.Model;
 
-            QueryResponseModel<PostCategoryEntity> response = await _postCategoryRepository.Query(
+            QueryResponseModel<PostCategoryListItemModel> response = await _postCategoryRepository.Query<PostCategoryListItemModel>(
                 terms: model.Terms,
                 ids: model.Ids,
                 sortBy: model.SortBy,
@@ -71,9 +71,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
                 paging: model,
                 count: true);
 
-            PostCategoryListItemModel[] list = _mapper
-                .ProjectTo<PostCategoryListItemModel>(response.Query)
-                .ToArray();
+            PostCategoryListItemModel[] list = response.Query.ToArray();
 
             return new ListResponseModel<PostCategoryListItemModel>(response.Total.Value, list);
         }

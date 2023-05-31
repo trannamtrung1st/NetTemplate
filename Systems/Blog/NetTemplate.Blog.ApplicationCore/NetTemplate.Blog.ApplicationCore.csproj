@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
@@ -23,10 +23,6 @@
 		<Folder Include="User\Models\" />
 		<Folder Include="User\Handlers\" />
 		<Folder Include="User\Queries\" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="AutoMapper" Version="12.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

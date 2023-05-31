@@ -5,7 +5,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
 {
     public interface IPostCategoryRepository : IRepository<PostCategoryEntity>
     {
-        Task<QueryResponseModel<PostCategoryEntity>> Query(
+        Task<QueryResponseModel<TResult>> Query<TResult>(
             string terms = null,
             IEnumerable<int> ids = null,
             Enums.PostCategorySortBy[] sortBy = null,

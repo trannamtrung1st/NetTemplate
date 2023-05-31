@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Common.DependencyInjection;
@@ -10,11 +11,11 @@ namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory
     [ScopedService]
     public class PostCategoryRepository : EFCoreRepository<PostCategoryEntity, MainDbContext>, IPostCategoryRepository
     {
-        public PostCategoryRepository(MainDbContext dbContext) : base(dbContext)
+        public PostCategoryRepository(MainDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
-        public async Task<QueryResponseModel<PostCategoryEntity>> Query(
+        public async Task<QueryResponseModel<TResult>> Query<TResult>(
             string terms = null,
             IEnumerable<int> ids = null,
             Enums.PostCategorySortBy[] sortBy = null,
@@ -47,11 +48,13 @@ namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory
 
             query = query.Paging(paging);
 
-            return new QueryResponseModel<PostCategoryEntity>(total, query);
+            IQueryable<TResult> result = mapper.CustomProjectTo<TResult>(query);
+
+            return new QueryResponseModel<TResult>(total, result);
         }
 
-        public override Task<IQueryable<PostCategoryEntity>> QueryById(params object[] keys)
-            => QueryById<PostCategoryEntity, int>(keys);
+        public override Task<IQueryable<TResult>> QueryById<TResult>(params object[] keys)
+            => QueryById<PostCategoryEntity, TResult, int>(keys);
 
         protected override Task LoadAggregate(PostCategoryEntity entity)
         {

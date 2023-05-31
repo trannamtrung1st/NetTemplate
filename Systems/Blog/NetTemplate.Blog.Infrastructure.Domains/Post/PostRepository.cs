@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Common.DependencyInjection;
@@ -10,7 +11,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
     [ScopedService]
     public class PostRepository : EFCoreRepository<PostEntity, MainDbContext>, IPostRepository
     {
-        public PostRepository(MainDbContext dbContext) : base(dbContext)
+        public PostRepository(MainDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
         }
 
@@ -40,15 +41,19 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
             return entity;
         }
 
-        public Task<IQueryable<PostEntity>> GetLatestPostOfCategory(int id)
+        public async Task<TResult> GetLatestPostOfCategory<TResult>(int id)
         {
             IOrderedQueryable<PostEntity> latestPostQuery = DbSet.Where(e => e.CategoryId == id)
                 .OrderByDescending(e => e.CreatedTime);
 
-            return Task.FromResult<IQueryable<PostEntity>>(latestPostQuery);
+            TResult result = await mapper
+                .CustomProjectTo<TResult>(latestPostQuery)
+                .FirstOrDefaultAsync();
+
+            return result;
         }
 
-        public async Task<QueryResponseModel<PostEntity>> Query(
+        public async Task<QueryResponseModel<TResult>> Query<TResult>(
             string terms = null,
             IEnumerable<int> ids = null,
             int? categoryId = null,
@@ -84,11 +89,13 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
 
             query = query.Paging(paging);
 
-            return new QueryResponseModel<PostEntity>(total, query);
+            IQueryable<TResult> result = mapper.CustomProjectTo<TResult>(query);
+
+            return new QueryResponseModel<TResult>(total, result);
         }
 
-        public override Task<IQueryable<PostEntity>> QueryById(params object[] keys)
-            => QueryById<PostEntity, int>(keys);
+        public override Task<IQueryable<TResult>> QueryById<TResult>(params object[] keys)
+            => QueryById<PostEntity, TResult, int>(keys);
 
         protected override async Task LoadAggregate(PostEntity entity)
         {
