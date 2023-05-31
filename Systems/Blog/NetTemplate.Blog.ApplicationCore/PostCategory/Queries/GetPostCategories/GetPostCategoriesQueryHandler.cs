@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Models;
@@ -52,7 +51,6 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
                 isDesc: model.IsDesc,
                 paging: model);
 
-            // Projecting
             PostCategoryListItemModel[] list = _mapper
                 .ProjectTo<PostCategoryListItemModel>(response.List.AsQueryable())
                 .ToArray();
@@ -65,36 +63,19 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
         {
             PostCategoryListRequestModel model = request.Model;
 
-            IQueryable<PostCategoryEntity> query = _postCategoryRepository.GetQuery();
+            QueryResponseModel<PostCategoryEntity> response = await _postCategoryRepository.Query(
+                terms: model.Terms,
+                ids: model.Ids,
+                sortBy: model.SortBy,
+                isDesc: model.IsDesc,
+                paging: model,
+                count: true);
 
-            // Filtering
-            if (!string.IsNullOrEmpty(model.Terms))
-            {
-                query = query.Where(e => e.Name.Contains(model.Terms));
-            }
+            PostCategoryListItemModel[] list = _mapper
+                .ProjectTo<PostCategoryListItemModel>(response.Query)
+                .ToArray();
 
-            query = query.ByIdsIfAny(model.Ids);
-
-            // Counting
-            int total = await query.CountAsync();
-
-            // Sorting
-            query = query.SortBy(model.SortBy, model.IsDesc,
-                Process: (query, sort, isDesc) => sort switch
-                {
-                    Enums.PostCategorySortBy.CreatorFullName => query.SortSequential(PostCategoryEntity.CreatorFullNameExpression, isDesc),
-                    _ => null,
-                });
-
-            // Paging
-            query = query.Paging(model);
-
-            // Projecting
-            PostCategoryListItemModel[] list = await _mapper
-                .ProjectTo<PostCategoryListItemModel>(query)
-                .ToArrayAsync(cancellationToken);
-
-            return new ListResponseModel<PostCategoryListItemModel>(total, list);
+            return new ListResponseModel<PostCategoryListItemModel>(response.Total.Value, list);
         }
     }
 }

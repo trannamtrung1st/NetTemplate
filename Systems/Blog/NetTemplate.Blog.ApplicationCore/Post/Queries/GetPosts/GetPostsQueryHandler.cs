@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Blog.ApplicationCore.Post.Models;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
@@ -33,36 +32,18 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
 
             PostListRequestModel model = request.Model;
 
-            IQueryable<PostEntity> query = _postRepository.GetQuery();
+            QueryResponseModel<PostEntity> response = await _postRepository.Query(
+                terms: model.Terms,
+                ids: model.Ids,
+                categoryId: model.CategoryId,
+                sortBy: model.SortBy,
+                isDesc: model.IsDesc,
+                paging: model,
+                count: true);
 
-            // Filtering
-            if (!string.IsNullOrEmpty(model.Terms))
-            {
-                query = query.Where(e => e.Title.Contains(model.Terms));
-            }
+            PostListItemModel[] list = _mapper.ProjectTo<PostListItemModel>(response.Query).ToArray();
 
-            if (model.CategoryId != null)
-            {
-                query = query.Where(e => e.Category.Id == model.CategoryId);
-            }
-
-            // Counting
-            int total = await query
-                .JoinRequiredRelationships()
-                .CountAsync();
-
-            // Sorting
-            query = query.SortBy(model.SortBy, model.IsDesc);
-
-            // Paging
-            query = query.Paging(model);
-
-            // Projecting
-            PostListItemModel[] list = await _mapper
-                .ProjectTo<PostListItemModel>(query)
-                .ToArrayAsync(cancellationToken);
-
-            return new ListResponseModel<PostListItemModel>(total, list);
+            return new ListResponseModel<PostListItemModel>(response.Total.Value, list);
         }
     }
 }

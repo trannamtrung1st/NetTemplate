@@ -25,7 +25,9 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
             this.dbContext = dbContext;
         }
 
-        public IQueryable<T> GetQuery() => dbContext.Set<T>();
+        protected DbSet<T> DbSet => dbContext.Set<T>();
+
+        public Task<IQueryable<T>> QueryAll() => Task.FromResult<IQueryable<T>>(dbContext.Set<T>());
 
         protected abstract Task LoadAggregate(T entity);
 
@@ -74,6 +76,16 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
             dbContext.TryAttach(entity, out _);
 
             return Task.FromResult(entity);
+        }
+
+        public abstract Task<IQueryable<T>> QueryById(params object[] keys);
+
+        protected Task<IQueryable<TEntity>> QueryById<TEntity, TId>(params object[] keys)
+            where TEntity : class, IHasId<TId>
+        {
+            TId id = GetIdFromKeys<TId>(keys);
+
+            return Task.FromResult(dbContext.Set<TEntity>().ById(id));
         }
 
         public static TId GetIdFromKeys<TId>(object[] keys)

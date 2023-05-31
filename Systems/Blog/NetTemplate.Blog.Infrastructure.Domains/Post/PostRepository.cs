@@ -2,6 +2,7 @@
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 using NetTemplate.Shared.Infrastructure.Persistence.Repositories;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.Post
@@ -16,12 +17,9 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
         // [TODO] add cancellation tokens
         public override async Task<PostEntity> FindById(params object[] keys)
         {
-            if (keys?.Length != 1 || keys[0] is not int id)
-            {
-                throw new ArgumentException(null, nameof(keys));
-            }
+            int id = GetIdFromKeys<int>(keys);
 
-            PostEntity entity = await dbContext.Post.ById(id)
+            PostEntity entity = await DbSet.ById(id)
                 .Select(PostEntity.SelectBasicInfoExpression)
                 .FirstOrDefaultAsync();
 
@@ -34,6 +32,48 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
 
             return entity;
         }
+
+        public async Task<QueryResponseModel<PostEntity>> Query(
+            string terms = null,
+            IEnumerable<int> ids = null,
+            int? categoryId = null,
+            Enums.PostSortBy[] sortBy = null,
+            bool[] isDesc = null,
+            IPagingQuery paging = null,
+            bool count = true)
+        {
+            IQueryable<PostEntity> query = DbSet;
+
+            if (!string.IsNullOrEmpty(terms))
+            {
+                query = query.Where(e => e.Title.Contains(terms));
+            }
+
+            query = query.ByIdsIfAny(ids);
+
+            if (categoryId != null)
+            {
+                query = query.Where(e => e.Category.Id == categoryId);
+            }
+
+            int? total = null;
+
+            if (count)
+            {
+                total = await query
+                    .JoinRequiredRelationships()
+                    .CountAsync();
+            }
+
+            query = query.SortBy(sortBy, isDesc);
+
+            query = query.Paging(paging);
+
+            return new QueryResponseModel<PostEntity>(total, query);
+        }
+
+        public override Task<IQueryable<PostEntity>> QueryById(params object[] keys)
+            => QueryById<PostEntity, int>(keys);
 
         protected override async Task LoadAggregate(PostEntity entity)
         {

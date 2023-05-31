@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
@@ -58,7 +57,6 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
             IQueryable<PostCategoryView> query = views.AsQueryable();
 
-            // Filtering
             if (!string.IsNullOrEmpty(terms))
             {
                 query = query.Where(e => e.Name.Contains(terms, StringComparison.OrdinalIgnoreCase));
@@ -66,13 +64,10 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
             query = query.ByIdsIfAny(ids);
 
-            // Counting
-            int total = await query.CountAsync();
+            int total = query.Count();
 
-            // Sorting
             query = query.SortBy(sortBy, isDesc);
 
-            // Paging
             query = query.Paging(paging);
 
             return new ListResponseModel<PostCategoryView>(total, query);
@@ -103,9 +98,9 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
         {
             _isPostCategoryAvailable = false;
 
-            IQueryable<PostCategoryEntity> query = _postCategoryRepository.GetQuery();
+            IQueryable<PostCategoryEntity> query = await _postCategoryRepository.QueryAll();
 
-            PostCategoryView[] views = await _mapper.ProjectTo<PostCategoryView>(query).ToArrayAsync();
+            PostCategoryView[] views = _mapper.ProjectTo<PostCategoryView>(query).ToArray();
 
             string setKey = Constants.CacheKeys.PostCategoryView;
 
@@ -145,10 +140,9 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         private async Task<PostCategoryView> ConstructPostCategoryViewById(int id)
         {
-            IQueryable<PostCategoryEntity> query = _postCategoryRepository.GetQuery()
-                .Where(e => e.Id == id);
+            IQueryable<PostCategoryEntity> query = await _postCategoryRepository.QueryById(id);
 
-            PostCategoryView view = await _mapper.ProjectTo<PostCategoryView>(query).FirstOrDefaultAsync();
+            PostCategoryView view = _mapper.ProjectTo<PostCategoryView>(query).FirstOrDefault();
 
             return view;
         }

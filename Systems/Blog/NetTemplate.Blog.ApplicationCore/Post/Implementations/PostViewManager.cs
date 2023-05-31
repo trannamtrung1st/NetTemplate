@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.ApplicationCore.Post.Interfaces;
@@ -42,9 +41,9 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Implementations
 
         private async Task<PostView> ConstructPostViewById(int id)
         {
-            IQueryable<PostEntity> query = _postRepository.GetQuery().ById(id);
+            IQueryable<PostEntity> query = await _postRepository.QueryById(id);
 
-            PostView view = await _mapper.ProjectTo<PostView>(query).FirstOrDefaultAsync();
+            PostView view = _mapper.ProjectTo<PostView>(query).FirstOrDefault();
 
             return view;
         }

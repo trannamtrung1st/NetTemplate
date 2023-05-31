@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
 
@@ -37,9 +38,9 @@ namespace NetTemplate.Blog.ApplicationCore.User.Commands.SyncUsers
 
             string[] userCodes = identityUsers.Select(o => o.UserCode).ToArray();
 
-            Dictionary<string, UserPartialEntity> userMap = _userPartialRepository.GetQuery()
-                .Where(o => userCodes.Contains(o.UserCode))
-                .ToDictionary(o => o.UserCode);
+            QueryResponseModel<UserPartialEntity> response = await _userPartialRepository.Query(userCodes: userCodes);
+
+            Dictionary<string, UserPartialEntity> userMap = response.Query.ToDictionary(o => o.UserCode);
 
             foreach (var identityUser in identityUsers)
             {

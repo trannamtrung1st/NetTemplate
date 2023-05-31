@@ -4,7 +4,8 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Interfaces
 {
     public interface IRepository<T> where T : class, IAggregateRoot
     {
-        IQueryable<T> GetQuery();
+        Task<IQueryable<T>> QueryAll();
+        Task<IQueryable<T>> QueryById(params object[] keys);
         Task<T> FindById(params object[] keys);
         Task<T> Create(T entity);
         Task<T> Update(T entity);

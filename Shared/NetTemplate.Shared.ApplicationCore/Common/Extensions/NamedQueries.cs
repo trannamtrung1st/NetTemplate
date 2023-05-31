@@ -37,6 +37,8 @@ namespace System.Linq
         public static IQueryable<T> Paging<T, TModel>(this IQueryable<T> query, TModel model)
             where TModel : IPagingQuery
         {
+            if (model == null) return query;
+
             query = query.Skip(model.Skip);
 
             if (!model.CanGetAll() || model.Take != null)
