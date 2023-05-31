@@ -49,11 +49,11 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPostDetails
         {
             _validator.ValidateAndThrow(request);
 
-            PostEntity entity = await _postRepository.FindById(request.Id);
+            IQueryable<PostDetailsModel> query = await _postRepository.QueryById<PostDetailsModel>(request.Id);
 
-            if (entity == null) throw new NotFoundException();
+            PostDetailsModel model = query.FirstOrDefault();
 
-            PostDetailsModel model = _mapper.Map<PostDetailsModel>(entity);
+            if (model == null) throw new NotFoundException();
 
             return model;
         }
