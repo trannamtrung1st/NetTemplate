@@ -1,5 +1,6 @@
 ﻿using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces
 {
@@ -15,7 +16,12 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces
 
         bool IsPostCategoryAvailable { get; }
         Task RebuildPostCategoryViews();
-        Task<IEnumerable<PostCategoryView>> GetPostCategoryViews();
+        Task<ListResponseModel<PostCategoryView>> FilterPostCategoryViews(
+            string terms = null,
+            IEnumerable<int> ids = null,
+            Enums.PostCategorySortBy[] sortBy = null,
+            bool[] isDesc = null,
+            IPagingQuery paging = null);
         Task<PostCategoryView> GetPostCategoryView(int id);
     }
 }

@@ -8,6 +8,7 @@ using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Common.MemoryStore.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Implementations;
+using NetTemplate.Shared.ApplicationCore.Common.Models;
 using ViewPreservedKeys = NetTemplate.Shared.ApplicationCore.Common.Constants.ViewPreservedKeys;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
@@ -42,7 +43,12 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         public bool IsPostCategoryAvailable => _isPostCategoryAvailable;
 
-        public async Task<IEnumerable<PostCategoryView>> GetPostCategoryViews()
+        public async Task<ListResponseModel<PostCategoryView>> FilterPostCategoryViews(
+            string terms = null,
+            IEnumerable<int> ids = null,
+            Enums.PostCategorySortBy[] sortBy = null,
+            bool[] isDesc = null,
+            IPagingQuery paging = null)
         {
             ThrowIfPostCategoryNotAvailable();
 
@@ -50,7 +56,26 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
                 key: Constants.CacheKeys.PostCategoryView,
                 exceptKeys: ViewPreservedKeys.All);
 
-            return views;
+            IQueryable<PostCategoryView> query = views.AsQueryable();
+
+            // Filtering
+            if (!string.IsNullOrEmpty(terms))
+            {
+                query = query.Where(e => e.Name.Contains(terms, StringComparison.OrdinalIgnoreCase));
+            }
+
+            query = query.ByIdsIfAny(ids);
+
+            // Counting
+            int total = await query.CountAsync();
+
+            // Sorting
+            query = query.SortBy(sortBy, isDesc);
+
+            // Paging
+            query = query.Paging(paging);
+
+            return new ListResponseModel<PostCategoryView>(total, query);
         }
 
         public async Task<PostCategoryView> GetPostCategoryView(int id)

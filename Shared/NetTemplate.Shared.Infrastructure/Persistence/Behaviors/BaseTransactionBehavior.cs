@@ -21,9 +21,9 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Behaviors
             IUnitOfWork unitOfWork,
             ILogger<T> logger)
         {
-            _dbContext = dbContext ?? throw new ArgumentException(nameof(DbContext));
+            _dbContext = dbContext ?? throw new ArgumentException(null, nameof(DbContext));
             _unitOfWork = unitOfWork;
-            _logger = logger ?? throw new ArgumentException(nameof(ILogger));
+            _logger = logger ?? throw new ArgumentException(null, nameof(ILogger));
         }
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)

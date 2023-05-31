@@ -18,7 +18,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
         {
             if (keys?.Length != 1 || keys[0] is not int id)
             {
-                throw new ArgumentException(nameof(keys));
+                throw new ArgumentException(null, nameof(keys));
             }
 
             PostEntity entity = await dbContext.Post.ById(id)

@@ -9,7 +9,7 @@ namespace NetTemplate.Common.Expressions
         {
             navigations = property.Split('.');
 
-            if (navigations.Length == 0) throw new ArgumentException(nameof(property));
+            if (navigations.Length == 0) throw new ArgumentException(null, nameof(property));
 
             Type entityType = typeof(TEntity);
 

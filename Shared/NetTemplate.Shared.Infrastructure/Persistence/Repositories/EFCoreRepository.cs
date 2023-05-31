@@ -75,5 +75,15 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
 
             return Task.FromResult(entity);
         }
+
+        public static TId GetIdFromKeys<TId>(object[] keys)
+        {
+            if (keys?.Length == 1 && keys[0] is TId id)
+            {
+                return id;
+            }
+
+            throw new ArgumentException(null, nameof(keys));
+        }
     }
 }

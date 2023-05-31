@@ -45,31 +45,19 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
         {
             PostCategoryListRequestModel model = request.Model;
 
-            IQueryable<PostCategoryView> query = (await _postCategoryViewManager.GetPostCategoryViews()).AsQueryable();
-
-            // Filtering
-            if (!string.IsNullOrEmpty(model.Terms))
-            {
-                query = query.Where(e => e.Name.Contains(model.Terms, StringComparison.OrdinalIgnoreCase));
-            }
-
-            query = query.ByIdsIfAny(model.Ids);
-
-            // Counting
-            int total = await query.CountAsync();
-
-            // Sorting
-            query = query.SortBy(model.SortBy, model.IsDesc);
-
-            // Paging
-            query = query.Paging(model);
+            ListResponseModel<PostCategoryView> response = await _postCategoryViewManager.FilterPostCategoryViews(
+                terms: model.Terms,
+                ids: model.Ids,
+                sortBy: model.SortBy,
+                isDesc: model.IsDesc,
+                paging: model);
 
             // Projecting
             PostCategoryListItemModel[] list = _mapper
-                .ProjectTo<PostCategoryListItemModel>(query)
+                .ProjectTo<PostCategoryListItemModel>(response.List.AsQueryable())
                 .ToArray();
 
-            return new ListResponseModel<PostCategoryListItemModel>(total, list);
+            return new ListResponseModel<PostCategoryListItemModel>(response.Total, list);
         }
 
         // [OPTIONAL] we can use views only
