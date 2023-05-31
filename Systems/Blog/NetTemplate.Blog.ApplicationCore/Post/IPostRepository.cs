@@ -13,5 +13,8 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             bool[] isDesc = null,
             IPagingQuery paging = null,
             bool count = true);
+
+        Task<int> CountByCategory(int id);
+        Task<IQueryable<PostEntity>> GetLatestPostOfCategory(int id);
     }
 }

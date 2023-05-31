@@ -21,6 +21,7 @@
                 public const string Base = "api/post-categories";
                 public const string GetPostCategories = "";
                 public const string GetPostCategoryDetails = "{id}";
+                public const string GetPostCategoryDetailsExtra = "{id}/extra";
                 public const string CreatePostCategory = "";
                 public const string UpdatePostCategory = "{id}";
                 public const string DeletePostCategory = "{id}";

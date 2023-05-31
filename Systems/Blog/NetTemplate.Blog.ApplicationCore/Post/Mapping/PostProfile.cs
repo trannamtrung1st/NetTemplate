@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NetTemplate.Blog.ApplicationCore.Post.Models;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
+using static NetTemplate.Blog.ApplicationCore.PostCategory.Models.PostCategoryDetailsExtraModel;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Mapping
 {
@@ -21,6 +22,8 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Mapping
 
             CreateMap<PostEntity, PostDetailsModel>()
                 .ForMember(e => e.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Value).ToList()));
+
+            CreateMap<PostEntity, LatestPostModel>();
         }
     }
 }

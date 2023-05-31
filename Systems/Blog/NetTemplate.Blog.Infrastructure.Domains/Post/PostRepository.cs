@@ -14,6 +14,13 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
         {
         }
 
+        public async Task<int> CountByCategory(int id)
+        {
+            int count = await DbSet.Where(e => e.CategoryId == id).CountAsync();
+
+            return count;
+        }
+
         // [TODO] add cancellation tokens
         public override async Task<PostEntity> FindById(params object[] keys)
         {
@@ -31,6 +38,14 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
             }
 
             return entity;
+        }
+
+        public Task<IQueryable<PostEntity>> GetLatestPostOfCategory(int id)
+        {
+            IOrderedQueryable<PostEntity> latestPostQuery = DbSet.Where(e => e.CategoryId == id)
+                .OrderByDescending(e => e.CreatedTime);
+
+            return Task.FromResult<IQueryable<PostEntity>>(latestPostQuery);
         }
 
         public async Task<QueryResponseModel<PostEntity>> Query(

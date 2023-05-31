@@ -6,6 +6,7 @@ using NetTemplate.Blog.ApplicationCore.PostCategory.Commands.UpdatePostCategory;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategories;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategoryDetails;
+using NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategoryDetailsExtra;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
 using NetTemplate.Shared.WebApi.Common.Controllers;
 using Swashbuckle.AspNetCore.Annotations;
@@ -45,6 +46,17 @@ namespace NetTemplate.Blog.WebApi.PostCategory.Controllers
             GetPostCategoryDetailsQuery query = new GetPostCategoryDetailsQuery(id);
 
             PostCategoryDetailsModel response = await _mediator.Send(query);
+
+            return Ok(response);
+        }
+
+        [HttpGet(Routes.GetPostCategoryDetailsExtra)]
+        [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PostCategoryDetailsExtraModel))]
+        public async Task<IActionResult> GetPostCategoryDetailsExtra([FromRoute] int id)
+        {
+            GetPostCategoryDetailsExtraQuery query = new GetPostCategoryDetailsExtraQuery(id);
+
+            PostCategoryDetailsExtraModel response = await _mediator.Send(query);
 
             return Ok(response);
         }
