@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Common.MemoryStore.Extensions;
+using NetTemplate.Shared.ApplicationCore.Identity.Extensions;
 using NetTemplate.Shared.ClientSDK.Common.Extensions;
 using NetTemplate.Shared.ClientSDK.Common.Models;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
@@ -96,7 +97,8 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
                 .AddCaching()
                 .AddResilience()
                 .AddSimpleMemoryStore()
-                .AddClientSdkServices(config.ClientConfig);
+                .AddClientSdkServices(config.ClientConfig)
+                .AddNullCurrentUserProvider();
 
             if (!isProduction)
             {

@@ -13,6 +13,7 @@ using NetTemplate.Shared.ClientSDK.Common.Models;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.Common.Extensions;
+using NetTemplate.Shared.Infrastructure.Common.Utils;
 using NetTemplate.Shared.Infrastructure.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.Extensions;
@@ -30,11 +31,13 @@ using System.Reflection;
 using ApiRoutes = NetTemplate.Blog.WebApi.Common.Constants.ApiRoutes;
 using BackgroundConnectionNames = NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames;
 using CacheProfiles = NetTemplate.Blog.WebApi.Common.Constants.CacheProfiles;
-using LoggingConfigurationSections = NetTemplate.Shared.WebApi.Logging.Constants.ConfigurationSections;
+using CommonConfigurationSections = NetTemplate.Blog.ApplicationCore.Common.Constants.ConfigurationSections;
+using WebLoggingConfigurationSections = NetTemplate.Shared.WebApi.Logging.Constants.ConfigurationSections;
 
 // ===== APPLICATION START =====
 
-using Serilog.Core.Logger seriLogger = WebApplicationHelper.CreateHostLogger();
+bool isProduction = WebApplicationHelper.IsProduction();
+using Serilog.Core.Logger seriLogger = InfrastructureHelper.CreateHostLogger(isProduction);
 ILogger logger = new SerilogLoggerFactory(seriLogger).CreateLogger(nameof(Program));
 List<IDisposable> resources = new List<IDisposable>();
 
@@ -42,15 +45,15 @@ try
 {
     logger.LogInformation("Starting web host");
 
-    WebApplicationBuilder builder = WebApplicationHelper.CreateBuilder(args);
+    WebApplicationBuilder builder = WebApplicationHelper.CreateDefaultBuilder(args);
 
     BindConfigurations(builder.Configuration);
 
     ApiDefaultServicesConfig defaultConfig = GetApiDefaultServicesConfig(
         builder.Configuration,
-        AppConfig.Instance);
+        WebApiConfig.Instance);
 
-    ConfigureServices(builder.Services, defaultConfig, builder.Environment, builder.Configuration);
+    ConfigureServices(defaultConfig, builder.Services, builder.Configuration, builder.Environment);
 
     ConfigureContainer(builder.Host, defaultConfig.ScanningAssemblies);
 
@@ -71,13 +74,13 @@ catch (Exception ex)
     return 1;
 }
 
+
+// ===== METHODS =====
+
 static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
     IConfiguration configuration,
-    AppConfig appConfig)
+    WebApiConfig webConfig)
 {
-    ClientConfig clientConfiguration = configuration.GetClientConfigDefaults();
-    ClientsConfig clientsConfig = configuration.GetClientsConfigDefaults();
-
     string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
 
     HangfireConfig hangfireConfig = configuration.GetHangfireConfigDefaults();
@@ -87,6 +90,8 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
     IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
     JwtConfig jwtConfig = configuration.GetJwtConfigDefaults();
     SimulatedAuthConfig simulatedAuthConfig = configuration.GetSimulatedAuthConfigDefaults();
+    ClientConfig clientConfiguration = configuration.GetClientConfigDefaults();
+    ClientsConfig clientsConfig = configuration.GetClientsConfigDefaults();
 
     PubSubConfig pubSubConfig = configuration.GetPubSubConfigDefaults();
 
@@ -108,11 +113,11 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
             opt.CacheProfiles.Add(CacheProfiles.Sample, new CacheProfile
             {
                 VaryByQueryKeys = new[] { "*" },
-                Duration = appConfig.ResponseCacheTtl
+                Duration = webConfig.ResponseCacheTtl
             });
         },
         DbContextConnectionString = dbContextConnectionString,
-        DbContextDebugEnabled = appConfig.DbContextDebugEnabled,
+        DbContextDebugEnabled = webConfig.DbContextDebugEnabled,
         HangfireConfig = hangfireConfig,
         HangfireConnectionString = hangfireConnStr,
         HangfireMasterConnectionString = masterConnStr,
@@ -126,12 +131,11 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
 
 static void BindConfigurations(IConfiguration configuration)
 {
-    configuration.Bind(AppConfig.Instance);
+    configuration.GetSection(CommonConfigurationSections.App).Bind(WebApiConfig.Instance);
 }
 
-static void ConfigureServices(IServiceCollection services,
-    ApiDefaultServicesConfig defaultConfig,
-    IWebHostEnvironment env, IConfiguration configuration)
+static void ConfigureServices(ApiDefaultServicesConfig defaultConfig,
+    IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
 {
     services
         .AddInfrastructureServices(defaultConfig, configuration, env.IsProduction())
@@ -194,7 +198,7 @@ static void ConfigurePipeline(WebApplication app,
     app.UseRequestDataExtraction();
 
     app.UseRequestLogging(app.Configuration,
-        requestLoggingSection: LoggingConfigurationSections.RequestLogging,
+        requestLoggingSection: WebLoggingConfigurationSections.RequestLogging,
         out IDisposable customRequestLogger);
 
     if (customRequestLogger != null) resources.Add(customRequestLogger);
@@ -230,5 +234,5 @@ static void OnApplicationStarted()
 
 static void OnApplicationStopped(IEnumerable<IDisposable> resources)
 {
-    WebApplicationHelper.CleanResources(resources);
+    InfrastructureHelper.CleanResources(resources);
 }
