@@ -47,6 +47,12 @@
                 public const string UpdateComment = "{id}";
                 public const string DeleteComment = "{id}";
             }
+
+            public static class User
+            {
+                public const string Base = "api/users";
+                public const string GetUsers = "";
+            }
         }
 
         public static class CacheProfiles

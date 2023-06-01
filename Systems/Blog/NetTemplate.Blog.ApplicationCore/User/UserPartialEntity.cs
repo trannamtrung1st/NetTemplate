@@ -3,6 +3,7 @@ using NetTemplate.Common.Validation;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Utils;
+using System.Linq.Expressions;
 using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messages;
 
 namespace NetTemplate.Blog.ApplicationCore.User
@@ -101,6 +102,9 @@ namespace NetTemplate.Blog.ApplicationCore.User
         #endregion
 
         public override int TransientIdValue() => default;
+
+        public static Expression<Func<UserPartialEntity, string>> FullNameExpression
+            => (e) => e.FirstName + " " + e.LastName;
 
         public static class Constraints
         {

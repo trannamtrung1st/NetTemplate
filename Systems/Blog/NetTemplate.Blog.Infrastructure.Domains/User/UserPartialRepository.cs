@@ -31,6 +31,9 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
             string terms = null,
             IEnumerable<string> userCodes = null,
             IEnumerable<int> ids = null,
+            bool? active = null,
+            Enums.UserSortBy[] sortBy = null,
+            bool[] isDesc = null,
             IOffsetPagingQuery paging = null,
             bool count = true)
         {
@@ -41,6 +44,16 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
                 query = query.Where(e => e.UserCode.Contains(terms)
                     || e.FirstName.Contains(terms)
                     || e.LastName.Contains(terms));
+            }
+
+            if (userCodes?.Any() == true)
+            {
+                query = query.Where(e => userCodes.Contains(e.UserCode));
+            }
+
+            if (active != null)
+            {
+                query = query.Where(e => e.Active == active);
             }
 
             query = query.ByIdsIfAny(ids);
@@ -56,6 +69,8 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
             {
                 total = await query.CountAsync();
             }
+
+            query = query.SortBy(sortBy, isDesc);
 
             query = query.OffsetPaging(paging);
 

@@ -19,9 +19,7 @@
 		<Folder Include="Cross\Queries\" />
 		<Folder Include="Post\Handlers\" />
 		<Folder Include="User\Exceptions\" />
-		<Folder Include="User\Models\" />
 		<Folder Include="User\Handlers\" />
-		<Folder Include="User\Queries\" />
 	</ItemGroup>
 
 	<ItemGroup>
