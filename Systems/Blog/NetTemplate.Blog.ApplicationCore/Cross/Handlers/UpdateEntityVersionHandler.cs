@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using NetTemplate.Blog.ApplicationCore.Cross.Interfaces;
+using NetTemplate.Blog.ApplicationCore.Common.Interfaces;
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory;

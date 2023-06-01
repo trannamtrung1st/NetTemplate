@@ -1,4 +1,4 @@
-﻿namespace NetTemplate.Blog.ApplicationCore.Cross.Interfaces
+﻿namespace NetTemplate.Blog.ApplicationCore.Common.Interfaces
 {
     public interface IEntityVersionManager
     {

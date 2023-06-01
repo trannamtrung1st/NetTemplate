@@ -1,8 +1,8 @@
-﻿using NetTemplate.Blog.ApplicationCore.Cross.Interfaces;
+﻿using NetTemplate.Blog.ApplicationCore.Common.Interfaces;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.ApplicationCore.Caching.Interfaces;
 
-namespace NetTemplate.Blog.ApplicationCore.Cross.Implementations
+namespace NetTemplate.Blog.ApplicationCore.Common.Implementations
 {
     [ScopedService]
     public class EntityVersionManager : IEntityVersionManager

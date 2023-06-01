@@ -1,4 +1,4 @@
-﻿using NetTemplate.Blog.ApplicationCore.Cross.Interfaces;
+﻿using NetTemplate.Blog.ApplicationCore.Common.Interfaces;
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.Post.Interfaces;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
