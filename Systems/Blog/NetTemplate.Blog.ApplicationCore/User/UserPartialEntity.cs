@@ -101,8 +101,6 @@ namespace NetTemplate.Blog.ApplicationCore.User
 
         #endregion
 
-        public override int TransientIdValue() => default;
-
         public static Expression<Func<UserPartialEntity, string>> FullNameExpression
             => (e) => e.FirstName + " " + e.LastName;
 

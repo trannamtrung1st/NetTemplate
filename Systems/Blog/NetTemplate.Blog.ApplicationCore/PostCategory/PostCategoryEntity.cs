@@ -111,8 +111,6 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
 
         #endregion
 
-        public override int TransientIdValue() => default;
-
         public static class Constraints
         {
         }

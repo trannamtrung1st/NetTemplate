@@ -112,8 +112,6 @@ namespace NetTemplate.Blog.ApplicationCore.Comment
 
         #endregion
 
-        public override int TransientIdValue() => default;
-
         public static class Constraints
         {
             public const int MaxContentLength = 500;

@@ -34,8 +34,6 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 
         #endregion
 
-        public override int TransientIdValue() => default;
-
         public static class Constraints
         {
             public const int MaxValueLength = 50;

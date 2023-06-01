@@ -153,8 +153,6 @@ namespace NetTemplate.Blog.ApplicationCore.Post
 
         #endregion
 
-        public override int TransientIdValue() => default;
-
         // [NOTE] exclude big data: Content
         public static Expression<Func<PostEntity, PostEntity>> SelectBasicInfoExpression
             => e => new PostEntity

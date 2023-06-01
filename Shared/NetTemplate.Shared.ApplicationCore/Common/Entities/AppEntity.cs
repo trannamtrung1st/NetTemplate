@@ -8,7 +8,7 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Entities
 
     public abstract class AppEntity<TId> : AppEntity, IHasId<TId>
     {
-        public abstract TId TransientIdValue();
+        public virtual TId TransientIdValue() => default;
 
         public bool IsTransient() => Equals(Id, TransientIdValue());
 
