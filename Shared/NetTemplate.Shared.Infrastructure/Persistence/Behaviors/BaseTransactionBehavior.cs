@@ -47,9 +47,9 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Behaviors
 
                     var strategy = _dbContext.Database.CreateExecutionStrategy();
 
-                    await strategy.ExecuteAsync(async () =>
+                    await strategy.ExecuteAsync(async (cancellationToken) =>
                     {
-                        using (var transaction = await _dbContext.BeginTransactionOrCurrent())
+                        using (var transaction = await _dbContext.BeginTransactionOrCurrent(cancellationToken))
                         {
                             try
                             {
@@ -57,20 +57,20 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Behaviors
 
                                 response = await next();
 
-                                await _unitOfWork.CommitChanges();
+                                await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
 
                                 _logger.LogInformation("[END] Commit transaction {transactionId} for {commandName}", transaction.TransactionId, typeName);
 
-                                await transaction.CommitAsync();
+                                await transaction.CommitAsync(cancellationToken: cancellationToken);
                             }
                             catch (Exception)
                             {
-                                await transaction.RollbackAsync();
+                                await transaction.RollbackAsync(cancellationToken: cancellationToken);
 
                                 throw;
                             }
                         }
-                    });
+                    }, cancellationToken: cancellationToken);
                 }
                 catch (Exception ex)
                 {
@@ -82,7 +82,7 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Behaviors
             {
                 response = await next();
 
-                await _unitOfWork.CommitChanges();
+                await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
             }
 
             return response;

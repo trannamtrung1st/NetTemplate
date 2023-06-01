@@ -39,7 +39,8 @@ namespace NetTemplate.Blog.ApplicationCore.User.Commands.SyncUsers
             string[] userCodes = identityUsers.Select(o => o.UserCode).ToArray();
 
             QueryResponseModel<UserPartialEntity> response = await _userPartialRepository.Query<UserPartialEntity>(
-                userCodes: userCodes);
+                userCodes: userCodes,
+                cancellationToken: cancellationToken);
 
             Dictionary<string, UserPartialEntity> userMap = response.Query.ToDictionary(o => o.UserCode);
 
@@ -55,7 +56,7 @@ namespace NetTemplate.Blog.ApplicationCore.User.Commands.SyncUsers
                             identityUser.LastName,
                             identityUser.IsActive);
 
-                        await _userPartialRepository.Create(currentUser);
+                        await _userPartialRepository.Create(currentUser, cancellationToken);
                     }
                     else
                     {
@@ -69,7 +70,7 @@ namespace NetTemplate.Blog.ApplicationCore.User.Commands.SyncUsers
                 }
             }
 
-            await _unitOfWork.CommitChanges();
+            await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }

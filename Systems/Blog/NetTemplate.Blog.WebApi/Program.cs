@@ -37,9 +37,11 @@ using WebLoggingConfigurationSections = NetTemplate.Shared.WebApi.Logging.Consta
 // ===== APPLICATION START =====
 
 bool isProduction = WebApplicationHelper.IsProduction();
+using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 using Serilog.Core.Logger seriLogger = InfrastructureHelper.CreateHostLogger(isProduction);
 ILogger logger = new SerilogLoggerFactory(seriLogger).CreateLogger(nameof(Program));
 List<IDisposable> resources = new List<IDisposable>();
+CancellationToken cancellationToken = cancellationTokenSource.Token;
 
 try
 {
@@ -61,7 +63,7 @@ try
 
     ConfigurePipeline(app, resources, defaultConfig.HangfireConfig);
 
-    await Initialize(app, defaultConfig.HangfireConfig);
+    await Initialize(app, defaultConfig.HangfireConfig, cancellationToken);
 
     app.Run();
 
@@ -217,7 +219,8 @@ static void ConfigurePipeline(WebApplication app,
 }
 
 static async Task Initialize(WebApplication app,
-    HangfireConfig hangfireConfig)
+    HangfireConfig hangfireConfig,
+    CancellationToken cancellationToken = default)
 {
     using IServiceScope serviceScope = app.Services.CreateScope();
 
@@ -225,7 +228,7 @@ static async Task Initialize(WebApplication app,
     dynamicData.HangfireConfig = hangfireConfig;
 
     IMediator mediator = serviceScope.ServiceProvider.GetRequiredService<IMediator>();
-    await mediator.Publish(new ApplicationStartingEvent(dynamicData));
+    await mediator.Publish(new ApplicationStartingEvent(dynamicData), cancellationToken);
 }
 
 static void OnApplicationStarted()

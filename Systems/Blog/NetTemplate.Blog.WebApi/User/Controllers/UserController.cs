@@ -25,11 +25,11 @@ namespace NetTemplate.Blog.WebApi.User.Controllers
 
         [HttpGet(Routes.GetUsers)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ListResponseModel<UserListItemModel>))]
-        public async Task<IActionResult> GetUsers([FromQuery] UserListRequestModel model)
+        public async Task<IActionResult> GetUsers([FromQuery] UserListRequestModel model, CancellationToken cancellationToken = default)
         {
             GetUsersQuery query = new GetUsersQuery(model);
 
-            ListResponseModel<UserListItemModel> response = await _mediator.Send(query);
+            ListResponseModel<UserListItemModel> response = await _mediator.Send(query, cancellationToken);
 
             return Ok(response);
         }

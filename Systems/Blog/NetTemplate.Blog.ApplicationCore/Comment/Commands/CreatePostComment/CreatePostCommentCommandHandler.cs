@@ -33,9 +33,9 @@ namespace NetTemplate.Blog.ApplicationCore.Comment.Commands.CreatePostComment
 
             CommentEntity entity = new CommentEntity(model.Content, request.OnPostId);
 
-            await _commentRepository.Create(entity);
+            await _commentRepository.Create(entity, cancellationToken);
 
-            await _unitOfWork.CommitChanges();
+            await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }

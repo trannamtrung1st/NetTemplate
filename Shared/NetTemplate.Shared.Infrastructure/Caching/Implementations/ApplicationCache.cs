@@ -14,36 +14,36 @@ namespace NetTemplate.Shared.Infrastructure.Caching.Implementations
             _easyCachingProvider = easyCachingProvider;
         }
 
-        public Task Set<T>(string cacheKey, T cacheValue, TimeSpan? expiration = null)
+        public Task Set<T>(string cacheKey, T cacheValue, TimeSpan? expiration = null, CancellationToken cancellationToken = default)
         {
-            return _easyCachingProvider.SetAsync(cacheKey, cacheValue, expiration ?? DefaultExpiration);
+            return _easyCachingProvider.SetAsync(cacheKey, cacheValue, expiration ?? DefaultExpiration, cancellationToken);
         }
 
-        public async Task<T> GetOrAdd<T>(string cacheKey, Func<Task<T>> createFunc, TimeSpan? expiration = null)
+        public async Task<T> GetOrAdd<T>(string cacheKey, Func<Task<T>> createFunc, TimeSpan? expiration = null, CancellationToken cancellationToken = default)
         {
-            var cacheValue = await _easyCachingProvider.GetAsync(cacheKey, createFunc, expiration ?? DefaultExpiration);
+            var cacheValue = await _easyCachingProvider.GetAsync(cacheKey, createFunc, expiration ?? DefaultExpiration, cancellationToken);
             return cacheValue.HasValue ? cacheValue.Value : default;
         }
 
-        public async Task<T> Get<T>(string cacheKey)
+        public async Task<T> Get<T>(string cacheKey, CancellationToken cancellationToken = default)
         {
-            var cacheValue = await _easyCachingProvider.GetAsync<T>(cacheKey);
+            var cacheValue = await _easyCachingProvider.GetAsync<T>(cacheKey, cancellationToken);
             return cacheValue.HasValue ? cacheValue.Value : default;
         }
 
-        public Task Remove(string cacheKey)
+        public Task Remove(string cacheKey, CancellationToken cancellationToken = default)
         {
-            return _easyCachingProvider.RemoveAsync(cacheKey);
+            return _easyCachingProvider.RemoveAsync(cacheKey, cancellationToken);
         }
 
-        public Task ClearAllAsync()
+        public Task ClearAllAsync(CancellationToken cancellationToken = default)
         {
-            return _easyCachingProvider.FlushAsync();
+            return _easyCachingProvider.FlushAsync(cancellationToken);
         }
 
-        public Task<bool> Exists(string cacheKey)
+        public Task<bool> Exists(string cacheKey, CancellationToken cancellationToken = default)
         {
-            return _easyCachingProvider.ExistsAsync(cacheKey);
+            return _easyCachingProvider.ExistsAsync(cacheKey, cancellationToken);
         }
     }
 }

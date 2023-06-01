@@ -12,9 +12,10 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             Enums.PostSortBy[] sortBy = null,
             bool[] isDesc = null,
             IOffsetPagingQuery paging = null,
-            bool count = true);
+            bool count = true,
+            CancellationToken cancellationToken = default);
 
-        Task<int> CountByCategory(int id);
-        Task<TResult> GetLatestPostOfCategory<TResult>(int id);
+        Task<int> CountByCategory(int id, CancellationToken cancellationToken = default);
+        Task<TResult> GetLatestPostOfCategory<TResult>(int id, CancellationToken cancellationToken = default);
     }
 }

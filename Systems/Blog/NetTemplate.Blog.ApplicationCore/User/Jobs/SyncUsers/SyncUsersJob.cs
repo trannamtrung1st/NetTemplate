@@ -6,7 +6,7 @@ namespace NetTemplate.Blog.ApplicationCore.User.Jobs.SyncUsers
 {
     public interface ISyncUsersJob
     {
-        Task Start(SyncUsersJobArgument args);
+        Task Start(SyncUsersJobArgument args, CancellationToken cancellationToken = default);
     }
 
     [ScopedService]
@@ -19,11 +19,11 @@ namespace NetTemplate.Blog.ApplicationCore.User.Jobs.SyncUsers
             _mediator = mediator;
         }
 
-        public async Task Start(SyncUsersJobArgument args)
+        public async Task Start(SyncUsersJobArgument args, CancellationToken cancellationToken = default)
         {
             // [NOTE] can add validator if necessary
 
-            await _mediator.Send(new SyncUsersCommand());
+            await _mediator.Send(new SyncUsersCommand(), cancellationToken);
         }
     }
 }

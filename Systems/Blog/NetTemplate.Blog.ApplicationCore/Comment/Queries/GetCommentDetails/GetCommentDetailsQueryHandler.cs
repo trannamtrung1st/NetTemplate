@@ -28,7 +28,7 @@ namespace NetTemplate.Blog.ApplicationCore.Comment.Queries.GetCommentDetails
         {
             _validator.ValidateAndThrow(request);
 
-            IQueryable<CommentDetailsModel> query = await _commentRepository.QueryById<CommentDetailsModel>(request.Id);
+            IQueryable<CommentDetailsModel> query = await _commentRepository.QueryById<CommentDetailsModel>(request.Id, cancellationToken);
 
             CommentDetailsModel model = query.FirstOrDefault();
 

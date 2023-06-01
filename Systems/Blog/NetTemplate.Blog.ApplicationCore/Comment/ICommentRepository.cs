@@ -11,6 +11,7 @@ namespace NetTemplate.Blog.ApplicationCore.Comment
             Enums.CommentSortBy[] sortBy = null,
             bool[] isDesc = null,
             IKeySetPagingQuery<DateTimeOffset> paging = null,
-            bool count = true);
+            bool count = true,
+            CancellationToken cancellationToken = default);
     }
 }

@@ -43,13 +43,15 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
             IEnumerable<int> ids = null,
             Enums.PostCategorySortBy[] sortBy = null,
             bool[] isDesc = null,
-            IOffsetPagingQuery paging = null)
+            IOffsetPagingQuery paging = null,
+            CancellationToken cancellationToken = default)
         {
             ThrowIfPostCategoryNotAvailable();
 
             PostCategoryView[] views = await _memoryStore.HashGetAll<PostCategoryView>(
                 key: Constants.CacheKeys.PostCategoryView,
-                exceptKeys: ViewPreservedKeys.All);
+                exceptKeys: ViewPreservedKeys.All,
+                cancellationToken);
 
             IQueryable<PostCategoryView> query = views.AsQueryable();
 
@@ -69,74 +71,76 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
             return new ListResponseModel<PostCategoryView>(total, query);
         }
 
-        public async Task<PostCategoryView> GetPostCategoryView(int id)
+        public async Task<PostCategoryView> GetPostCategoryView(int id, CancellationToken cancellationToken = default)
         {
             ThrowIfPostCategoryNotAvailable();
 
             PostCategoryView view = await _memoryStore.HashGet<PostCategoryView>(
                 key: Constants.CacheKeys.PostCategoryView,
-                itemKey: id.ToString());
+                itemKey: id.ToString(),
+                cancellationToken);
 
             return view;
         }
 
-        public async Task Initialize()
+        public async Task Initialize(CancellationToken cancellationToken = default)
         {
-            await Initialize(Constants.CacheKeys.PostCategoryView, _viewsOptions.Value.PostCategoryViewVersion, RebuildPostCategoryViews);
+            await Initialize(Constants.CacheKeys.PostCategoryView, _viewsOptions.Value.PostCategoryViewVersion, RebuildPostCategoryViews, cancellationToken);
         }
 
-        public async Task RebuildAllViews()
+        public async Task RebuildAllViews(CancellationToken cancellationToken = default)
         {
-            await RebuildPostCategoryViews();
+            await RebuildPostCategoryViews(cancellationToken);
         }
 
-        public async Task RebuildPostCategoryViews()
+        public async Task RebuildPostCategoryViews(CancellationToken cancellationToken = default)
         {
             _isPostCategoryAvailable = false;
 
-            IQueryable<PostCategoryView> query = await _postCategoryRepository.QueryAll<PostCategoryView>();
+            IQueryable<PostCategoryView> query = await _postCategoryRepository.QueryAll<PostCategoryView>(cancellationToken);
 
             PostCategoryView[] views = query.ToArray();
 
             string setKey = Constants.CacheKeys.PostCategoryView;
 
-            await _memoryStore.RemoveKey(setKey);
+            await _memoryStore.RemoveKey(setKey, cancellationToken);
 
             await _memoryStore.HashSet(setKey,
                 itemKeys: views.Select(v => v.Id.ToString()).ToArray(),
-                items: views);
+                items: views,
+                cancellationToken);
 
             _isPostCategoryAvailable = true;
         }
 
-        public async Task UpdateViewsOnEvent(PostCategoryCreatedEvent @event)
+        public async Task UpdateViewsOnEvent(PostCategoryCreatedEvent @event, CancellationToken cancellationToken = default)
         {
             ThrowIfPostCategoryNotAvailable();
 
-            PostCategoryView view = await ConstructPostCategoryViewById(@event.Entity.Id);
+            PostCategoryView view = await ConstructPostCategoryViewById(@event.Entity.Id, cancellationToken);
 
-            await _memoryStore.HashSet(Constants.CacheKeys.PostCategoryView, view.Id.ToString(), view);
+            await _memoryStore.HashSet(Constants.CacheKeys.PostCategoryView, view.Id.ToString(), view, cancellationToken);
         }
 
-        public async Task UpdateViewsOnEvent(PostCategoryUpdatedEvent @event)
+        public async Task UpdateViewsOnEvent(PostCategoryUpdatedEvent @event, CancellationToken cancellationToken = default)
         {
             ThrowIfPostCategoryNotAvailable();
 
-            PostCategoryView view = await ConstructPostCategoryViewById(@event.EntityId);
+            PostCategoryView view = await ConstructPostCategoryViewById(@event.EntityId, cancellationToken);
 
-            await _memoryStore.HashSet(Constants.CacheKeys.PostCategoryView, view.Id.ToString(), view);
+            await _memoryStore.HashSet(Constants.CacheKeys.PostCategoryView, view.Id.ToString(), view, cancellationToken);
         }
 
-        public async Task UpdateViewsOnEvent(PostCategoryDeletedEvent @event)
+        public async Task UpdateViewsOnEvent(PostCategoryDeletedEvent @event, CancellationToken cancellationToken = default)
         {
             ThrowIfPostCategoryNotAvailable();
 
-            await _memoryStore.HashRemove(Constants.CacheKeys.PostCategoryView, @event.EntityId.ToString());
+            await _memoryStore.HashRemove(Constants.CacheKeys.PostCategoryView, @event.EntityId.ToString(), cancellationToken);
         }
 
-        private async Task<PostCategoryView> ConstructPostCategoryViewById(int id)
+        private async Task<PostCategoryView> ConstructPostCategoryViewById(int id, CancellationToken cancellationToken = default)
         {
-            IQueryable<PostCategoryView> query = await _postCategoryRepository.QueryById<PostCategoryView>(id);
+            IQueryable<PostCategoryView> query = await _postCategoryRepository.QueryById<PostCategoryView>(id, cancellationToken);
 
             PostCategoryView view = query.FirstOrDefault();
 

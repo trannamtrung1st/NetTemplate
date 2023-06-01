@@ -40,7 +40,8 @@ namespace NetTemplate.Blog.ApplicationCore.User.Queries.GetUsers
                 sortBy: model.SortBy,
                 isDesc: model.IsDesc,
                 paging: model,
-                count: true);
+                count: true,
+                cancellationToken: cancellationToken);
 
             UserListItemModel[] list = response.Query.ToArray();
 

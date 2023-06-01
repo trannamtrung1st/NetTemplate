@@ -26,42 +26,42 @@ namespace NetTemplate.Blog.ApplicationCore.Cross.Handlers
 
         public async Task Handle(PostEntityEvent<PostCategoryUpdatedEvent> notification, CancellationToken cancellationToken)
         {
-            await UpdatePostCategory(notification.Data.EntityId);
+            await UpdatePostCategory(notification.Data.EntityId, cancellationToken);
         }
 
         public async Task Handle(PostEntityEvent<PostCategoryDeletedEvent> notification, CancellationToken cancellationToken)
         {
-            await RemovePostCategory(notification.Data.EntityId);
+            await RemovePostCategory(notification.Data.EntityId, cancellationToken);
         }
 
         public async Task Handle(PostEntityEvent<PostUpdatedEvent> notification, CancellationToken cancellationToken)
         {
-            await UpdatePost(notification.Data.EntityId);
+            await UpdatePost(notification.Data.EntityId, cancellationToken);
         }
 
         public async Task Handle(PostEntityEvent<PostTagsUpdatedEvent> notification, CancellationToken cancellationToken)
         {
-            await UpdatePost(notification.Data.EntityId);
+            await UpdatePost(notification.Data.EntityId, cancellationToken);
         }
 
         public async Task Handle(PostEntityEvent<PostDeletedEvent> notification, CancellationToken cancellationToken)
         {
-            await RemovePost(notification.Data.EntityId);
+            await RemovePost(notification.Data.EntityId, cancellationToken);
         }
 
         public async Task Handle(PostEntityEvent<PostCategoryCreatedEvent> notification, CancellationToken cancellationToken)
         {
-            await UpdatePostCategory(notification.Data.Entity.Id);
+            await UpdatePostCategory(notification.Data.Entity.Id, cancellationToken);
         }
 
         public async Task Handle(PostEntityEvent<PostCreatedEvent> notification, CancellationToken cancellationToken)
         {
-            await UpdatePost(notification.Data.Entity.Id);
+            await UpdatePost(notification.Data.Entity.Id, cancellationToken);
         }
 
-        private async Task UpdatePostCategory(int id) => await _manager.UpdateVersion(nameof(PostCategoryEntity), id.ToString());
-        private async Task RemovePostCategory(int id) => await _manager.Remove(nameof(PostCategoryEntity), id.ToString());
-        private async Task UpdatePost(int id) => await _manager.UpdateVersion(nameof(PostEntity), id.ToString());
-        private async Task RemovePost(int id) => await _manager.Remove(nameof(PostEntity), id.ToString());
+        private async Task UpdatePostCategory(int id, CancellationToken cancellationToken = default) => await _manager.UpdateVersion(nameof(PostCategoryEntity), id.ToString(), cancellationToken);
+        private async Task RemovePostCategory(int id, CancellationToken cancellationToken = default) => await _manager.Remove(nameof(PostCategoryEntity), id.ToString(), cancellationToken);
+        private async Task UpdatePost(int id, CancellationToken cancellationToken = default) => await _manager.UpdateVersion(nameof(PostEntity), id.ToString(), cancellationToken);
+        private async Task RemovePost(int id, CancellationToken cancellationToken = default) => await _manager.Remove(nameof(PostEntity), id.ToString(), cancellationToken);
     }
 }

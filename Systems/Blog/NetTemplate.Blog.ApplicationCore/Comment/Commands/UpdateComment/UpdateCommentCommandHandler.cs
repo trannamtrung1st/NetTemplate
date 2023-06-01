@@ -38,7 +38,7 @@ namespace NetTemplate.Blog.ApplicationCore.Comment.Commands.UpdateComment
 
             entity.Update(model.Content);
 
-            await _unitOfWork.CommitChanges();
+            await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }

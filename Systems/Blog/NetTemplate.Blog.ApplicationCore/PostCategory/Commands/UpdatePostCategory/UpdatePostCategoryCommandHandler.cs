@@ -37,7 +37,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Commands.UpdatePostCateg
 
             entity.Update(model.Name);
 
-            await _unitOfWork.CommitChanges();
+            await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }

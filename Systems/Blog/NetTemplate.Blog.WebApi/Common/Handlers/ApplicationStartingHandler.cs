@@ -29,20 +29,20 @@ namespace NetTemplate.Blog.WebApi.Common.Handlers
         {
             HangfireConfig hangfireConfig = @event.Data.HangfireConfig;
 
-            await MigrateDatabase();
+            await MigrateDatabase(cancellationToken);
 
-            await RunJobs(hangfireConfig);
+            await RunJobs(hangfireConfig, cancellationToken);
 
-            await StartConsumers();
+            await StartConsumers(cancellationToken);
         }
 
-        private async Task MigrateDatabase()
+        private async Task MigrateDatabase(CancellationToken cancellationToken = default)
         {
-            await _dbContext.Database.MigrateAsync();
-            await _dbContext.SeedMigrationsAsync(_provider);
+            await _dbContext.Database.MigrateAsync(cancellationToken);
+            await _dbContext.SeedMigrationsAsync(_provider, cancellationToken);
         }
 
-        private Task RunJobs(HangfireConfig config)
+        private Task RunJobs(HangfireConfig config, CancellationToken cancellationToken = default)
         {
             IEnumerable<CronJob> jobs = config.Jobs;
 
@@ -76,7 +76,7 @@ namespace NetTemplate.Blog.WebApi.Common.Handlers
             return Task.CompletedTask;
         }
 
-        private Task StartConsumers()
+        private Task StartConsumers(CancellationToken cancellationToken = default)
         {
             // [TODO]
 

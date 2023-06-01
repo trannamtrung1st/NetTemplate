@@ -13,8 +13,9 @@ namespace NetTemplate.Blog.ApplicationCore.User
             Enums.UserSortBy[] sortBy = null,
             bool[] isDesc = null,
             IOffsetPagingQuery paging = null,
-            bool count = true);
+            bool count = true,
+            CancellationToken cancellationToken = default);
 
-        Task<UserPartialEntity> FindByCode(string userCode);
+        Task<UserPartialEntity> FindByCode(string userCode, CancellationToken cancellationToken = default);
     }
 }

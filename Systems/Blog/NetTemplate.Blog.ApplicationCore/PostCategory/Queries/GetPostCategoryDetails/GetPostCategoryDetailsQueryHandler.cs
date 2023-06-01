@@ -32,7 +32,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategoryD
         {
             _validator.ValidateAndThrow(request);
 
-            PostCategoryView view = await _postCategoryViewManager.GetPostCategoryView(request.Id);
+            PostCategoryView view = await _postCategoryViewManager.GetPostCategoryView(request.Id, cancellationToken);
 
             if (view == null) throw new NotFoundException();
 

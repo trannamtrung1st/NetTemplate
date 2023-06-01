@@ -12,17 +12,17 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Implementations
             _memoryStore = memoryStore;
         }
 
-        protected virtual async Task Initialize(string cacheKey, string currentVersion, Func<Task> action)
+        protected virtual async Task Initialize(string cacheKey, string currentVersion, Func<CancellationToken, Task> action, CancellationToken cancellationToken = default)
         {
             if (!string.IsNullOrWhiteSpace(currentVersion))
             {
-                string storedVersion = await _memoryStore.HashGet<string>(cacheKey, ViewPreservedKeys.Version);
+                string storedVersion = await _memoryStore.HashGet<string>(cacheKey, ViewPreservedKeys.Version, cancellationToken);
 
                 if (storedVersion != currentVersion)
                 {
-                    await action();
+                    await action(cancellationToken);
 
-                    await _memoryStore.HashSet(cacheKey, ViewPreservedKeys.Version, currentVersion);
+                    await _memoryStore.HashSet(cacheKey, ViewPreservedKeys.Version, currentVersion, cancellationToken);
                 }
             }
         }

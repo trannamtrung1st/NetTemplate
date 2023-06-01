@@ -49,7 +49,8 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
                 ids: model.Ids,
                 sortBy: model.SortBy,
                 isDesc: model.IsDesc,
-                paging: model);
+                paging: model,
+                cancellationToken);
 
             PostCategoryListItemModel[] list = _mapper
                 .Map<PostCategoryListItemModel[]>(response.List)
@@ -69,7 +70,8 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategorie
                 sortBy: model.SortBy,
                 isDesc: model.IsDesc,
                 paging: model,
-                count: true);
+                count: true,
+                cancellationToken);
 
             PostCategoryListItemModel[] list = response.Query.ToArray();
 

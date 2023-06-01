@@ -27,9 +27,9 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Queries.GetPostCategoryD
         {
             _validator.ValidateAndThrow(request);
 
-            int postCount = await _postRepository.CountByCategory(request.Id);
+            int postCount = await _postRepository.CountByCategory(request.Id, cancellationToken);
 
-            LatestPostModel latestPost = await _postRepository.GetLatestPostOfCategory<LatestPostModel>(request.Id);
+            LatestPostModel latestPost = await _postRepository.GetLatestPostOfCategory<LatestPostModel>(request.Id, cancellationToken);
 
             PostCategoryDetailsExtraModel model = new PostCategoryDetailsExtraModel()
             {

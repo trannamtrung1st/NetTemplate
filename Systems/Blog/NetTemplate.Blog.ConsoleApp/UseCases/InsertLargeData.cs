@@ -6,7 +6,7 @@ namespace NetTemplate.Blog.ConsoleApp.UseCases
 {
     public static class InsertLargeData
     {
-        public static async Task Run(IServiceProvider provider)
+        public static async Task Run(IServiceProvider provider, CancellationToken cancellationToken = default)
         {
             using IServiceScope scope = provider.CreateScope();
             IPostRepository postRepository = scope.ServiceProvider.GetRequiredService<IPostRepository>();
@@ -25,10 +25,10 @@ namespace NetTemplate.Blog.ConsoleApp.UseCases
                     Console.WriteLine($"Current: post {i}");
                 }
 
-                await postRepository.Create(entity);
+                await postRepository.Create(entity, cancellationToken);
             }
 
-            await unitOfWork.CommitChanges();
+            await unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }

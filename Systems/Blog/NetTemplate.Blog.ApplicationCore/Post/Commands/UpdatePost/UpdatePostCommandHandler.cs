@@ -39,7 +39,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdatePost
 
             entity.UpdateTags(model.Tags);
 
-            await _unitOfWork.CommitChanges();
+            await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }

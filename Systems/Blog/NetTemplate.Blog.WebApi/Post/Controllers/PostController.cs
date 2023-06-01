@@ -33,44 +33,44 @@ namespace NetTemplate.Blog.WebApi.Post.Controllers
 
         [HttpGet(Routes.GetPosts)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ListResponseModel<PostListItemModel>))]
-        public async Task<IActionResult> GetPostCategories([FromQuery] PostListRequestModel model)
+        public async Task<IActionResult> GetPostCategories([FromQuery] PostListRequestModel model, CancellationToken cancellationToken = default)
         {
             GetPostsQuery query = new GetPostsQuery(model);
 
-            ListResponseModel<PostListItemModel> response = await _mediator.Send(query);
+            ListResponseModel<PostListItemModel> response = await _mediator.Send(query, cancellationToken);
 
             return Ok(response);
         }
 
         [HttpGet(Routes.GetPostDetails)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PostDetailsModel))]
-        public async Task<IActionResult> GetPostDetails([FromRoute] int id)
+        public async Task<IActionResult> GetPostDetails([FromRoute] int id, CancellationToken cancellationToken = default)
         {
             GetPostDetailsQuery query = new GetPostDetailsQuery(id);
 
-            PostDetailsModel response = await _mediator.Send(query);
+            PostDetailsModel response = await _mediator.Send(query, cancellationToken);
 
             return Ok(response);
         }
 
         [HttpGet(Routes.GetPostComments)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ListResponseModel<CommentListItemModel>))]
-        public async Task<IActionResult> GetPostComments([FromRoute] int id, [FromQuery] CommentListRequestModel model)
+        public async Task<IActionResult> GetPostComments([FromRoute] int id, [FromQuery] CommentListRequestModel model, CancellationToken cancellationToken = default)
         {
             GetPostCommentsQuery query = new GetPostCommentsQuery(id, model);
 
-            ListResponseModel<CommentListItemModel> response = await _mediator.Send(query);
+            ListResponseModel<CommentListItemModel> response = await _mediator.Send(query, cancellationToken);
 
             return Ok(response);
         }
 
         [HttpPost(Routes.CreatePost)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> CreatePost([FromBody] CreatePostModel model)
+        public async Task<IActionResult> CreatePost([FromBody] CreatePostModel model, CancellationToken cancellationToken = default)
         {
             CreatePostCommand command = new CreatePostCommand(model);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }
@@ -78,11 +78,11 @@ namespace NetTemplate.Blog.WebApi.Post.Controllers
         [HttpPost(Routes.CreatePostComment)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> CreatePostComment(
-            [FromRoute] int id, [FromBody] CreateCommentModel model)
+            [FromRoute] int id, [FromBody] CreateCommentModel model, CancellationToken cancellationToken = default)
         {
             CreatePostCommentCommand command = new CreatePostCommentCommand(id, model);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }
@@ -90,11 +90,11 @@ namespace NetTemplate.Blog.WebApi.Post.Controllers
         [HttpPut(Routes.UpdatePost)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdatePost(
-            [FromRoute] int id, [FromBody] UpdatePostModel model)
+            [FromRoute] int id, [FromBody] UpdatePostModel model, CancellationToken cancellationToken = default)
         {
             UpdatePostCommand command = new UpdatePostCommand(id, model);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }
@@ -102,22 +102,22 @@ namespace NetTemplate.Blog.WebApi.Post.Controllers
         [HttpPut(Routes.UpdatePostTags)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdatePostTags(
-            [FromRoute] int id, [FromBody] UpdatePostTagsModel model)
+            [FromRoute] int id, [FromBody] UpdatePostTagsModel model, CancellationToken cancellationToken = default)
         {
             UpdatePostTagsCommand command = new UpdatePostTagsCommand(id, model);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }
 
         [HttpDelete(Routes.DeletePost)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> DeletePost([FromRoute] int id)
+        public async Task<IActionResult> DeletePost([FromRoute] int id, CancellationToken cancellationToken = default)
         {
             DeletePostCommand command = new DeletePostCommand(id);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }

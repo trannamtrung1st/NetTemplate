@@ -13,8 +13,8 @@ namespace NetTemplate.Blog.Infrastructure.Persistence
     public class MainDbContext : BaseDbContext<MainDbContext>
     {
         // [IMPORTANT] It is acceptable to comment obsolete migration logics (e.g, Changes in properties)
-        public static readonly List<Func<MainDbContext, IServiceProvider, Task>> MigrationSeedingActions
-            = new List<Func<MainDbContext, IServiceProvider, Task>>();
+        public static readonly List<Func<MainDbContext, IServiceProvider, CancellationToken, Task>> MigrationSeedingActions
+            = new List<Func<MainDbContext, IServiceProvider, CancellationToken, Task>>();
 
         public MainDbContext(ICurrentUserProvider currentUserProvider) : base(currentUserProvider)
         {
@@ -49,18 +49,20 @@ namespace NetTemplate.Blog.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
         }
 
-        public async Task SeedMigrationsAsync(IServiceProvider serviceProvider)
+        public async Task SeedMigrationsAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
         {
-            using (var transaction = await this.BeginTransactionOrCurrent())
+            using (var transaction = await this.BeginTransactionOrCurrent(cancellationToken))
             {
                 foreach (var action in MigrationSeedingActions)
                 {
-                    await action(this, serviceProvider);
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    await action(this, serviceProvider, cancellationToken);
                 }
 
                 MigrationSeedingActions.Clear();
 
-                await transaction.CommitAsync();
+                await transaction.CommitAsync(cancellationToken: cancellationToken);
             }
         }
     }

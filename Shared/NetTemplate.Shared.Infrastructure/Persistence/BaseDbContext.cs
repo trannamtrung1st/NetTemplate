@@ -134,7 +134,7 @@ namespace NetTemplate.Shared.Infrastructure.Persistence
             }
         }
 
-        public virtual Task ResetState()
+        public virtual Task ResetState(CancellationToken cancellationToken = default)
         {
             var entries = ChangeTracker.Entries().ToArray();
             foreach (var entry in entries)
@@ -146,11 +146,11 @@ namespace NetTemplate.Shared.Infrastructure.Persistence
 
         public virtual async Task<int> SaveEntitiesAsync(bool dispatchEvents = true, CancellationToken cancellationToken = default)
         {
-            if (dispatchEvents) await _mediator.DispatchEntityEventsAsync(this, isPost: false);
+            if (dispatchEvents) await _mediator.DispatchEntityEventsAsync(this, isPost: false, cancellationToken);
 
             int result = await SaveChangesAsync(cancellationToken);
 
-            if (dispatchEvents) await _mediator.DispatchEntityEventsAsync(this, isPost: true);
+            if (dispatchEvents) await _mediator.DispatchEntityEventsAsync(this, isPost: true, cancellationToken);
 
             return result;
         }

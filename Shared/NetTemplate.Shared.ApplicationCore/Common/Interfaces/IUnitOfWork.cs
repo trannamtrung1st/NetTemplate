@@ -2,7 +2,7 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        Task ResetState();
+        Task ResetState(CancellationToken cancellationToken = default);
         Task<bool> CommitChanges(bool dispatchEvents = true, CancellationToken cancellationToken = default);
     }
 }

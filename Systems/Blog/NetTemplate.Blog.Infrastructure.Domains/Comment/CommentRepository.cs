@@ -21,7 +21,8 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Comment
             Enums.CommentSortBy[] sortBy = null,
             bool[] isDesc = null,
             IKeySetPagingQuery<DateTimeOffset> paging = null,
-            bool count = true)
+            bool count = true,
+            CancellationToken cancellationToken = default)
         {
             IQueryable<CommentEntity> query = DbSet.OnPost(onPostId);
 
@@ -36,7 +37,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Comment
 
             if (count)
             {
-                total = await query.CountAsync();
+                total = await query.CountAsync(cancellationToken);
             }
 
             query = query.SortBy(sortBy, isDesc);
@@ -48,10 +49,10 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Comment
             return new QueryResponseModel<TResult>(total, result);
         }
 
-        public override Task<IQueryable<TResult>> QueryById<TResult>(params object[] keys)
-            => QueryById<CommentEntity, TResult, int>(keys);
+        public override Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default)
+            => QueryById<CommentEntity, TResult, int>(key, cancellationToken);
 
-        protected override Task LoadAggregate(CommentEntity entity)
+        protected override Task LoadAggregate(CommentEntity entity, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
         }

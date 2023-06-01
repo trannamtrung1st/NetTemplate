@@ -31,7 +31,7 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
 
         protected DbSet<T> DbSet => dbContext.Set<T>();
 
-        public Task<IQueryable<TResult>> QueryAll<TResult>()
+        public Task<IQueryable<TResult>> QueryAll<TResult>(CancellationToken cancellationToken = default)
         {
             DbSet<T> query = dbContext.Set<T>();
 
@@ -40,7 +40,7 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
             return Task.FromResult(result);
         }
 
-        protected abstract Task LoadAggregate(T entity);
+        protected abstract Task LoadAggregate(T entity, CancellationToken cancellationToken = default);
 
         public virtual async Task<T> FindById(params object[] keys)
         {
@@ -51,19 +51,19 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
             return entity;
         }
 
-        public virtual async Task<T> Create(T entity)
+        public virtual async Task<T> Create(T entity, CancellationToken cancellationToken = default)
         {
             EntityEntry<T> entry = dbContext.Entry(entity);
 
             if (entry.State == EntityState.Detached)
             {
-                return (await dbContext.AddAsync(entity)).Entity;
+                return (await dbContext.AddAsync(entity, cancellationToken)).Entity;
             }
 
             return entity;
         }
 
-        public virtual Task<T> Update(T entity)
+        public virtual Task<T> Update(T entity, CancellationToken cancellationToken = default)
         {
             EntityEntry<T> entry = dbContext.Entry(entity);
 
@@ -75,26 +75,26 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
             return Task.FromResult(entity);
         }
 
-        public virtual Task<T> Delete(T entity)
+        public virtual Task<T> Delete(T entity, CancellationToken cancellationToken = default)
         {
             entity = dbContext.Remove(entity).Entity;
 
             return Task.FromResult(entity);
         }
 
-        public virtual Task<T> Track(T entity)
+        public virtual Task<T> Track(T entity, CancellationToken cancellationToken = default)
         {
             dbContext.TryAttach(entity, out _);
 
             return Task.FromResult(entity);
         }
 
-        public abstract Task<IQueryable<TResult>> QueryById<TResult>(params object[] keys);
+        public abstract Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default);
 
-        protected Task<IQueryable<TResult>> QueryById<TEntity, TResult, TId>(params object[] keys)
+        protected Task<IQueryable<TResult>> QueryById<TEntity, TResult, TId>(object key, CancellationToken cancellationToken = default)
             where TEntity : class, IHasId<TId>
         {
-            TId id = GetIdFromKeys<TId>(keys);
+            TId id = GetIdFromObject<TId>(key);
 
             IQueryable<TEntity> query = dbContext.Set<TEntity>().ById(id);
 
@@ -111,6 +111,16 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
             }
 
             throw new ArgumentException(null, nameof(keys));
+        }
+
+        public static TId GetIdFromObject<TId>(object key)
+        {
+            if (key is TId id)
+            {
+                return id;
+            }
+
+            throw new ArgumentException(null, nameof(key));
         }
     }
 }

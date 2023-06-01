@@ -26,18 +26,18 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Implementations
             _viewsOptions = viewsOptions;
         }
 
-        public async Task<PostView> GetPostView(int id)
+        public async Task<PostView> GetPostView(int id, CancellationToken cancellationToken = default)
         {
             PostView view = await _postCache.GetEntryOrAdd(
                 id, _viewsOptions.Value.PostViewVersion,
-                () => ConstructPostViewById(id));
+                (cancellationToken) => ConstructPostViewById(id, cancellationToken), cancellationToken: cancellationToken);
 
             return view;
         }
 
-        private async Task<PostView> ConstructPostViewById(int id)
+        private async Task<PostView> ConstructPostViewById(int id, CancellationToken cancellationToken = default)
         {
-            IQueryable<PostView> query = await _postRepository.QueryById<PostView>(id);
+            IQueryable<PostView> query = await _postRepository.QueryById<PostView>(id, cancellationToken);
 
             PostView view = query.FirstOrDefault();
 

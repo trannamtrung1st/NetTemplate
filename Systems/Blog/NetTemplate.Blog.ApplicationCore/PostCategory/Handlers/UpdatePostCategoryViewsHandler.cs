@@ -19,17 +19,17 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Handlers
 
         public async Task Handle(PostEntityEvent<PostCategoryCreatedEvent> @event, CancellationToken cancellationToken)
         {
-            await _postCategoryViewManager.UpdateViewsOnEvent(@event.Data);
+            await _postCategoryViewManager.UpdateViewsOnEvent(@event.Data, cancellationToken);
         }
 
         public async Task Handle(PostEntityEvent<PostCategoryDeletedEvent> @event, CancellationToken cancellationToken)
         {
-            await _postCategoryViewManager.UpdateViewsOnEvent(@event.Data);
+            await _postCategoryViewManager.UpdateViewsOnEvent(@event.Data, cancellationToken);
         }
 
         public async Task Handle(PostEntityEvent<PostCategoryUpdatedEvent> @event, CancellationToken cancellationToken)
         {
-            await _postCategoryViewManager.UpdateViewsOnEvent(@event.Data);
+            await _postCategoryViewManager.UpdateViewsOnEvent(@event.Data, cancellationToken);
         }
     }
 }

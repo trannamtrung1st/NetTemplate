@@ -29,17 +29,17 @@ namespace NetTemplate.Blog.ApplicationCore.Comment.Commands.DeleteComment
         {
             _validator.ValidateAndThrow(request);
 
-            CommentEntity entity = (await _commentRepository.QueryById<CommentEntity>(request.Id))
+            CommentEntity entity = (await _commentRepository.QueryById<CommentEntity>(request.Id, cancellationToken))
                 .Select(e => new CommentEntity(e.Id))
                 .FirstOrDefault();
 
             if (entity == null) throw new NotFoundException();
 
-            await _commentRepository.Track(entity);
+            await _commentRepository.Track(entity, cancellationToken);
 
             entity.SoftDelete();
 
-            await _unitOfWork.CommitChanges();
+            await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }

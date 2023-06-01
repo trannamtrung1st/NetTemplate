@@ -29,17 +29,17 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Commands.DeletePostCateg
         {
             _validator.ValidateAndThrow(request);
 
-            PostCategoryEntity entity = (await _postCategoryRepository.QueryById<PostCategoryEntity>(request.Id))
+            PostCategoryEntity entity = (await _postCategoryRepository.QueryById<PostCategoryEntity>(request.Id, cancellationToken))
                 .Select(e => new PostCategoryEntity(e.Id))
                 .FirstOrDefault();
 
             if (entity == null) throw new NotFoundException();
 
-            await _postCategoryRepository.Track(entity);
+            await _postCategoryRepository.Track(entity, cancellationToken);
 
             entity.SoftDelete();
 
-            await _unitOfWork.CommitChanges();
+            await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }

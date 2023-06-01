@@ -11,6 +11,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
             Enums.PostCategorySortBy[] sortBy = null,
             bool[] isDesc = null,
             IOffsetPagingQuery paging = null,
-            bool count = true);
+            bool count = true,
+            CancellationToken cancellationToken = default);
     }
 }

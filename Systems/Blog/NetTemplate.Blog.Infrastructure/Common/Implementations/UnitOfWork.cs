@@ -14,9 +14,9 @@ namespace NetTemplate.Blog.Infrastructure.Common.Implementations
             _mainDbContext = mainDbContext;
         }
 
-        public Task ResetState()
+        public Task ResetState(CancellationToken cancellationToken = default)
         {
-            return _mainDbContext.ResetState();
+            return _mainDbContext.ResetState(cancellationToken);
         }
 
         public async Task<bool> CommitChanges(bool dispatchEvents = true, CancellationToken cancellationToken = default)

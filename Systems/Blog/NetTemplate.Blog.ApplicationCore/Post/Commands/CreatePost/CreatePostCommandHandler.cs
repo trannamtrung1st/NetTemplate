@@ -35,9 +35,9 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.CreatePost
 
             PostEntity entity = new PostEntity(model.Title, model.Content, model.CategoryId, tags);
 
-            await _postRepository.Create(entity);
+            await _postRepository.Create(entity, cancellationToken);
 
-            await _unitOfWork.CommitChanges();
+            await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }

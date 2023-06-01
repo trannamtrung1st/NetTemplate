@@ -14,29 +14,29 @@ namespace NetTemplate.Blog.ApplicationCore.Cross.Implementations
             _applicationCache = applicationCache;
         }
 
-        public async Task<string> UpdateVersion(string entityName, string key)
+        public async Task<string> UpdateVersion(string entityName, string key, CancellationToken cancellationToken = default)
         {
             string cacheKey = GetKey(entityName, key);
 
             string newVersion = GetNewVersion();
 
-            await _applicationCache.Set(cacheKey, newVersion);
+            await _applicationCache.Set(cacheKey, newVersion, cancellationToken: cancellationToken);
 
             return newVersion;
         }
 
-        public async Task<string> GetVersion(string entityName, string key)
+        public async Task<string> GetVersion(string entityName, string key, CancellationToken cancellationToken = default)
         {
             string cacheKey = GetKey(entityName, key);
 
-            return await _applicationCache.GetOrAdd(cacheKey, () => Task.FromResult(GetNewVersion()));
+            return await _applicationCache.GetOrAdd(cacheKey, () => Task.FromResult(GetNewVersion()), cancellationToken: cancellationToken);
         }
 
-        public async Task Remove(string entityName, string key)
+        public async Task Remove(string entityName, string key, CancellationToken cancellationToken = default)
         {
             string cacheKey = GetKey(entityName, key);
 
-            await _applicationCache.Remove(cacheKey);
+            await _applicationCache.Remove(cacheKey, cancellationToken: cancellationToken);
         }
 
         private static string GetNewVersion() => DateTime.UtcNow.Ticks.ToString();

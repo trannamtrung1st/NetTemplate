@@ -5,7 +5,7 @@ namespace NetTemplate.Shared.Infrastructure.Background.Utils
 {
     public static class HangfireHelper
     {
-        public static async Task InitHangfireDatabase(string masterConnStr, string HangfireDbName)
+        public static async Task InitHangfireDatabase(string masterConnStr, string HangfireDbName, CancellationToken cancellationToken = default)
         {
             using (SqlConnection connection = new SqlConnection(masterConnStr))
             {
@@ -18,7 +18,7 @@ CREATE DATABASE [{0}];", HangfireDbName);
 
                 using (SqlCommand command = new SqlCommand(sqlCmd, connection))
                 {
-                    await command.ExecuteNonQueryAsync();
+                    await command.ExecuteNonQueryAsync(cancellationToken);
                 }
             }
         }

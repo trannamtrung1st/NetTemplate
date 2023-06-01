@@ -34,7 +34,8 @@ namespace NetTemplate.Blog.ApplicationCore.Comment.Queries.GetPostComments
                 sortBy: new[] { Enums.CommentSortBy.CreatedTime },
                 isDesc: new[] { false },
                 paging: model,
-                count: true);
+                count: true,
+                cancellationToken: cancellationToken);
 
             CommentListItemModel[] list = response.Query.ToArray();
 

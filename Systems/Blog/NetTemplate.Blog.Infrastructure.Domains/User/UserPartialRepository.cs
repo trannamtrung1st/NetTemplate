@@ -15,13 +15,13 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
         {
         }
 
-        public async Task<UserPartialEntity> FindByCode(string userCode)
+        public async Task<UserPartialEntity> FindByCode(string userCode, CancellationToken cancellationToken = default)
         {
-            UserPartialEntity entity = await DbSet.Where(e => e.UserCode == userCode).FirstOrDefaultAsync();
+            UserPartialEntity entity = await DbSet.Where(e => e.UserCode == userCode).FirstOrDefaultAsync(cancellationToken);
 
             if (entity != null)
             {
-                await LoadAggregate(entity);
+                await LoadAggregate(entity, cancellationToken);
             }
 
             return entity;
@@ -35,7 +35,8 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
             Enums.UserSortBy[] sortBy = null,
             bool[] isDesc = null,
             IOffsetPagingQuery paging = null,
-            bool count = true)
+            bool count = true,
+            CancellationToken cancellationToken = default)
         {
             IQueryable<UserPartialEntity> query = DbSet;
 
@@ -67,7 +68,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
 
             if (count)
             {
-                total = await query.CountAsync();
+                total = await query.CountAsync(cancellationToken);
             }
 
             query = query.SortBy(sortBy, isDesc);
@@ -79,10 +80,10 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
             return new QueryResponseModel<TResult>(total, result);
         }
 
-        public override Task<IQueryable<TResult>> QueryById<TResult>(params object[] keys)
-            => QueryById<UserPartialEntity, TResult, int>(keys);
+        public override Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default)
+            => QueryById<UserPartialEntity, TResult, int>(key, cancellationToken);
 
-        protected override Task LoadAggregate(UserPartialEntity entity)
+        protected override Task LoadAggregate(UserPartialEntity entity, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
         }

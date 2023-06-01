@@ -22,7 +22,8 @@ namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory
             Enums.PostCategorySortBy[] sortBy = null,
             bool[] isDesc = null,
             IOffsetPagingQuery paging = null,
-            bool count = true)
+            bool count = true,
+            CancellationToken cancellationToken = default)
         {
             IQueryable<PostCategoryEntity> query = DbSet;
 
@@ -37,7 +38,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory
 
             if (count)
             {
-                total = await query.CountAsync();
+                total = await query.CountAsync(cancellationToken);
             }
 
             query = query.SortBy(sortBy, isDesc,
@@ -54,10 +55,10 @@ namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory
             return new QueryResponseModel<TResult>(total, result);
         }
 
-        public override Task<IQueryable<TResult>> QueryById<TResult>(params object[] keys)
-            => QueryById<PostCategoryEntity, TResult, int>(keys);
+        public override Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default)
+            => QueryById<PostCategoryEntity, TResult, int>(key, cancellationToken);
 
-        protected override Task LoadAggregate(PostCategoryEntity entity)
+        protected override Task LoadAggregate(PostCategoryEntity entity, CancellationToken cancellationToken = default)
         {
             return Task.CompletedTask;
         }

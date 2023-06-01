@@ -15,7 +15,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Handlers
 
         public async Task Handle(ApplicationStartingEvent @event, CancellationToken cancellationToken)
         {
-            await _postCategoryViewManager.Initialize();
+            await _postCategoryViewManager.Initialize(cancellationToken);
         }
     }
 }

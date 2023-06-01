@@ -8,7 +8,7 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Extensions
     static class MediatorExtension
     {
         public static async Task DispatchEntityEventsAsync(this IMediator mediator,
-            DbContext ctx, bool isPost)
+            DbContext ctx, bool isPost, CancellationToken cancellationToken = default)
         {
             EntityEntry<DomainEntity>[] entities;
 
@@ -21,11 +21,15 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Extensions
 
                 foreach (EntityEntry<DomainEntity> entry in entities)
                 {
+                    cancellationToken.ThrowIfCancellationRequested();
+
                     IEnumerable<INotification> events = isPost ? entry.Entity.TakePostvents() : entry.Entity.TakePreEvents();
 
                     foreach (INotification @event in events)
                     {
-                        await mediator.Publish(@event);
+                        cancellationToken.ThrowIfCancellationRequested();
+
+                        await mediator.Publish(@event, cancellationToken);
                     }
                 }
 

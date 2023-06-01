@@ -15,17 +15,16 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
         {
         }
 
-        public async Task<int> CountByCategory(int id)
+        public async Task<int> CountByCategory(int id, CancellationToken cancellationToken = default)
         {
-            int count = await DbSet.Where(e => e.CategoryId == id).CountAsync();
+            int count = await DbSet.Where(e => e.CategoryId == id).CountAsync(cancellationToken);
 
             return count;
         }
 
-        // [TODO] add cancellation tokens
         public override async Task<PostEntity> FindById(params object[] keys)
         {
-            int id = GetIdFromKeys<int>(keys);
+            int id = GetIdFromObject<int>(keys);
 
             PostEntity entity = await DbSet.ById(id)
                 .Select(PostEntity.SelectBasicInfoExpression)
@@ -41,14 +40,14 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
             return entity;
         }
 
-        public async Task<TResult> GetLatestPostOfCategory<TResult>(int id)
+        public async Task<TResult> GetLatestPostOfCategory<TResult>(int id, CancellationToken cancellationToken = default)
         {
             IOrderedQueryable<PostEntity> latestPostQuery = DbSet.Where(e => e.CategoryId == id)
                 .OrderByDescending(e => e.CreatedTime);
 
             TResult result = await mapper
                 .CustomProjectTo<TResult>(latestPostQuery)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
 
             return result;
         }
@@ -60,7 +59,8 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
             Enums.PostSortBy[] sortBy = null,
             bool[] isDesc = null,
             IOffsetPagingQuery paging = null,
-            bool count = true)
+            bool count = true,
+            CancellationToken cancellationToken = default)
         {
             IQueryable<PostEntity> query = DbSet;
 
@@ -82,7 +82,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
             {
                 total = await query
                     .JoinRequiredRelationships()
-                    .CountAsync();
+                    .CountAsync(cancellationToken);
             }
 
             query = query.SortBy(sortBy, isDesc);
@@ -94,12 +94,12 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
             return new QueryResponseModel<TResult>(total, result);
         }
 
-        public override Task<IQueryable<TResult>> QueryById<TResult>(params object[] keys)
-            => QueryById<PostEntity, TResult, int>(keys);
+        public override Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default)
+            => QueryById<PostEntity, TResult, int>(key, cancellationToken);
 
-        protected override async Task LoadAggregate(PostEntity entity)
+        protected override async Task LoadAggregate(PostEntity entity, CancellationToken cancellationToken = default)
         {
-            await dbContext.Entry(entity).Collection(e => e.Tags).LoadAsync();
+            await dbContext.Entry(entity).Collection(e => e.Tags).LoadAsync(cancellationToken);
         }
     }
 }

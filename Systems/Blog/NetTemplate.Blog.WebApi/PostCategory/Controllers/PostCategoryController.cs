@@ -30,44 +30,44 @@ namespace NetTemplate.Blog.WebApi.PostCategory.Controllers
 
         [HttpGet(Routes.GetPostCategories)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(ListResponseModel<PostCategoryListItemModel>))]
-        public async Task<IActionResult> GetPostCategories([FromQuery] PostCategoryListRequestModel model)
+        public async Task<IActionResult> GetPostCategories([FromQuery] PostCategoryListRequestModel model, CancellationToken cancellationToken = default)
         {
             GetPostCategoriesQuery query = new GetPostCategoriesQuery(model);
 
-            ListResponseModel<PostCategoryListItemModel> response = await _mediator.Send(query);
+            ListResponseModel<PostCategoryListItemModel> response = await _mediator.Send(query, cancellationToken);
 
             return Ok(response);
         }
 
         [HttpGet(Routes.GetPostCategoryDetails)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PostCategoryDetailsModel))]
-        public async Task<IActionResult> GetPostCategoryDetails([FromRoute] int id)
+        public async Task<IActionResult> GetPostCategoryDetails([FromRoute] int id, CancellationToken cancellationToken = default)
         {
             GetPostCategoryDetailsQuery query = new GetPostCategoryDetailsQuery(id);
 
-            PostCategoryDetailsModel response = await _mediator.Send(query);
+            PostCategoryDetailsModel response = await _mediator.Send(query, cancellationToken);
 
             return Ok(response);
         }
 
         [HttpGet(Routes.GetPostCategoryDetailsExtra)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(PostCategoryDetailsExtraModel))]
-        public async Task<IActionResult> GetPostCategoryDetailsExtra([FromRoute] int id)
+        public async Task<IActionResult> GetPostCategoryDetailsExtra([FromRoute] int id, CancellationToken cancellationToken = default)
         {
             GetPostCategoryDetailsExtraQuery query = new GetPostCategoryDetailsExtraQuery(id);
 
-            PostCategoryDetailsExtraModel response = await _mediator.Send(query);
+            PostCategoryDetailsExtraModel response = await _mediator.Send(query, cancellationToken);
 
             return Ok(response);
         }
 
         [HttpPost(Routes.CreatePostCategory)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> CreatePostCategory([FromBody] CreatePostCategoryModel model)
+        public async Task<IActionResult> CreatePostCategory([FromBody] CreatePostCategoryModel model, CancellationToken cancellationToken = default)
         {
             CreatePostCategoryCommand command = new CreatePostCategoryCommand(model);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }
@@ -75,22 +75,22 @@ namespace NetTemplate.Blog.WebApi.PostCategory.Controllers
         [HttpPut(Routes.UpdatePostCategory)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdatePostCategory(
-            [FromRoute] int id, [FromBody] UpdatePostCategoryModel model)
+            [FromRoute] int id, [FromBody] UpdatePostCategoryModel model, CancellationToken cancellationToken = default)
         {
             UpdatePostCategoryCommand command = new UpdatePostCategoryCommand(id, model);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }
 
         [HttpDelete(Routes.DeletePostCategory)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> DeletePostCategory([FromRoute] int id)
+        public async Task<IActionResult> DeletePostCategory([FromRoute] int id, CancellationToken cancellationToken = default)
         {
             DeletePostCategoryCommand command = new DeletePostCategoryCommand(id);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }

@@ -35,7 +35,8 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPosts
                 sortBy: model.SortBy,
                 isDesc: model.IsDesc,
                 paging: model,
-                count: true);
+                count: true,
+                cancellationToken: cancellationToken);
 
             PostListItemModel[] list = response.Query.ToArray();
 

@@ -26,11 +26,11 @@ namespace NetTemplate.Blog.WebApi.Comment.Controllers
 
         [HttpGet(Routes.GetCommentDetails)]
         [SwaggerResponse((int)HttpStatusCode.OK, Type = typeof(CommentDetailsModel))]
-        public async Task<IActionResult> GetCommentDetails([FromRoute] int id)
+        public async Task<IActionResult> GetCommentDetails([FromRoute] int id, CancellationToken cancellationToken = default)
         {
             GetCommentDetailsQuery query = new GetCommentDetailsQuery(id);
 
-            CommentDetailsModel response = await _mediator.Send(query);
+            CommentDetailsModel response = await _mediator.Send(query, cancellationToken);
 
             return Ok(response);
         }
@@ -38,22 +38,22 @@ namespace NetTemplate.Blog.WebApi.Comment.Controllers
         [HttpPut(Routes.UpdateComment)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdateComment(
-            [FromRoute] int id, [FromBody] UpdateCommentModel model)
+            [FromRoute] int id, [FromBody] UpdateCommentModel model, CancellationToken cancellationToken = default)
         {
             UpdateCommentCommand command = new UpdateCommentCommand(id, model);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }
 
         [HttpDelete(Routes.DeleteComment)]
         [SwaggerResponse((int)HttpStatusCode.NoContent)]
-        public async Task<IActionResult> DeleteComment([FromRoute] int id)
+        public async Task<IActionResult> DeleteComment([FromRoute] int id, CancellationToken cancellationToken = default)
         {
             DeleteCommentCommand command = new DeleteCommentCommand(id);
 
-            await _mediator.Send(command);
+            await _mediator.Send(command, cancellationToken);
 
             return NoContent();
         }

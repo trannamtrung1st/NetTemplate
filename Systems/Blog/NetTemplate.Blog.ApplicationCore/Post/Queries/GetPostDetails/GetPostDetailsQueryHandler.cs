@@ -35,7 +35,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPostDetails
         {
             _validator.ValidateAndThrow(request);
 
-            PostView view = await _postViewManager.GetPostView(request.Id);
+            PostView view = await _postViewManager.GetPostView(request.Id, cancellationToken);
 
             if (view == null) throw new NotFoundException();
 
@@ -49,7 +49,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Queries.GetPostDetails
         {
             _validator.ValidateAndThrow(request);
 
-            IQueryable<PostDetailsModel> query = await _postRepository.QueryById<PostDetailsModel>(request.Id);
+            IQueryable<PostDetailsModel> query = await _postRepository.QueryById<PostDetailsModel>(request.Id, cancellationToken);
 
             PostDetailsModel model = query.FirstOrDefault();
 

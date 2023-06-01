@@ -22,7 +22,9 @@ using CommonConfigurationSections = NetTemplate.Blog.ApplicationCore.Common.Cons
 
 // ===== APPLICATION START =====
 
+using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 List<IDisposable> resources = new List<IDisposable>();
+CancellationToken cancellationToken = cancellationTokenSource.Token;
 
 IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: false)
@@ -47,7 +49,7 @@ IContainer container = ConfigureContainer(containerBuilder, services, defaultCon
 
 IServiceProvider serviceProvider = new AutofacServiceProvider(container);
 
-await InsertLargeData.Run(serviceProvider);
+await InsertLargeData.Run(serviceProvider, cancellationToken);
 
 
 // ===== METHODS =====

@@ -22,24 +22,24 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.Implementations
             _entityVersionManager = entityVersionManager;
         }
 
-        public async Task<PostView> GetEntryOrAdd(int id, string currentVersion, Func<Task<PostView>> createFunc, TimeSpan? expiration = null)
+        public async Task<PostView> GetEntryOrAdd(int id, string currentVersion, Func<CancellationToken, Task<PostView>> createFunc, TimeSpan? expiration = null, CancellationToken cancellationToken = default)
         {
             PostView entry = null;
             bool needUpdate = false;
-            string storedVersion = await _applicationCache.Get<string>(GetCacheVersionKey(id));
+            string storedVersion = await _applicationCache.Get<string>(GetCacheVersionKey(id), cancellationToken);
             string postVersion = null;
             string categoryVersion = null;
 
             if (storedVersion == currentVersion)
             {
-                entry = await _applicationCache.Get<PostView>(GetCacheKey(id));
+                entry = await _applicationCache.Get<PostView>(GetCacheKey(id), cancellationToken);
             }
 
             if (entry != null)
             {
                 if (!needUpdate)
                 {
-                    postVersion = await _entityVersionManager.GetVersion(nameof(PostEntity), entry.Id.ToString());
+                    postVersion = await _entityVersionManager.GetVersion(nameof(PostEntity), entry.Id.ToString(), cancellationToken);
 
                     if (entry.Version != postVersion)
                     {
@@ -49,7 +49,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.Implementations
 
                 if (!needUpdate)
                 {
-                    categoryVersion = await _entityVersionManager.GetVersion(nameof(PostCategoryEntity), entry.CategoryId.ToString());
+                    categoryVersion = await _entityVersionManager.GetVersion(nameof(PostCategoryEntity), entry.CategoryId.ToString(), cancellationToken);
 
                     if (entry.Category?.Version != categoryVersion)
                     {
@@ -64,48 +64,49 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.Implementations
 
             if (needUpdate)
             {
-                entry = await createFunc();
+                entry = await createFunc(cancellationToken);
 
                 if (entry != null)
                 {
-                    await UpdateEntry(entry, currentVersion, postVersion, categoryVersion, expiration);
+                    await UpdateEntry(entry, currentVersion, postVersion, categoryVersion, expiration, cancellationToken);
                 }
                 else
                 {
-                    await RemoveEntry(id);
+                    await RemoveEntry(id, cancellationToken);
                 }
             }
 
             return entry;
         }
 
-        public async Task<bool> RemoveEntry(int id)
+        public async Task<bool> RemoveEntry(int id, CancellationToken cancellationToken = default)
         {
-            await _applicationCache.Remove(GetCacheKey(id));
+            await _applicationCache.Remove(GetCacheKey(id), cancellationToken);
             return true;
         }
 
-        public async Task<bool> UpdateEntry(PostView entry, string currentVersion, TimeSpan? expiration = null)
+        public async Task<bool> UpdateEntry(PostView entry, string currentVersion, TimeSpan? expiration = null, CancellationToken cancellationToken = default)
         {
-            return await UpdateEntry(entry, currentVersion, postVersion: null, categoryVersion: null, expiration);
+            return await UpdateEntry(entry, currentVersion, postVersion: null, categoryVersion: null, expiration, cancellationToken: cancellationToken);
         }
 
-        private async Task<string> GetVersionIfNull(string entityName, string key, string currentVersion = null)
-            => currentVersion ?? await _entityVersionManager.GetVersion(entityName, key);
+        private async Task<string> GetVersionIfNull(string entityName, string key, string currentVersion = null, CancellationToken cancellationToken = default)
+            => currentVersion ?? await _entityVersionManager.GetVersion(entityName, key, cancellationToken);
 
         private async Task<bool> UpdateEntry(PostView entry, string currentVersion,
             string postVersion, string categoryVersion,
-            TimeSpan? expiration = null)
+            TimeSpan? expiration = null,
+            CancellationToken cancellationToken = default)
         {
-            entry.SetVersion(await GetVersionIfNull(nameof(PostEntity), entry.Id.ToString(), postVersion));
+            entry.SetVersion(await GetVersionIfNull(nameof(PostEntity), entry.Id.ToString(), postVersion, cancellationToken));
 
             if (entry.Category != null)
             {
-                entry.Category.SetVersion(await GetVersionIfNull(nameof(PostCategoryEntity), entry.CategoryId.ToString(), categoryVersion));
+                entry.Category.SetVersion(await GetVersionIfNull(nameof(PostCategoryEntity), entry.CategoryId.ToString(), categoryVersion, cancellationToken));
             }
 
-            await _applicationCache.Set(GetCacheVersionKey(entry.Id), currentVersion, expiration);
-            await _applicationCache.Set(GetCacheKey(entry.Id), entry, expiration);
+            await _applicationCache.Set(GetCacheVersionKey(entry.Id), currentVersion, expiration, cancellationToken);
+            await _applicationCache.Set(GetCacheKey(entry.Id), entry, expiration, cancellationToken);
 
             return true;
         }

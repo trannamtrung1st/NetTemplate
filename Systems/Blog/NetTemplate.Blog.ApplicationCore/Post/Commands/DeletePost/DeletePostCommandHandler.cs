@@ -29,17 +29,17 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.DeletePost
         {
             _validator.ValidateAndThrow(request);
 
-            PostEntity entity = (await _postRepository.QueryById<PostEntity>(request.Id))
+            PostEntity entity = (await _postRepository.QueryById<PostEntity>(request.Id, cancellationToken))
                 .Select(e => new PostEntity(e.Id))
                 .FirstOrDefault();
 
             if (entity == null) throw new NotFoundException();
 
-            await _postRepository.Track(entity);
+            await _postRepository.Track(entity, cancellationToken);
 
             entity.SoftDelete();
 
-            await _unitOfWork.CommitChanges();
+            await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
     }
 }
