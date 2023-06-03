@@ -3,7 +3,7 @@ using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.Post
 {
-    public interface IPostRepository : IRepository<PostEntity>
+    public interface IPostRepository : IRepository<PostEntity, int>
     {
         Task<QueryResponseModel<TResult>> Query<TResult>(
             string terms = null,
@@ -15,6 +15,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post
             bool count = true,
             CancellationToken cancellationToken = default);
 
+        Task<bool> TitleExists(string title, CancellationToken cancellationToken = default);
         Task<int> CountByCategory(int id, CancellationToken cancellationToken = default);
         Task<TResult> GetLatestPostOfCategory<TResult>(int id, CancellationToken cancellationToken = default);
     }

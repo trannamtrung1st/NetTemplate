@@ -175,9 +175,21 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Post_Title",
+                table: "Post",
+                column: "Title",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PostCategory_CreatorId",
                 table: "PostCategory",
                 column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PostCategory_Name",
+                table: "PostCategory",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PostTag_CreatorId",

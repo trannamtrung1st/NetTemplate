@@ -13,6 +13,9 @@ namespace NetTemplate.Blog.Infrastructure.Persistence.EntityConfigs.Post
                 .HasMaxLength(CommonConstraints.MaxStringLength)
                 .IsRequired();
 
+            builder.HasIndex(e => e.Title)
+                .IsUnique();
+
             builder.Property(e => e.Content)
                 .IsRequired();
 

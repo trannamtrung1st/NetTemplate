@@ -10,10 +10,17 @@ using NetTemplate.Shared.Infrastructure.Persistence.Repositories;
 namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory
 {
     [ScopedService]
-    public class PostCategoryRepository : EFCoreRepository<PostCategoryEntity, MainDbContext>, IPostCategoryRepository
+    public class PostCategoryRepository : EFCoreRepository<PostCategoryEntity, int, MainDbContext>, IPostCategoryRepository
     {
         public PostCategoryRepository(MainDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
+        }
+
+        public async Task<bool> NameExists(string name, CancellationToken cancellationToken = default)
+        {
+            bool exists = await DbSet.Where(e => e.Name == name).AnyAsync(cancellationToken);
+
+            return exists;
         }
 
         public async Task<QueryResponseModel<TResult>> Query<TResult>(
@@ -54,9 +61,6 @@ namespace NetTemplate.Blog.Infrastructure.Domains.PostCategory
 
             return new QueryResponseModel<TResult>(total, result);
         }
-
-        public override Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default)
-            => QueryById<PostCategoryEntity, TResult, int>(key, cancellationToken);
 
         protected override Task LoadAggregate(PostCategoryEntity entity, CancellationToken cancellationToken = default)
         {

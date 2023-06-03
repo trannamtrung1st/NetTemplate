@@ -9,7 +9,7 @@ using NetTemplate.Shared.Infrastructure.Persistence.Repositories;
 namespace NetTemplate.Blog.Infrastructure.Domains.Post
 {
     [ScopedService]
-    public class PostRepository : EFCoreRepository<PostEntity, MainDbContext>, IPostRepository
+    public class PostRepository : EFCoreRepository<PostEntity, int, MainDbContext>, IPostRepository
     {
         public PostRepository(MainDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
@@ -22,19 +22,17 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
             return count;
         }
 
-        public override async Task<PostEntity> FindById(params object[] keys)
+        public override async Task<PostEntity> FindById(int key, CancellationToken cancellationToken = default)
         {
-            int id = GetIdFromObject<int>(keys);
-
-            PostEntity entity = await DbSet.ById(id)
+            PostEntity entity = await DbSet.ById(key)
                 .Select(PostEntity.SelectBasicInfoExpression)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (entity != null)
             {
-                await Track(entity);
+                await Track(entity, cancellationToken);
 
-                await LoadAggregate(entity);
+                await LoadAggregate(entity, cancellationToken);
             }
 
             return entity;
@@ -94,8 +92,12 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post
             return new QueryResponseModel<TResult>(total, result);
         }
 
-        public override Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default)
-            => QueryById<PostEntity, TResult, int>(key, cancellationToken);
+        public async Task<bool> TitleExists(string title, CancellationToken cancellationToken = default)
+        {
+            bool exists = await DbSet.Where(e => e.Title == title).AnyAsync(cancellationToken);
+
+            return exists;
+        }
 
         protected override async Task LoadAggregate(PostEntity entity, CancellationToken cancellationToken = default)
         {

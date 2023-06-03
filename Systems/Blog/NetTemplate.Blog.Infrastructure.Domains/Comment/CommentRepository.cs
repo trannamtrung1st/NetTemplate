@@ -9,7 +9,7 @@ using NetTemplate.Shared.Infrastructure.Persistence.Repositories;
 namespace NetTemplate.Blog.Infrastructure.Domains.Comment
 {
     [ScopedService]
-    public class CommentRepository : EFCoreRepository<CommentEntity, MainDbContext>, ICommentRepository
+    public class CommentRepository : EFCoreRepository<CommentEntity, int, MainDbContext>, ICommentRepository
     {
         public CommentRepository(MainDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
@@ -48,9 +48,6 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Comment
 
             return new QueryResponseModel<TResult>(total, result);
         }
-
-        public override Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default)
-            => QueryById<CommentEntity, TResult, int>(key, cancellationToken);
 
         protected override Task LoadAggregate(CommentEntity entity, CancellationToken cancellationToken = default)
         {

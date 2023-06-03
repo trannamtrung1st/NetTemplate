@@ -3,7 +3,7 @@ using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.Comment
 {
-    public interface ICommentRepository : IRepository<CommentEntity>
+    public interface ICommentRepository : IRepository<CommentEntity, int>
     {
         Task<QueryResponseModel<TResult>> Query<TResult>(int onPostId,
             IEnumerable<int> ids = null,

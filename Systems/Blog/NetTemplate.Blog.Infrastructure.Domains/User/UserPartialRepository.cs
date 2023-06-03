@@ -9,7 +9,7 @@ using NetTemplate.Shared.Infrastructure.Persistence.Repositories;
 namespace NetTemplate.Blog.Infrastructure.Domains.User
 {
     [ScopedService]
-    public class UserPartialRepository : EFCoreRepository<UserPartialEntity, MainDbContext>, IUserPartialRepository
+    public class UserPartialRepository : EFCoreRepository<UserPartialEntity, int, MainDbContext>, IUserPartialRepository
     {
         public UserPartialRepository(MainDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
@@ -79,9 +79,6 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
 
             return new QueryResponseModel<TResult>(total, result);
         }
-
-        public override Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default)
-            => QueryById<UserPartialEntity, TResult, int>(key, cancellationToken);
 
         protected override Task LoadAggregate(UserPartialEntity entity, CancellationToken cancellationToken = default)
         {

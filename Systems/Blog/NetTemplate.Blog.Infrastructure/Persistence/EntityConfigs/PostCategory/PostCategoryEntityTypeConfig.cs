@@ -13,6 +13,9 @@ namespace NetTemplate.Blog.Infrastructure.Persistence.EntityConfigs.PostCategory
                 .HasMaxLength(CommonConstraints.MaxStringLength)
                 .IsRequired();
 
+            builder.HasIndex(e => e.Name)
+                .IsUnique();
+
             builder.HasOne(e => e.Creator)
                 .WithMany()
                 .HasForeignKey(e => e.CreatorId)

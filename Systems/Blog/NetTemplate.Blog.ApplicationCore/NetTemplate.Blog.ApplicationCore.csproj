@@ -20,6 +20,8 @@
 		<Folder Include="Post\Handlers\" />
 		<Folder Include="User\Exceptions\" />
 		<Folder Include="User\Handlers\" />
+		<Folder Include="User\Implementations\" />
+		<Folder Include="User\Interfaces\" />
 	</ItemGroup>
 
 	<ItemGroup>

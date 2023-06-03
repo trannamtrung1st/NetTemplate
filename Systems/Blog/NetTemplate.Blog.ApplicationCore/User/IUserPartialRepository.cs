@@ -3,7 +3,7 @@ using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.User
 {
-    public interface IUserPartialRepository : IRepository<UserPartialEntity>
+    public interface IUserPartialRepository : IRepository<UserPartialEntity, int>
     {
         Task<QueryResponseModel<TResult>> Query<TResult>(
             string terms = null,

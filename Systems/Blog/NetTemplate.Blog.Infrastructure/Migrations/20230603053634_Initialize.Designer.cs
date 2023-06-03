@@ -12,7 +12,7 @@ using NetTemplate.Blog.Infrastructure.Persistence;
 namespace NetTemplate.Blog.Infrastructure.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20230529132833_Initialize")]
+    [Migration("20230603053634_Initialize")]
     partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -117,6 +117,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
 
                     b.HasIndex("CreatorId");
 
+                    b.HasIndex("Title")
+                        .IsUnique();
+
                     b.ToTable("Post");
                 });
 
@@ -194,6 +197,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("PostCategory");
                 });

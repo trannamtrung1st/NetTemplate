@@ -19,6 +19,7 @@
             public const string MissingRequiredFields = "Missing required fields";
             public const string ObjectResult = "Object result";
             public const string NotFound = "Not found";
+            public const string EntityNotFound = "{EntityName} not found";
             public const string BadRequest = "Bad request";
             public const string AccessDenied = "Access is denied";
             public const string UnknownError = "Unknown error";

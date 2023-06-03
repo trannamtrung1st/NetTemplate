@@ -85,7 +85,15 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         public async Task Initialize(CancellationToken cancellationToken = default)
         {
-            await Initialize(Constants.CacheKeys.PostCategoryView, _viewsOptions.Value.PostCategoryViewVersion, RebuildPostCategoryViews, cancellationToken);
+            await Initialize(Constants.CacheKeys.PostCategoryView,
+                _viewsOptions.Value.PostCategoryViewVersion,
+                RebuildPostCategoryViews,
+                (_) =>
+                {
+                    _isPostCategoryAvailable = true;
+                    return Task.CompletedTask;
+                },
+                cancellationToken);
         }
 
         public async Task RebuildAllViews(CancellationToken cancellationToken = default)

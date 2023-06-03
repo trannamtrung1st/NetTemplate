@@ -3,7 +3,7 @@ using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory
 {
-    public interface IPostCategoryRepository : IRepository<PostCategoryEntity>
+    public interface IPostCategoryRepository : IRepository<PostCategoryEntity, int>
     {
         Task<QueryResponseModel<TResult>> Query<TResult>(
             string terms = null,
@@ -13,5 +13,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory
             IOffsetPagingQuery paging = null,
             bool count = true,
             CancellationToken cancellationToken = default);
+
+        Task<bool> NameExists(string name, CancellationToken cancellationToken = default);
     }
 }

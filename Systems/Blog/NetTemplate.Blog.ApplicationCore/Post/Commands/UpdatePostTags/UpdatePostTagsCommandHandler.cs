@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using NetTemplate.Blog.ApplicationCore.Post.Models;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
@@ -29,7 +30,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdatePostTags
         {
             _validator.ValidateAndThrow(request);
 
-            Models.UpdatePostTagsModel model = request.Model;
+            UpdatePostTagsModel model = request.Model;
 
             PostEntity entity = await _postRepository.FindById(request.Id);
 

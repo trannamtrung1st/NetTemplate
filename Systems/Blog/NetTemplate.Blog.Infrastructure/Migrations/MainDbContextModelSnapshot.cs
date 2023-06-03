@@ -115,6 +115,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
 
                     b.HasIndex("CreatorId");
 
+                    b.HasIndex("Title")
+                        .IsUnique();
+
                     b.ToTable("Post");
                 });
 
@@ -192,6 +195,9 @@ namespace NetTemplate.Blog.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
 
                     b.ToTable("PostCategory");
                 });

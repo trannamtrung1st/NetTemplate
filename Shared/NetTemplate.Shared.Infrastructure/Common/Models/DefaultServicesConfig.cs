@@ -1,4 +1,5 @@
-﻿using NetTemplate.Shared.ClientSDK.Common.Models;
+﻿using NetTemplate.Redis.Models;
+using NetTemplate.Shared.ClientSDK.Common.Models;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.Models;
@@ -28,5 +29,8 @@ namespace NetTemplate.Shared.Infrastructure.Common.Models
 
         // Client SDK
         public ClientConfig ClientConfig { get; set; }
+
+        // Redis
+        public RedisConfig RedisConfig { get; set; }
     }
 }

@@ -8,6 +8,8 @@ using NetTemplate.Blog.Infrastructure.Common.Extensions;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Blog.WebApi.Common.Models;
 using NetTemplate.Common.Web.Middlewares;
+using NetTemplate.Redis.Extensions;
+using NetTemplate.Redis.Models;
 using NetTemplate.Shared.ApplicationCore.Common.Events;
 using NetTemplate.Shared.ClientSDK.Common.Models;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
@@ -83,20 +85,7 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
     IConfiguration configuration,
     WebApiConfig webConfig)
 {
-    string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
-
-    HangfireConfig hangfireConfig = configuration.GetHangfireConfigDefaults();
-    string hangfireConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Hangfire);
-    string masterConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Master);
-
-    IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
-    JwtConfig jwtConfig = configuration.GetJwtConfigDefaults();
-    SimulatedAuthConfig simulatedAuthConfig = configuration.GetSimulatedAuthConfigDefaults();
-    ClientConfig clientConfiguration = configuration.GetClientConfigDefaults();
-    ClientsConfig clientsConfig = configuration.GetClientsConfigDefaults();
-
-    PubSubConfig pubSubConfig = configuration.GetPubSubConfigDefaults();
-
+    // Common
     Type[] representativeTypes = new[]
     {
         typeof(NetTemplate.Blog.WebApi.AssemblyType),
@@ -105,19 +94,44 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
         typeof(NetTemplate.Blog.ApplicationCore.AssemblyType)
     };
     Assembly[] assemblies = representativeTypes.Select(t => t.Assembly).ToArray();
+    Action<MvcOptions> controllerConfigureAction = (opt) =>
+    {
+        opt.CacheProfiles.Add(CacheProfiles.Sample, new CacheProfile
+        {
+            VaryByQueryKeys = new[] { "*" },
+            Duration = webConfig.ResponseCacheTtl
+        });
+    };
+
+    // DbContext
+    string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
+
+    // Hangfire
+    HangfireConfig hangfireConfig = configuration.GetHangfireConfigDefaults();
+    string hangfireConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Hangfire);
+    string masterConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Master);
+
+    // Identity
+    IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
+    JwtConfig jwtConfig = configuration.GetJwtConfigDefaults();
+    SimulatedAuthConfig simulatedAuthConfig = configuration.GetSimulatedAuthConfigDefaults();
+    ClientsConfig clientsConfig = configuration.GetClientsConfigDefaults();
+
+    // Client SDK
+    ClientConfig clientConfiguration = configuration.GetClientConfigDefaults();
+
+    // PubSubConfig
+    PubSubConfig pubSubConfig = configuration.GetPubSubConfigDefaults();
+
+    // Redis
+    RedisConfig redisConfig = configuration.GetRedisConfigDefaults();
+
 
     return new ApiDefaultServicesConfig
     {
         ClientConfig = clientConfiguration,
         ClientsConfig = clientsConfig,
-        ControllerConfigureAction = (opt) =>
-        {
-            opt.CacheProfiles.Add(CacheProfiles.Sample, new CacheProfile
-            {
-                VaryByQueryKeys = new[] { "*" },
-                Duration = webConfig.ResponseCacheTtl
-            });
-        },
+        ControllerConfigureAction = controllerConfigureAction,
         DbContextConnectionString = dbContextConnectionString,
         DbContextDebugEnabled = webConfig.DbContextDebugEnabled,
         HangfireConfig = hangfireConfig,
@@ -127,7 +141,8 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
         JwtConfig = jwtConfig,
         SimulatedAuthConfig = simulatedAuthConfig,
         PubSubConfig = pubSubConfig,
-        ScanningAssemblies = assemblies
+        ScanningAssemblies = assemblies,
+        RedisConfig = redisConfig
     };
 };
 

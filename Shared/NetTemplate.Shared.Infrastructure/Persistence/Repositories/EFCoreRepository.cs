@@ -33,7 +33,7 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
 
         public Task<IQueryable<TResult>> QueryAll<TResult>(CancellationToken cancellationToken = default)
         {
-            DbSet<T> query = dbContext.Set<T>();
+            DbSet<T> query = DbSet;
 
             IQueryable<TResult> result = mapper.CustomProjectTo<TResult>(query);
 
@@ -41,15 +41,6 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
         }
 
         protected abstract Task LoadAggregate(T entity, CancellationToken cancellationToken = default);
-
-        public virtual async Task<T> FindById(params object[] keys)
-        {
-            T entity = await dbContext.FindAsync<T>(keys);
-
-            await LoadAggregate(entity);
-
-            return entity;
-        }
 
         public virtual async Task<T> Create(T entity, CancellationToken cancellationToken = default)
         {
@@ -88,39 +79,49 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Repositories
 
             return Task.FromResult(entity);
         }
+    }
 
-        public abstract Task<IQueryable<TResult>> QueryById<TResult>(object key, CancellationToken cancellationToken = default);
-
-        protected Task<IQueryable<TResult>> QueryById<TEntity, TResult, TId>(object key, CancellationToken cancellationToken = default)
-            where TEntity : class, IHasId<TId>
+    public abstract class EFCoreRepository<T, TId, TDbContext>
+        : EFCoreRepository<T, TDbContext>, IRepository<T, TId>
+        where T : class, IAggregateRoot, IHasId<TId>
+        where TDbContext : DbContext
+    {
+        protected EFCoreRepository(TDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
-            TId id = GetIdFromObject<TId>(key);
+        }
 
-            IQueryable<TEntity> query = dbContext.Set<TEntity>().ById(id);
+        public virtual async Task<bool> Exists(TId key, CancellationToken cancellationToken = default)
+        {
+            bool exists = await DbSet.Where(e => Equals(e.Id, key)).AnyAsync(cancellationToken);
 
-            IQueryable<TResult> result = mapper.CustomProjectTo<TResult>(query);
+            return exists;
+        }
+
+        public virtual async Task<T> FindById(TId key, CancellationToken cancellationToken = default)
+        {
+            T entity = await DbSet.ById(key).FirstOrDefaultAsync(cancellationToken);
+
+            await LoadAggregate(entity, cancellationToken);
+
+            return entity;
+        }
+
+        public virtual Task<IQueryable<TResult>> QueryById<TResult>(TId key, CancellationToken cancellationToken = default)
+        {
+            IQueryable<T> query = DbSet.ById(key);
+
+            IQueryable<TResult> result = mapper.ProjectTo<TResult>(query);
 
             return Task.FromResult(result);
         }
 
-        public static TId GetIdFromKeys<TId>(object[] keys)
+        public virtual Task<IQueryable<TResult>> QueryByIds<TResult>(IEnumerable<TId> keys, CancellationToken cancellationToken = default)
         {
-            if (keys?.Length == 1 && keys[0] is TId id)
-            {
-                return id;
-            }
+            IQueryable<T> query = DbSet.ByIds(keys);
 
-            throw new ArgumentException(null, nameof(keys));
-        }
+            IQueryable<TResult> result = mapper.ProjectTo<TResult>(query);
 
-        public static TId GetIdFromObject<TId>(object key)
-        {
-            if (key is TId id)
-            {
-                return id;
-            }
-
-            throw new ArgumentException(null, nameof(key));
+            return Task.FromResult(result);
         }
     }
 }
