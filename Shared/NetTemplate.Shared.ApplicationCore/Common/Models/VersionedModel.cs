@@ -2,16 +2,11 @@
 {
     public interface IVersionedModel
     {
-        string Version { get; }
+        string _version_ { get; }
     }
 
-    public abstract class VersionedModel
+    public abstract class VersionedModel : IVersionedModel
     {
-        public string @Version { get; protected set; }
-
-        public virtual void SetVersion(string version)
-        {
-            @Version = version;
-        }
+        public string _version_ { get; set; }
     }
 }

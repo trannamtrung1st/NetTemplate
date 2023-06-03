@@ -40,7 +40,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdatePost
 
             if (entity == null) throw new NotFoundException();
 
-            await Validate(model, cancellationToken);
+            await Validate(entity, model, cancellationToken);
 
             entity.UpdatePost(model.Title, model.Content, model.CategoryId);
 
@@ -49,11 +49,11 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.UpdatePost
             await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
 
-        private async Task Validate(UpdatePostModel model, CancellationToken cancellationToken)
+        private async Task Validate(PostEntity entity, UpdatePostModel model, CancellationToken cancellationToken)
         {
             await _postValidator.ValidateExistences(model.CategoryId, cancellationToken);
 
-            await _postValidator.ValidatePostTitle(model.Title, cancellationToken);
+            await _postValidator.ValidatePostTitle(currentTitle: entity.Title, newTitle: model.Title, cancellationToken);
         }
     }
 }

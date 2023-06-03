@@ -40,16 +40,16 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Commands.UpdatePostCateg
 
             if (entity == null) throw new NotFoundException();
 
-            await Validate(model, cancellationToken);
+            await Validate(entity, model, cancellationToken);
 
             entity.Update(model.Name);
 
             await _unitOfWork.CommitChanges(cancellationToken: cancellationToken);
         }
 
-        private async Task Validate(UpdatePostCategoryModel model, CancellationToken cancellationToken)
+        private async Task Validate(PostCategoryEntity entity, UpdatePostCategoryModel model, CancellationToken cancellationToken)
         {
-            await _postCategoryValidator.ValidatePostCategoryName(model.Name, cancellationToken);
+            await _postCategoryValidator.ValidatePostCategoryName(currentName: entity.Name, newName: model.Name, cancellationToken);
         }
     }
 }

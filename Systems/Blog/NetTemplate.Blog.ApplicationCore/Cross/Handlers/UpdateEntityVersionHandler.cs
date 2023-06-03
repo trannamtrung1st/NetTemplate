@@ -1,10 +1,10 @@
 ﻿using MediatR;
-using NetTemplate.Blog.ApplicationCore.Common.Interfaces;
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
 using NetTemplate.Shared.ApplicationCore.Common.Events;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.Cross.Handlers
 {

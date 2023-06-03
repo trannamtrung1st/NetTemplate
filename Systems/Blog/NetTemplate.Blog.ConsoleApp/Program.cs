@@ -7,6 +7,8 @@ using NetTemplate.Blog.ConsoleApp.UseCases;
 using NetTemplate.Blog.Infrastructure.Common.Extensions;
 using NetTemplate.Blog.Infrastructure.Common.Models;
 using NetTemplate.Blog.Infrastructure.Persistence;
+using NetTemplate.Redis.Extensions;
+using NetTemplate.Redis.Models;
 using NetTemplate.Shared.ClientSDK.Common.Models;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
 using NetTemplate.Shared.Infrastructure.Background.Models;
@@ -58,28 +60,37 @@ static DefaultServicesConfig GetDefaultServicesConfig(
     IConfiguration configuration,
     InfrastructureConfig infrasConfig)
 {
-    string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
-
-    HangfireConfig hangfireConfig = configuration.GetHangfireConfigDefaults();
-    string hangfireConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Hangfire);
-    string masterConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Master);
-
-    IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
-    ClientConfig clientConfiguration = configuration.GetClientConfigDefaults();
-
-    PubSubConfig pubSubConfig = configuration.GetPubSubConfigDefaults();
-
+    // Common
     Type[] representativeTypes = new[]
     {
         typeof(NetTemplate.Blog.Infrastructure.AssemblyType),
-        typeof(NetTemplate.Blog.Infrastructure.Domains.AssemblyType),
         typeof(NetTemplate.Blog.ApplicationCore.AssemblyType)
     };
     Assembly[] assemblies = representativeTypes.Select(t => t.Assembly).ToArray();
 
+    // DbContext
+    string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
+
+    // Hangfire
+    HangfireConfig hangfireConfig = configuration.GetHangfireConfigDefaults();
+    string hangfireConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Hangfire);
+    string masterConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Master);
+
+    // Identity
+    IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
+
+    // Client SDK
+    ClientConfig clientConfig = configuration.GetClientConfigDefaults();
+
+    // PubSubConfig
+    PubSubConfig pubSubConfig = configuration.GetPubSubConfigDefaults();
+
+    // Redis
+    RedisConfig redisConfig = configuration.GetRedisConfigDefaults();
+
     return new DefaultServicesConfig
     {
-        ClientConfig = clientConfiguration,
+        ClientConfig = clientConfig,
         DbContextConnectionString = dbContextConnectionString,
         DbContextDebugEnabled = infrasConfig.DbContextDebugEnabled,
         HangfireConfig = hangfireConfig,
@@ -87,7 +98,9 @@ static DefaultServicesConfig GetDefaultServicesConfig(
         HangfireMasterConnectionString = masterConnStr,
         IdentityConfig = identityConfig,
         PubSubConfig = pubSubConfig,
-        ScanningAssemblies = assemblies
+        ScanningAssemblies = assemblies,
+        UseRedis = infrasConfig.UseRedis,
+        RedisConfig = redisConfig
     };
 };
 

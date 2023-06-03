@@ -46,7 +46,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Commands.CreatePostCateg
 
         private async Task Validate(CreatePostCategoryModel model, CancellationToken cancellationToken)
         {
-            await _postCategoryValidator.ValidatePostCategoryName(model.Name, cancellationToken);
+            await _postCategoryValidator.ValidatePostCategoryName(currentName: null, newName: model.Name, cancellationToken);
         }
     }
 }

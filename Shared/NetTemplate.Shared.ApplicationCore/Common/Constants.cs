@@ -31,9 +31,10 @@
 
         public static class ViewPreservedKeys
         {
-            public const string Version = "@version";
+            public const string Version = "_version_";
+            public const string Entry = "_entry_";
 
-            public static readonly string[] All = new[] { Version };
+            public static readonly string[] All = new[] { Version, Entry };
         }
     }
 }

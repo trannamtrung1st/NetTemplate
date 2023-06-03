@@ -14,9 +14,11 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
             _postCategoryRepository = postCategoryRepository;
         }
 
-        public async Task ValidatePostCategoryName(string name, CancellationToken cancellationToken = default)
+        public async Task ValidatePostCategoryName(string currentName, string newName, CancellationToken cancellationToken = default)
         {
-            bool exists = await _postCategoryRepository.NameExists(name, cancellationToken);
+            if (currentName == newName) return;
+
+            bool exists = await _postCategoryRepository.NameExists(newName, cancellationToken);
 
             if (exists) throw new BusinessException(ResultCodes.PostCategory.NameAlreadyExists);
         }

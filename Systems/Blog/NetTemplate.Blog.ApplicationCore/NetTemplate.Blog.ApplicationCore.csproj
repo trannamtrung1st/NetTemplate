@@ -10,8 +10,6 @@
 		<Folder Include="Common\Events\" />
 		<Folder Include="Common\Exceptions\" />
 		<Folder Include="Common\Handlers\" />
-		<Folder Include="Common\Implementations\" />
-		<Folder Include="Common\Interfaces\" />
 		<Folder Include="Common\Jobs\" />
 		<Folder Include="Common\Mapping\" />
 		<Folder Include="Common\Queries\" />

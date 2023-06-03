@@ -2,6 +2,6 @@
 {
     public interface IPostCategoryValidator
     {
-        Task ValidatePostCategoryName(string name, CancellationToken cancellationToken = default);
+        Task ValidatePostCategoryName(string currentName, string newName, CancellationToken cancellationToken = default);
     }
 }

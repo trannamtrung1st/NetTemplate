@@ -25,9 +25,11 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Implementations
             if (!categoryExists) throw new NotFoundException(nameof(PostCategoryEntity));
         }
 
-        public async Task ValidatePostTitle(string title, CancellationToken cancellationToken = default)
+        public async Task ValidatePostTitle(string currentTitle, string newTitle, CancellationToken cancellationToken = default)
         {
-            bool exists = await _postRepository.TitleExists(title, cancellationToken);
+            if (currentTitle == newTitle) return;
+
+            bool exists = await _postRepository.TitleExists(newTitle, cancellationToken);
 
             if (exists) throw new BusinessException(ResultCodes.Post.TitleAlreadyExists);
         }

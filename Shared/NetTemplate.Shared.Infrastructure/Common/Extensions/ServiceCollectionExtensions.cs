@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Common.MemoryStore.Extensions;
+using NetTemplate.Shared.ApplicationCore.Common.Extensions;
 using NetTemplate.Shared.ApplicationCore.Identity.Extensions;
 using NetTemplate.Shared.ClientSDK.Common.Extensions;
 using NetTemplate.Shared.ClientSDK.Common.Models;
@@ -94,11 +95,12 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
                 .AddMediator(config.ScanningAssemblies)
                 .AddMapper(config.ScanningAssemblies)
                 .AddValidationDefaults(config.ScanningAssemblies)
-                .AddCaching()
+                .AddCaching(useRedis: config.UseRedis, redisConfig: config.RedisConfig)
                 .AddResilience()
                 .AddSimpleMemoryStore()
                 .AddClientSdkServices(config.ClientConfig)
-                .AddNullCurrentUserProvider();
+                .AddNullCurrentUserProvider()
+                .AddEntityVersionManager();
 
             if (!isProduction)
             {

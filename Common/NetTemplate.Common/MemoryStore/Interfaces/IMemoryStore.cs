@@ -4,10 +4,10 @@
     {
         Task<bool> KeyExists(string key, CancellationToken cancellationToken = default);
         Task<bool> RemoveKey(string key, CancellationToken cancellationToken = default);
-        Task<bool> StringSet(string key, string value, CancellationToken cancellationToken = default);
-        Task<bool> StringSet<T>(string key, T value, CancellationToken cancellationToken = default);
-        Task<string> StringGet(string key, CancellationToken cancellationToken = default);
-        Task<T> StringGet<T>(string key, CancellationToken cancellationToken = default);
+        Task<bool> Set(string key, string value, CancellationToken cancellationToken = default);
+        Task<bool> Set<T>(string key, T value, CancellationToken cancellationToken = default);
+        Task<string> Get(string key, CancellationToken cancellationToken = default);
+        Task<T> Get<T>(string key, CancellationToken cancellationToken = default);
         Task<string[]> HashGetAll(string key, string[] exceptKeys = null, CancellationToken cancellationToken = default);
         Task<T[]> HashGetAll<T>(string key, string[] exceptKeys = null, CancellationToken cancellationToken = default);
         Task<string> HashGet(string key, string itemKey, CancellationToken cancellationToken = default);

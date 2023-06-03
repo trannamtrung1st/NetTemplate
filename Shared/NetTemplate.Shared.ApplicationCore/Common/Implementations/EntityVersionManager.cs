@@ -1,10 +1,8 @@
-﻿using NetTemplate.Blog.ApplicationCore.Common.Interfaces;
-using NetTemplate.Common.DependencyInjection;
-using NetTemplate.Shared.ApplicationCore.Caching.Interfaces;
+﻿using NetTemplate.Shared.ApplicationCore.Caching.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
-namespace NetTemplate.Blog.ApplicationCore.Common.Implementations
+namespace NetTemplate.Shared.ApplicationCore.Common.Implementations
 {
-    [ScopedService]
     public class EntityVersionManager : IEntityVersionManager
     {
         private readonly IApplicationCache _applicationCache;

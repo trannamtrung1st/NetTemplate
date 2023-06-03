@@ -129,11 +129,11 @@ namespace NetTemplate.Shared.Infrastructure.MemoryStore.Implementations
             return await db.KeyDeleteAsync(key);
         }
 
-        public async Task<T> StringGet<T>(string key, CancellationToken cancellationToken = default)
+        public async Task<T> Get<T>(string key, CancellationToken cancellationToken = default)
         {
             T obj = default;
 
-            string value = await StringGet(key, cancellationToken);
+            string value = await Get(key, cancellationToken);
 
             if (value != null)
             {
@@ -143,7 +143,7 @@ namespace NetTemplate.Shared.Infrastructure.MemoryStore.Implementations
             return obj;
         }
 
-        public async Task<string> StringGet(string key, CancellationToken cancellationToken = default)
+        public async Task<string> Get(string key, CancellationToken cancellationToken = default)
         {
             IDatabase db = _connectionMultiplexer.GetDatabase();
 
@@ -152,16 +152,16 @@ namespace NetTemplate.Shared.Infrastructure.MemoryStore.Implementations
             return value;
         }
 
-        public async Task<bool> StringSet(string key, string value, CancellationToken cancellationToken = default)
+        public async Task<bool> Set(string key, string value, CancellationToken cancellationToken = default)
         {
             IDatabase db = _connectionMultiplexer.GetDatabase();
 
             return await db.StringSetAsync(key, value);
         }
 
-        public async Task<bool> StringSet<T>(string key, T value, CancellationToken cancellationToken = default)
+        public async Task<bool> Set<T>(string key, T value, CancellationToken cancellationToken = default)
         {
-            return await StringSet(key, JsonConvert.SerializeObject(value), cancellationToken);
+            return await Set(key, JsonConvert.SerializeObject(value), cancellationToken);
         }
     }
 }

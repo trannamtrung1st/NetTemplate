@@ -7,7 +7,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.WebApi\NetTemplate.Shared.WebApi.csproj" />
-		<ProjectReference Include="..\NetTemplate.Blog.Infrastructure.Domains\NetTemplate.Blog.Infrastructure.Domains.csproj" />
 		<ProjectReference Include="..\NetTemplate.Blog.Infrastructure\NetTemplate.Blog.Infrastructure.csproj" />
 	</ItemGroup>
 

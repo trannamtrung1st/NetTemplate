@@ -5,6 +5,7 @@ using NetTemplate.Blog.ApplicationCore.Post.Views;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Common.MemoryStore.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Implementations;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Implementations
 {
@@ -12,13 +13,13 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Implementations
     public class PostViewManager : BaseViewManager, IPostViewManager
     {
         private readonly IPostRepository _postRepository;
-        private readonly IPostCache _postCache;
+        private readonly IEntityCache<PostView> _postCache;
         private readonly IOptions<ViewsConfig> _viewsOptions;
 
         public PostViewManager(
             IMemoryStore memoryStore,
             IPostRepository postRepository,
-            IPostCache postCache,
+            IEntityCache<PostView> postCache,
             IOptions<ViewsConfig> viewsOptions) : base(memoryStore)
         {
             _postRepository = postRepository;
@@ -29,7 +30,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Implementations
         public async Task<PostView> GetPostView(int id, CancellationToken cancellationToken = default)
         {
             PostView view = await _postCache.GetEntryOrAdd(
-                id, _viewsOptions.Value.PostViewVersion,
+                id.ToString(), _viewsOptions.Value.PostViewVersion,
                 (cancellationToken) => ConstructPostViewById(id, cancellationToken), cancellationToken: cancellationToken);
 
             return view;

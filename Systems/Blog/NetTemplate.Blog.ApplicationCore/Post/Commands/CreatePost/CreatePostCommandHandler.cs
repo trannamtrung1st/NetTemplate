@@ -50,7 +50,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Commands.CreatePost
         {
             await _postValidator.ValidateExistences(model.CategoryId, cancellationToken);
 
-            await _postValidator.ValidatePostTitle(model.Title, cancellationToken);
+            await _postValidator.ValidatePostTitle(currentTitle: null, newTitle: model.Title, cancellationToken);
         }
     }
 }

@@ -90,7 +90,6 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
     {
         typeof(NetTemplate.Blog.WebApi.AssemblyType),
         typeof(NetTemplate.Blog.Infrastructure.AssemblyType),
-        typeof(NetTemplate.Blog.Infrastructure.Domains.AssemblyType),
         typeof(NetTemplate.Blog.ApplicationCore.AssemblyType)
     };
     Assembly[] assemblies = representativeTypes.Select(t => t.Assembly).ToArray();
@@ -118,7 +117,7 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
     ClientsConfig clientsConfig = configuration.GetClientsConfigDefaults();
 
     // Client SDK
-    ClientConfig clientConfiguration = configuration.GetClientConfigDefaults();
+    ClientConfig clientConfig = configuration.GetClientConfigDefaults();
 
     // PubSubConfig
     PubSubConfig pubSubConfig = configuration.GetPubSubConfigDefaults();
@@ -126,10 +125,9 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
     // Redis
     RedisConfig redisConfig = configuration.GetRedisConfigDefaults();
 
-
     return new ApiDefaultServicesConfig
     {
-        ClientConfig = clientConfiguration,
+        ClientConfig = clientConfig,
         ClientsConfig = clientsConfig,
         ControllerConfigureAction = controllerConfigureAction,
         DbContextConnectionString = dbContextConnectionString,
@@ -142,6 +140,7 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
         SimulatedAuthConfig = simulatedAuthConfig,
         PubSubConfig = pubSubConfig,
         ScanningAssemblies = assemblies,
+        UseRedis = webConfig.UseRedis,
         RedisConfig = redisConfig
     };
 };

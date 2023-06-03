@@ -123,7 +123,7 @@ namespace NetTemplate.Common.MemoryStore.Implementations
             return Task.FromResult(_map.TryRemove(key, out _));
         }
 
-        public Task<T> StringGet<T>(string key, CancellationToken cancellationToken = default)
+        public Task<T> Get<T>(string key, CancellationToken cancellationToken = default)
         {
             T obj = default;
 
@@ -135,17 +135,17 @@ namespace NetTemplate.Common.MemoryStore.Implementations
             return Task.FromResult(obj);
         }
 
-        public async Task<string> StringGet(string key, CancellationToken cancellationToken = default)
+        public async Task<string> Get(string key, CancellationToken cancellationToken = default)
         {
-            return await StringGet<string>(key, cancellationToken);
+            return await Get<string>(key, cancellationToken);
         }
 
-        public async Task<bool> StringSet(string key, string value, CancellationToken cancellationToken = default)
+        public async Task<bool> Set(string key, string value, CancellationToken cancellationToken = default)
         {
-            return await StringSet<string>(key, value, cancellationToken);
+            return await Set<string>(key, value, cancellationToken);
         }
 
-        public Task<bool> StringSet<T>(string key, T value, CancellationToken cancellationToken = default)
+        public Task<bool> Set<T>(string key, T value, CancellationToken cancellationToken = default)
         {
             _map[key] = value;
 

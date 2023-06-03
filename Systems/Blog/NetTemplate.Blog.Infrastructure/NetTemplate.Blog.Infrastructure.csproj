@@ -23,6 +23,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="Domains\Cross\" />
 		<Folder Include="Persistence\Extensions\" />
 		<Folder Include="Persistence\Interfaces\" />
 		<Folder Include="Persistence\Models\" />

@@ -31,6 +31,7 @@ namespace NetTemplate.Shared.Infrastructure.Common.Models
         public ClientConfig ClientConfig { get; set; }
 
         // Redis
+        public bool UseRedis { get; set; }
         public RedisConfig RedisConfig { get; set; }
     }
 }
