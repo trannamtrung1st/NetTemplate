@@ -7,7 +7,8 @@ services:
       - "6379:6379"
     volumes:
       - ./Local/RedisVolume:/data
-    command: [ "redis-server", "/data/redis.conf" ]
+      - ./External/Redis/redis.conf:/config/redis.conf
+    command: [ "redis-server", "/config/redis.conf" ]
 
   sql-server:
     image: mcr.microsoft.com/mssql/server:2019-CU18-ubuntu-20.04
