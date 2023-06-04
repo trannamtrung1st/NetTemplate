@@ -1,11 +1,9 @@
-﻿using Hangfire;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+﻿using MediatR;
+using NetTemplate.Blog.Infrastructure.Common.Interfaces;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Shared.ApplicationCore.Common.Events;
 using NetTemplate.Shared.Infrastructure.Background.Models;
-using Newtonsoft.Json;
-using CommonJobNames = NetTemplate.Blog.ApplicationCore.Common.Constants.JobNames;
+using NetTemplate.Shared.Infrastructure.PubSub.Models;
 
 namespace NetTemplate.Blog.WebApi.Common.Handlers
 {
@@ -13,74 +11,46 @@ namespace NetTemplate.Blog.WebApi.Common.Handlers
     {
         private readonly MainDbContext _dbContext;
         private readonly IServiceProvider _provider;
-        private readonly IRecurringJobManager _recurringJobManager;
+        private readonly IJobManager _jobManager;
+        private readonly IConsumerManager _consumerManager;
 
         public ApplicationStartingHandler(
             MainDbContext dbContext,
             IServiceProvider provider,
-            IRecurringJobManager recurringJobManager)
+            IJobManager jobManager,
+            IConsumerManager consumerManager)
         {
             _dbContext = dbContext;
             _provider = provider;
-            _recurringJobManager = recurringJobManager;
+            _jobManager = jobManager;
+            _consumerManager = consumerManager;
         }
 
         public async Task Handle(ApplicationStartingEvent @event, CancellationToken cancellationToken)
         {
             HangfireConfig hangfireConfig = @event.Data.HangfireConfig;
+            PubSubConfig pubSubConfig = @event.Data.PubSubConfig;
 
             await MigrateDatabase(cancellationToken);
 
             await RunJobs(hangfireConfig, cancellationToken);
 
-            await StartConsumers(cancellationToken);
+            await StartConsumers(pubSubConfig, cancellationToken);
         }
 
         private async Task MigrateDatabase(CancellationToken cancellationToken = default)
         {
-            await _dbContext.Database.MigrateAsync(cancellationToken);
-            await _dbContext.SeedMigrationsAsync(_provider, cancellationToken);
+            await _dbContext.Migrate(_provider, cancellationToken);
         }
 
-        private Task RunJobs(HangfireConfig config, CancellationToken cancellationToken = default)
+        private async Task RunJobs(HangfireConfig config, CancellationToken cancellationToken = default)
         {
-            IEnumerable<CronJob> jobs = config.Jobs;
-
-            if (jobs?.Any() != true) return Task.CompletedTask;
-
-            TimeZoneInfo defaultTimeZone = config.TimeZoneInfo;
-
-            foreach (var job in config.Jobs)
-            {
-                var count = 1;
-                foreach (var cronExpr in job.CronExpressions)
-                {
-                    switch (job.Name)
-                    {
-                        case CommonJobNames.Sample:
-                            {
-                                var serializedData = JsonConvert.SerializeObject(job.JobData);
-                                var jobData = JsonConvert.DeserializeObject(serializedData);
-                                var finalName = CommonJobNames.Sample + (count++);
-
-                                _recurringJobManager.AddOrUpdate(finalName,
-                                    () => Console.WriteLine("Sample Job Run"),
-                                    cronExpr,
-                                    new RecurringJobOptions { TimeZone = defaultTimeZone });
-                                break;
-                            }
-                    }
-                }
-            }
-
-            return Task.CompletedTask;
+            await _jobManager.RunJobs(config, cancellationToken);
         }
 
-        private Task StartConsumers(CancellationToken cancellationToken = default)
+        private async Task StartConsumers(PubSubConfig pubSubConfig, CancellationToken cancellationToken = default)
         {
-            // [TODO]
-
-            return Task.CompletedTask;
+            await _consumerManager.StartConsumers(pubSubConfig, cancellationToken);
         }
     }
 }

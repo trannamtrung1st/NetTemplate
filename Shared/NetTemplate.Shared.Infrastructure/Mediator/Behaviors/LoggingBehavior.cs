@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Common.Reflection;
+using System.Diagnostics;
 
 namespace NetTemplate.Shared.Infrastructure.Mediator.Behaviors
 {
+    [DebuggerStepThrough]
     public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IBaseRequest
     {

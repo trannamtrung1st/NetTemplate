@@ -51,19 +51,24 @@ namespace NetTemplate.Blog.Infrastructure.Persistence
 
         public async Task SeedMigrationsAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
         {
-            using (var transaction = await this.BeginTransactionOrCurrent(cancellationToken))
+            using var transaction = await this.BeginTransactionOrCurrent(cancellationToken);
+
+            foreach (var action in MigrationSeedingActions)
             {
-                foreach (var action in MigrationSeedingActions)
-                {
-                    cancellationToken.ThrowIfCancellationRequested();
+                cancellationToken.ThrowIfCancellationRequested();
 
-                    await action(this, serviceProvider, cancellationToken);
-                }
-
-                MigrationSeedingActions.Clear();
-
-                await transaction.CommitAsync(cancellationToken: cancellationToken);
+                await action(this, serviceProvider, cancellationToken);
             }
+
+            MigrationSeedingActions.Clear();
+
+            await transaction.CommitAsync(cancellationToken: cancellationToken);
+        }
+
+        public async Task Migrate(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
+        {
+            await Database.MigrateAsync(cancellationToken);
+            await SeedMigrationsAsync(serviceProvider, cancellationToken);
         }
     }
 }

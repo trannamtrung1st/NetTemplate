@@ -10,6 +10,7 @@ using NetTemplate.Shared.ClientSDK.Common.Models;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
 using NetTemplate.Shared.Infrastructure.Caching.Extensions;
 using NetTemplate.Shared.Infrastructure.Common.Models;
+using NetTemplate.Shared.Infrastructure.Domains.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Logging.Extensions;
 using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
@@ -99,6 +100,7 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
                 .AddResilience()
                 .AddSimpleMemoryStore()
                 .AddClientSdkServices(config.ClientConfig)
+                .AddIdentityService()
                 .AddNullCurrentUserProvider()
                 .AddEntityVersionManager();
 

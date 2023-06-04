@@ -17,7 +17,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Common\NetTemplate.Common.Web\NetTemplate.Common.Web.csproj" />
-		<ProjectReference Include="..\NetTemplate.Shared.Infrastructure.Domains\NetTemplate.Shared.Infrastructure.Domains.csproj" />
 		<ProjectReference Include="..\NetTemplate.Shared.Infrastructure\NetTemplate.Shared.Infrastructure.csproj" />
 	</ItemGroup>
 

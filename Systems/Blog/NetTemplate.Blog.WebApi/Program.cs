@@ -65,7 +65,7 @@ try
 
     ConfigurePipeline(app, resources, defaultConfig.HangfireConfig);
 
-    await Initialize(app, defaultConfig.HangfireConfig, cancellationToken);
+    await Initialize(app, defaultConfig.HangfireConfig, defaultConfig.PubSubConfig, cancellationToken);
 
     app.Run();
 
@@ -234,12 +234,14 @@ static void ConfigurePipeline(WebApplication app,
 
 static async Task Initialize(WebApplication app,
     HangfireConfig hangfireConfig,
+    PubSubConfig pubSubConfig,
     CancellationToken cancellationToken = default)
 {
     using IServiceScope serviceScope = app.Services.CreateScope();
 
     dynamic dynamicData = new ExpandoObject();
     dynamicData.HangfireConfig = hangfireConfig;
+    dynamicData.PubSubConfig = pubSubConfig;
 
     IMediator mediator = serviceScope.ServiceProvider.GetRequiredService<IMediator>();
     await mediator.Publish(new ApplicationStartingEvent(dynamicData), cancellationToken);
