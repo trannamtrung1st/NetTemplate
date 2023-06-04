@@ -19,6 +19,7 @@ using NetTemplate.Shared.Infrastructure.Identity.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.Extensions;
 using NetTemplate.Shared.Infrastructure.PubSub.Models;
 using System.Reflection;
+using static NetTemplate.Shared.Infrastructure.Common.Constants;
 using BackgroundConnectionNames = NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames;
 using CommonConfigurationSections = NetTemplate.Blog.ApplicationCore.Common.Constants.ConfigurationSections;
 
@@ -29,7 +30,8 @@ List<IDisposable> resources = new List<IDisposable>();
 CancellationToken cancellationToken = cancellationTokenSource.Token;
 
 IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", optional: false)
+    .InsertSharedJson()
+    .AddJsonFile(DefaultPaths.AppsettingsPath, optional: false)
     .AddEnvironmentVariables()
     .AddCommandLine(args)
     .AddUserSecrets<Program>();

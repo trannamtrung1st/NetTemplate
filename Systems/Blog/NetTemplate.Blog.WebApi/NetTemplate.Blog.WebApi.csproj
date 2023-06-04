@@ -6,6 +6,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Include="..\Shared\appsettings.shared.json" Link="appsettings.shared.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
 		<ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.WebApi\NetTemplate.Shared.WebApi.csproj" />
 		<ProjectReference Include="..\NetTemplate.Blog.Infrastructure\NetTemplate.Blog.Infrastructure.csproj" />
 	</ItemGroup>

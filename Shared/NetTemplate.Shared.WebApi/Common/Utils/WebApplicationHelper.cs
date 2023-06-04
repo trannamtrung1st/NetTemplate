@@ -9,6 +9,8 @@ namespace NetTemplate.Shared.WebApi.Common.Utils
         {
             WebApplicationBuilder webBuilder = WebApplication.CreateBuilder(args);
 
+            webBuilder.Host.ConfigureAppConfiguration(builder => builder.InsertSharedJson());
+
             webBuilder.Host.UseDefault();
 
             return webBuilder;
