@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTemplate.Blog.ApplicationCore.User;
 using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
 
-namespace NetTemplate.Blog.Infrastructure.Persistence.EntityConfigs.User
+namespace NetTemplate.Blog.Infrastructure.Domains.User.EntityConfigs
 {
     class UserPartialEntityTypeConfig : IEntityTypeConfiguration<UserPartialEntity>
     {

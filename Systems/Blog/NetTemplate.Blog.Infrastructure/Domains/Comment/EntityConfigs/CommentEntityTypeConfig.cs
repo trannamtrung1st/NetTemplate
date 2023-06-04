@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTemplate.Blog.ApplicationCore.Comment;
 
-namespace NetTemplate.Blog.Infrastructure.Persistence.EntityConfigs.Comment
+namespace NetTemplate.Blog.Infrastructure.Domains.Comment.EntityConfigs
 {
     class CommentEntityTypeConfig : IEntityTypeConfiguration<CommentEntity>
     {

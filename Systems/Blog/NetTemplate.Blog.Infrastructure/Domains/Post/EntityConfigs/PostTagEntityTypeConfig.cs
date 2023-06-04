@@ -6,7 +6,7 @@ using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
 using CommonConstraintNames = NetTemplate.Shared.Infrastructure.Persistence.Constants.ConstraintNames;
 using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
 
-namespace NetTemplate.Blog.Infrastructure.Persistence.EntityConfigs.Post
+namespace NetTemplate.Blog.Infrastructure.Domains.Post.EntityConfigs
 {
     class PostTagEntityTypeConfig : IEntityTypeConfiguration<PostTagEntity>
     {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTemplate.Blog.ApplicationCore.Post;
 using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
 
-namespace NetTemplate.Blog.Infrastructure.Persistence.EntityConfigs.Post
+namespace NetTemplate.Blog.Infrastructure.Domains.Post.EntityConfigs
 {
     class PostEntityTypeConfig : IEntityTypeConfiguration<PostEntity>
     {
