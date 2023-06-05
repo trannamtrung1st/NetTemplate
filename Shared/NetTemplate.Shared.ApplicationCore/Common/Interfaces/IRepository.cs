@@ -1,6 +1,4 @@
-﻿using NetTemplate.Shared.ApplicationCore.Common.Entities;
-
-namespace NetTemplate.Shared.ApplicationCore.Common.Interfaces
+﻿namespace NetTemplate.Shared.ApplicationCore.Common.Interfaces
 {
     public interface IRepository<T> where T : class, IAggregateRoot
     {

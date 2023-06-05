@@ -1,4 +1,6 @@
-﻿namespace NetTemplate.Shared.ApplicationCore.Common.Models
+﻿using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
+
+namespace NetTemplate.Shared.ApplicationCore.Common.Models
 {
     public abstract class BaseSortableFilterQuery<TSortBy> : BaseFilterQuery, ISortableQuery<TSortBy>
     {

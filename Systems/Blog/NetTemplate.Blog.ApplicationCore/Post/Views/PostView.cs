@@ -1,5 +1,5 @@
 ﻿using NetTemplate.Blog.ApplicationCore.User.Views;
-using NetTemplate.Shared.ApplicationCore.Common.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.Post.Views

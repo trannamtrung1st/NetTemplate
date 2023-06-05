@@ -4,6 +4,11 @@ using Newtonsoft.Json;
 
 namespace NetTemplate.Shared.ClientSDK.Identity
 {
+    public interface IIdentityClient
+    {
+        Task<IEnumerable<IdentityUserModel>> GetUsers(CancellationToken cancellationToken = default);
+    }
+
     public class IdentityClient : IIdentityClient
     {
         private readonly HttpClient _client;

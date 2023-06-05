@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
-using NetTemplate.Shared.ApplicationCore.Common.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.Infrastructure.Persistence.Interfaces;
 using System.Linq.Expressions;
 

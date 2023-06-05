@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTemplate.Common.Reflection;
-using NetTemplate.Shared.ApplicationCore.Common.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.Infrastructure.Persistence.Interfaces;
 using System.Linq.Expressions;
 using System.Reflection;

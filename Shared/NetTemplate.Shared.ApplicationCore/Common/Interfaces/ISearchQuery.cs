@@ -1,4 +1,4 @@
-﻿namespace NetTemplate.Shared.ApplicationCore.Common.Models
+﻿namespace NetTemplate.Shared.ApplicationCore.Common.Interfaces
 {
     public interface ISearchQuery
     {

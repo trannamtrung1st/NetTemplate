@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using NetTemplate.Shared.ApplicationCore.Common.Models;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
 using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messages;
 

@@ -1,4 +1,4 @@
-﻿namespace NetTemplate.Shared.ApplicationCore.Common.Entities
+﻿namespace NetTemplate.Shared.ApplicationCore.Common.Interfaces
 {
     public interface IAuditableEntity
     {

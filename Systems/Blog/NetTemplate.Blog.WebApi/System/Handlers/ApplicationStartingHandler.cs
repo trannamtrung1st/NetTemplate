@@ -5,7 +5,7 @@ using NetTemplate.Shared.ApplicationCore.Common.Events;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.Models;
 
-namespace NetTemplate.Blog.WebApi.Common.Handlers
+namespace NetTemplate.Blog.WebApi.System.Handlers
 {
     public class ApplicationStartingHandler : INotificationHandler<ApplicationStartingEvent>
     {

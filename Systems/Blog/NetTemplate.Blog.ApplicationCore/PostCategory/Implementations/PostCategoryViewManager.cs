@@ -6,6 +6,7 @@ using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Common.MemoryStore.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Implementations;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
 using ViewPreservedKeys = NetTemplate.Shared.ApplicationCore.Common.Constants.ViewPreservedKeys;
 

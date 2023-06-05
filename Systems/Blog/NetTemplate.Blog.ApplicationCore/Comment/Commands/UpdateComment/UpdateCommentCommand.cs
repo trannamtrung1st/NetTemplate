@@ -1,5 +1,5 @@
 ﻿using NetTemplate.Blog.ApplicationCore.Comment.Models;
-using NetTemplate.Shared.ApplicationCore.Common.Models;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.ApplicationCore.Comment.Commands.UpdateComment
 {

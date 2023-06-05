@@ -1,4 +1,5 @@
-﻿using FilterDefaults = NetTemplate.Shared.ApplicationCore.Common.Constants.Filter;
+﻿using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
+using FilterDefaults = NetTemplate.Shared.ApplicationCore.Common.Constants.Filter;
 
 namespace NetTemplate.Shared.ApplicationCore.Common.Models
 {

@@ -1,10 +1,11 @@
-﻿using NetTemplate.Blog.ApplicationCore.Common.Models;
+﻿using NetTemplate.Blog.ApplicationCore.Common.Interfaces;
 using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.ApplicationCore.User;
 using NetTemplate.Common.Validation;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Utils;
 using System.Linq.Expressions;
 using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messages;

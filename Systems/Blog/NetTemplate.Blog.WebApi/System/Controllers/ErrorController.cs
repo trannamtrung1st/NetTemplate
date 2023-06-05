@@ -2,7 +2,7 @@
 using NetTemplate.Shared.WebApi.Common.Controllers;
 using Routes = NetTemplate.Blog.WebApi.Common.Constants.ApiRoutes.Error;
 
-namespace NetTemplate.Blog.WebApi.Common.Controllers
+namespace NetTemplate.Blog.WebApi.System.Controllers
 {
     [Route(Routes.Base)]
     public class ErrorController : BaseErrorController

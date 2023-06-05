@@ -4,6 +4,7 @@ using NetTemplate.Blog.ApplicationCore.Common.Utils;
 using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
 using NetTemplate.Shared.Infrastructure.Persistence.Repositories;
 

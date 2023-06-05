@@ -1,5 +1,6 @@
 ﻿using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces

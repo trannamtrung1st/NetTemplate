@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Common.Reflection;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
-using NetTemplate.Shared.ApplicationCore.Common.Models;
 using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
 
 namespace NetTemplate.Shared.Infrastructure.Persistence.Behaviors

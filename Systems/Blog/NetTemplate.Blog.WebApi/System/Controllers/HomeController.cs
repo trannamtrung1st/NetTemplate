@@ -3,7 +3,7 @@ using NetTemplate.Shared.WebApi.Common.Controllers;
 using Messages = NetTemplate.Blog.WebApi.Common.Constants.Messages;
 using Routes = NetTemplate.Blog.WebApi.Common.Constants.ApiRoutes.Home;
 
-namespace NetTemplate.Blog.WebApi.Common.Controllers
+namespace NetTemplate.Blog.WebApi.System.Controllers
 {
     [Route(Routes.Base)]
     public class HomeController : BaseHomeController

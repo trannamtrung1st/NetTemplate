@@ -1,4 +1,4 @@
-﻿using NetTemplate.Blog.ApplicationCore.Common.Models;
+﻿using NetTemplate.Blog.ApplicationCore.Common.Interfaces;
 using System.Linq.Expressions;
 
 namespace NetTemplate.Blog.ApplicationCore.Common.Utils

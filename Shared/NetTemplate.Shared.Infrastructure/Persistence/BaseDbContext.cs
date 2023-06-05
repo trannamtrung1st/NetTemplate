@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using NetTemplate.Shared.ApplicationCore.Common.Entities;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Identity.Interfaces;
 using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
 using NetTemplate.Shared.Infrastructure.Persistence.QueryFilters;

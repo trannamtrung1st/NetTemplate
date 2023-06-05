@@ -1,4 +1,4 @@
-﻿namespace NetTemplate.Shared.ApplicationCore.Common.Models
+﻿namespace NetTemplate.Shared.ApplicationCore.Common.Interfaces
 {
     public interface IByCreatorQuery<TUserId> where TUserId : struct
     {

@@ -1,6 +1,5 @@
 ﻿using NetTemplate.Common.Enumerations;
-using NetTemplate.Shared.ApplicationCore.Common.Entities;
-using NetTemplate.Shared.ApplicationCore.Common.Models;
+using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace System.Linq
 {
