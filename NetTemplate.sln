@@ -49,6 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{7092AF
 		Systems\Blog\Shared\appsettings.shared.json = Systems\Blog\Shared\appsettings.shared.json
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTemplate.ApacheKafka", "Common\NetTemplate.ApacheKafka\NetTemplate.ApacheKafka.csproj", "{AD740E04-B99F-4573-9A8F-0F597FDFECBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{34348AC2-0A2F-4089-83C3-FB40A93F65DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34348AC2-0A2F-4089-83C3-FB40A93F65DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34348AC2-0A2F-4089-83C3-FB40A93F65DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD740E04-B99F-4573-9A8F-0F597FDFECBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD740E04-B99F-4573-9A8F-0F597FDFECBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD740E04-B99F-4573-9A8F-0F597FDFECBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD740E04-B99F-4573-9A8F-0F597FDFECBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{7989CF6E-46AE-45B4-BF94-D14EEF2CA4DB} = {F9A9AC9D-F14E-43FC-889D-1C487B15C51D}
 		{34348AC2-0A2F-4089-83C3-FB40A93F65DA} = {B43C91A4-83AC-4DE1-BC96-52D35BDBB3FA}
 		{7092AFBA-A748-4F3D-AF59-9B6BEA8DBF53} = {6C99D2B1-F5FF-455A-BE67-BD8ADD1FD4E6}
+		{AD740E04-B99F-4573-9A8F-0F597FDFECBF} = {B43C91A4-83AC-4DE1-BC96-52D35BDBB3FA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2119FE8C-EDF8-4B3A-B6DC-A62DC2C39512}

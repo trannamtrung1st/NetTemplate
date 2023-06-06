@@ -1,6 +1,11 @@
 # NetTemplate
 
 [TODO]
+- Redis security
+- Kafka security: SSL, etc
+
+[IMPORTANT]
+- Dockerfile should be CRLF
 
 ## Overview
 
