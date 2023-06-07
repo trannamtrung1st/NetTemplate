@@ -1,5 +1,5 @@
 ﻿using NetTemplate.Blog.Infrastructure.Common.Interfaces;
-using NetTemplate.Blog.Infrastructure.Domains.Integrations.Identity.Interfaces;
+using NetTemplate.Blog.Infrastructure.Domains.Integrations.Identity.Consumers;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.Infrastructure.PubSub.Models;
 

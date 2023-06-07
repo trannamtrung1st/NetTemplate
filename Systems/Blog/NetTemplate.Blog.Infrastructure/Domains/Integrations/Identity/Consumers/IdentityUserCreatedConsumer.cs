@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Blog.ApplicationCore.Integrations.Identity;
-using NetTemplate.Blog.Infrastructure.Domains.Integrations.Identity.Interfaces;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.Consumers;
@@ -13,6 +12,11 @@ using TopicNames = NetTemplate.Blog.Infrastructure.Domains.Integrations.Identity
 
 namespace NetTemplate.Blog.Infrastructure.Domains.Integrations.Identity.Consumers
 {
+    public interface IIdentityUserCreatedConsumer
+    {
+        Task Start(CompetingConsumerConfig commonConfig, CancellationToken cancellationToken = default);
+    }
+
     [ScopedService]
     public class IdentityUserCreatedConsumer
         : BaseConsumer<IdentityUserCreatedConsumer, string, IdentityUserCreatedEventModel>
