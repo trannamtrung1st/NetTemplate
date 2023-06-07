@@ -13,17 +13,20 @@ namespace NetTemplate.Blog.WebApi.System.Handlers
         private readonly IServiceProvider _provider;
         private readonly IJobManager _jobManager;
         private readonly IConsumerManager _consumerManager;
+        private readonly ITopicManager _topicManager;
 
         public ApplicationStartingHandler(
             MainDbContext dbContext,
             IServiceProvider provider,
             IJobManager jobManager,
-            IConsumerManager consumerManager)
+            IConsumerManager consumerManager,
+            ITopicManager topicManager)
         {
             _dbContext = dbContext;
             _provider = provider;
             _jobManager = jobManager;
             _consumerManager = consumerManager;
+            _topicManager = topicManager;
         }
 
         public async Task Handle(ApplicationStartingEvent @event, CancellationToken cancellationToken)
@@ -33,9 +36,11 @@ namespace NetTemplate.Blog.WebApi.System.Handlers
 
             await MigrateDatabase(cancellationToken);
 
-            await RunJobs(hangfireConfig, cancellationToken);
+            await UpdateTopics(pubSubConfig, cancellationToken);
 
-            await StartConsumers(pubSubConfig, cancellationToken);
+            await Task.WhenAll(
+                RunJobs(hangfireConfig, cancellationToken),
+                StartConsumers(pubSubConfig, cancellationToken));
         }
 
         private async Task MigrateDatabase(CancellationToken cancellationToken = default)
@@ -46,6 +51,11 @@ namespace NetTemplate.Blog.WebApi.System.Handlers
         private async Task RunJobs(HangfireConfig config, CancellationToken cancellationToken = default)
         {
             await _jobManager.RunJobs(config, cancellationToken);
+        }
+
+        private async Task UpdateTopics(PubSubConfig pubSubConfig, CancellationToken cancellationToken = default)
+        {
+            await _topicManager.UpdateTopics(pubSubConfig, cancellationToken);
         }
 
         private async Task StartConsumers(PubSubConfig pubSubConfig, CancellationToken cancellationToken = default)

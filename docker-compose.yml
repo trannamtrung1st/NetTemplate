@@ -7,7 +7,7 @@ services:
       - "6379:6379"
     volumes:
       - ./Local/RedisVolume:/data
-      - ./External/Redis/redis.conf:/config/redis.conf
+      - ./External/Redis/redis.conf:/config/redis.conf:ro
     command: [ "redis-server", "/config/redis.conf" ]
 
   sql-server:
@@ -31,10 +31,11 @@ services:
       - LOCAL_PORT=9092
       - DOCKER_PORT=29092
     volumes:
-      - ./External/Kafka/config:/kafka/custom-config
-      - ./External/Kafka/scripts:/kafka/scripts
-      - ./Local/KafkaVolume/kafka-data:/kafka-data
-      - ./Local/KafkaVolume/zookeeper-data:/zookeeper-data
+      - ./External/Kafka/config:/kafka/custom-config:ro
+      - ./External/Kafka/scripts:/kafka/scripts:ro
+      # - ./Local/KafkaVolume/kafka-data:/kafka-data
+      # - ./Local/KafkaVolume/zookeeper-data:/zookeeper-data
+      # - ./Local/KafkaVolume/logs:/kafka/logs
     ports:
       - target: 9092
         published: 9092

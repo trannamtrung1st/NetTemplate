@@ -5,8 +5,7 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.Extensions
 {
     public static class ConfigurationExtensions
     {
-        // [TODO]
         public static PubSubConfig GetPubSubConfigDefaults(this IConfiguration configuration)
-            => new PubSubConfig();
+            => configuration.GetSection(Constants.ConfigurationSection).Get<PubSubConfig>();
     }
 }

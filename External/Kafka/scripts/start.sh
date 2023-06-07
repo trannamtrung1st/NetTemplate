@@ -2,7 +2,7 @@
 cp ./custom-config/server.properties ./config/server.properties;
 cp ./custom-config/zookeeper.properties ./config/zookeeper.properties;
 
-mkdir /zookeeper-data;
+mkdir -p /zookeeper-data;
 echo "$BROKER_ID" > /zookeeper-data/myid;
 
 sed -i -e "s/{BROKER_ID}/$BROKER_ID/g" \
@@ -11,4 +11,4 @@ sed -i -e "s/{BROKER_ID}/$BROKER_ID/g" \
 	./config/server.properties;
 
 bin/zookeeper-server-start.sh ./config/zookeeper.properties &
-sleep 7s; bin/kafka-server-start.sh ./config/server.properties;
+sleep 20s; bin/kafka-server-start.sh ./config/server.properties;

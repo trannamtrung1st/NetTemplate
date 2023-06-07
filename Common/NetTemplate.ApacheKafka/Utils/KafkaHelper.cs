@@ -37,5 +37,10 @@ namespace NetTemplate.ApacheKafka.Utils
 
             return consumer;
         }
+
+        public static IAdminClient CreateAdmin(AdminClientConfig config)
+        {
+            return new AdminClientBuilder(config).Build();
+        }
     }
 }
