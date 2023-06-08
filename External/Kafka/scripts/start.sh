@@ -11,4 +11,4 @@ sed -i -e "s/{BROKER_ID}/$BROKER_ID/g" \
 	./config/server.properties;
 
 bin/zookeeper-server-start.sh ./config/zookeeper.properties &
-sleep 20s; bin/kafka-server-start.sh ./config/server.properties;
+sleep 30s; bin/kafka-server-start.sh ./config/server.properties;
