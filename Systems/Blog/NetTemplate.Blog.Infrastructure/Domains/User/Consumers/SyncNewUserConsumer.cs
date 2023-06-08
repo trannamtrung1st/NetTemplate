@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Blog.ApplicationCore.User.Commands.SyncNewUser;
 using NetTemplate.Common.DependencyInjection;
-using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions;
 using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations;
@@ -21,11 +20,15 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User.Consumers
 
     [ScopedService]
     public class SyncNewUserConsumer
-        : BaseConsumer<SyncNewUserConsumer, string, IdentityUserCreatedEventModel>
+        : CompetingThreadConsumer<SyncNewUserConsumer, string, IdentityUserCreatedEventModel>
         , ISyncNewUserConsumer
     {
-        public SyncNewUserConsumer(IServiceProvider provider, IConfiguration configuration, ILogger<SyncNewUserConsumer> logger)
-            : base(provider, configuration, logger)
+        public SyncNewUserConsumer(
+            IServiceProvider provider,
+            IOffsetStore offsetStore,
+            IConfiguration configuration,
+            ILogger<SyncNewUserConsumer> logger)
+            : base(provider, offsetStore, configuration, logger)
         {
         }
 
@@ -50,7 +53,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User.Consumers
 
                 await mediator.Send(command, cancellationToken);
             }
-            catch (BusinessException ex)
+            catch (Exception ex)
             {
                 logger.LogError(ex, ex.Message);
             }

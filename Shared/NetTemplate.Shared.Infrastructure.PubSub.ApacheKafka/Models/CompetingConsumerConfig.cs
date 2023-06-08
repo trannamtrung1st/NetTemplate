@@ -4,12 +4,32 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models
 {
     public class CompetingConsumerConfig : ConsumerConfig, ICloneable
     {
+        public CompetingConsumerConfig()
+        {
+        }
+
+        public CompetingConsumerConfig(ClientConfig config) : base(config)
+        {
+        }
+
+        public CompetingConsumerConfig(IDictionary<string, string> config) : base(config)
+        {
+        }
+
+        public bool UseOffsetStore { get; set; }
         public int DefaultRetryAfter { get; set; }
         public int ConsumerCount { get; set; }
 
         public object Clone()
         {
-            return MemberwiseClone();
+            Dictionary<string, string> config = this.ToDictionary(e => e.Key, e => e.Value);
+
+            return new CompetingConsumerConfig(config)
+            {
+                UseOffsetStore = UseOffsetStore,
+                DefaultRetryAfter = DefaultRetryAfter,
+                ConsumerCount = ConsumerCount,
+            };
         }
     }
 }
