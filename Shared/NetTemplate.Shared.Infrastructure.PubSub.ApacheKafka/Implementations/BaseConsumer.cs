@@ -63,6 +63,9 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations
 
         protected virtual async Task Consume(int threadId, CompetingConsumerConfig consumerConfig, CancellationToken cancellationToken = default)
         {
+            consumerConfig = (CompetingConsumerConfig)consumerConfig.Clone();
+            consumerConfig.GroupInstanceId = threadId.ToString();
+
             using IConsumer<TKey, TValue> consumer = KafkaHelper.CreateConsumer<TKey, TValue>(consumerConfig);
 
             try
