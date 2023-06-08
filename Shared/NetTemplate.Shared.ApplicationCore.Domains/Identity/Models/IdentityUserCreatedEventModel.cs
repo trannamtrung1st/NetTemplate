@@ -2,9 +2,6 @@
 {
     public class IdentityUserCreatedEventModel
     {
-        public string UserCode { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public bool Active { get; set; }
+        public IdentityUserModel Model { get; set; }
     }
 }

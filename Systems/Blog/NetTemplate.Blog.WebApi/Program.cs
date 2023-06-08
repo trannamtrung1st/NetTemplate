@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using NetTemplate.Blog.Infrastructure.Common.Extensions;
+using NetTemplate.Blog.Infrastructure.Common.Models;
 using NetTemplate.Blog.Infrastructure.Persistence;
+using NetTemplate.Blog.WebApi.Common.Extensions;
 using NetTemplate.Blog.WebApi.Common.Models;
 using NetTemplate.Common.Web.Middlewares;
 using NetTemplate.Redis.Extensions;
@@ -18,54 +20,50 @@ using NetTemplate.Shared.Infrastructure.Common.Extensions;
 using NetTemplate.Shared.Infrastructure.Common.Utils;
 using NetTemplate.Shared.Infrastructure.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
-using NetTemplate.Shared.Infrastructure.PubSub.Extensions;
-using NetTemplate.Shared.Infrastructure.PubSub.Models;
+using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions;
+using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 using NetTemplate.Shared.WebApi.Common.Extensions;
-using NetTemplate.Shared.WebApi.Common.Models;
 using NetTemplate.Shared.WebApi.Common.Utils;
 using NetTemplate.Shared.WebApi.Identity.Extensions;
 using NetTemplate.Shared.WebApi.Identity.Models;
 using NetTemplate.Shared.WebApi.Logging.Extensions;
 using NetTemplate.Shared.WebApi.Swagger.Extensions;
 using Serilog.Extensions.Logging;
-using System.Dynamic;
 using System.Reflection;
 using ApiRoutes = NetTemplate.Blog.WebApi.Common.Constants.ApiRoutes;
 using BackgroundConnectionNames = NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames;
 using CacheProfiles = NetTemplate.Blog.WebApi.Common.Constants.CacheProfiles;
-using CommonConfigurationSections = NetTemplate.Blog.ApplicationCore.Common.Constants.ConfigurationSections;
 using WebLoggingConfigurationSections = NetTemplate.Shared.WebApi.Logging.Constants.ConfigurationSections;
+
 
 // ===== APPLICATION START =====
 
 bool isProduction = WebApplicationHelper.IsProduction();
-using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 using Serilog.Core.Logger seriLogger = InfrastructureHelper.CreateHostLogger(isProduction);
 ILogger logger = new SerilogLoggerFactory(seriLogger).CreateLogger(nameof(Program));
-List<IDisposable> resources = new List<IDisposable>();
-CancellationToken cancellationToken = cancellationTokenSource.Token;
 
 try
 {
     logger.LogInformation("Starting web host");
 
+    List<IDisposable> resources = new List<IDisposable>();
+    using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+    CancellationToken cancellationToken = cancellationTokenSource.Token;
+
     WebApplicationBuilder builder = WebApplicationHelper.CreateDefaultBuilder(args);
+    IConfiguration configuration = builder.Configuration;
 
-    BindConfigurations(builder.Configuration);
+    ParseConfigurations(configuration);
 
-    ApiDefaultServicesConfig defaultConfig = GetApiDefaultServicesConfig(
-        builder.Configuration,
-        WebApiConfig.Instance);
+    ConfigureServices(builder.Services, builder.Configuration, builder.Environment);
 
-    ConfigureServices(defaultConfig, builder.Services, builder.Configuration, builder.Environment);
-
-    ConfigureContainer(builder.Host, defaultConfig.ScanningAssemblies);
+    ConfigureContainer(builder.Host, RuntimeConfig.ScanningAssemblies);
 
     WebApplication app = builder.Build();
 
-    ConfigurePipeline(app, resources, defaultConfig.HangfireConfig);
+    ConfigurePipeline(app, resources);
 
-    await Initialize(app, defaultConfig.HangfireConfig, defaultConfig.PubSubConfig, cancellationToken);
+    await Initialize(app, cancellationToken);
 
     app.Run();
 
@@ -81,9 +79,45 @@ catch (Exception ex)
 
 // ===== METHODS =====
 
-static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
-    IConfiguration configuration,
-    WebApiConfig webConfig)
+static void ParseConfigurations(IConfiguration configuration)
+{
+    // Common
+    RuntimeConfig = GetRuntimeConfig();
+    WebConfig = configuration.GetApplicationConfigDefaults<WebApplicationConfig>();
+    ControllerConfigureAction = (opt) =>
+    {
+        opt.CacheProfiles.Add(CacheProfiles.Sample, new CacheProfile
+        {
+            VaryByQueryKeys = new[] { "*" },
+            Duration = WebConfig.ResponseCacheTtl
+        });
+    };
+
+    // DbContext
+    DbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
+
+    // Hangfire
+    HangfireConfig = configuration.GetHangfireConfigDefaults();
+    HangfireConnectionString = configuration.GetConnectionString(BackgroundConnectionNames.Hangfire);
+    HangfireMasterConnectionString = configuration.GetConnectionString(BackgroundConnectionNames.Master);
+
+    // Identity
+    IdentityConfig = configuration.GetIdentityConfigDefaults();
+    JwtConfig = configuration.GetJwtConfigDefaults();
+    SimulatedAuthConfig = configuration.GetSimulatedAuthConfigDefaults();
+    ClientsConfig = configuration.GetClientsConfigDefaults();
+
+    // Client SDK
+    ClientConfig = configuration.GetClientConfigDefaults();
+
+    // Redis
+    RedisConfig = configuration.GetRedisConfigDefaults();
+
+    // Apache Kafka
+    ApacheKafkaConfig = configuration.GetApacheKafkaConfigDefaults();
+}
+
+static RuntimeConfig GetRuntimeConfig()
 {
     // Common
     Type[] representativeTypes = new[]
@@ -93,69 +127,30 @@ static ApiDefaultServicesConfig GetApiDefaultServicesConfig(
         typeof(NetTemplate.Blog.ApplicationCore.AssemblyType)
     };
     Assembly[] assemblies = representativeTypes.Select(t => t.Assembly).ToArray();
-    Action<MvcOptions> controllerConfigureAction = (opt) =>
+
+    return new RuntimeConfig
     {
-        opt.CacheProfiles.Add(CacheProfiles.Sample, new CacheProfile
-        {
-            VaryByQueryKeys = new[] { "*" },
-            Duration = webConfig.ResponseCacheTtl
-        });
+        ScanningAssemblies = assemblies
     };
-
-    // DbContext
-    string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
-
-    // Hangfire
-    HangfireConfig hangfireConfig = configuration.GetHangfireConfigDefaults();
-    string hangfireConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Hangfire);
-    string masterConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Master);
-
-    // Identity
-    IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
-    JwtConfig jwtConfig = configuration.GetJwtConfigDefaults();
-    SimulatedAuthConfig simulatedAuthConfig = configuration.GetSimulatedAuthConfigDefaults();
-    ClientsConfig clientsConfig = configuration.GetClientsConfigDefaults();
-
-    // Client SDK
-    ClientConfig clientConfig = configuration.GetClientConfigDefaults();
-
-    // PubSubConfig
-    PubSubConfig pubSubConfig = configuration.GetPubSubConfigDefaults();
-
-    // Redis
-    RedisConfig redisConfig = configuration.GetRedisConfigDefaults();
-
-    return new ApiDefaultServicesConfig
-    {
-        ClientConfig = clientConfig,
-        ClientsConfig = clientsConfig,
-        ControllerConfigureAction = controllerConfigureAction,
-        DbContextConnectionString = dbContextConnectionString,
-        DbContextDebugEnabled = webConfig.DbContextDebugEnabled,
-        HangfireConfig = hangfireConfig,
-        HangfireConnectionString = hangfireConnStr,
-        HangfireMasterConnectionString = masterConnStr,
-        IdentityConfig = identityConfig,
-        JwtConfig = jwtConfig,
-        SimulatedAuthConfig = simulatedAuthConfig,
-        PubSubConfig = pubSubConfig,
-        ScanningAssemblies = assemblies,
-        UseRedis = webConfig.UseRedis,
-        RedisConfig = redisConfig
-    };
-};
-
-static void BindConfigurations(IConfiguration configuration)
-{
-    configuration.GetSection(CommonConfigurationSections.App).Bind(WebApiConfig.Instance);
 }
 
-static void ConfigureServices(ApiDefaultServicesConfig defaultConfig,
-    IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
+static void ConfigureServices(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
 {
-    services
-        .AddInfrastructureServices(defaultConfig, configuration, env.IsProduction())
-        .AddApiDefaultServices<MainDbContext>(defaultConfig, env);
+    services.AddInfrastructureServices(configuration, env.IsProduction(),
+        RuntimeConfig, WebConfig,
+        DbContextConnectionString,
+        IdentityConfig,
+        HangfireConfig, HangfireConnectionString, HangfireMasterConnectionString,
+        RedisConfig,
+        ClientConfig,
+        ApacheKafkaConfig);
+
+    services.AddApiServices(env,
+        WebConfig,
+        JwtConfig,
+        ClientsConfig,
+        SimulatedAuthConfig,
+        ControllerConfigureAction);
 }
 
 static void ConfigureContainer(IHostBuilder hostBuilder,
@@ -167,9 +162,7 @@ static void ConfigureContainer(IHostBuilder hostBuilder,
     });
 }
 
-static void ConfigurePipeline(WebApplication app,
-    List<IDisposable> resources,
-    HangfireConfig hangfireConfig)
+static void ConfigurePipeline(WebApplication app, List<IDisposable> resources)
 {
     using IServiceScope scope = app.Services.CreateScope();
     IServiceProvider serviceProvider = scope.ServiceProvider;
@@ -223,7 +216,7 @@ static void ConfigurePipeline(WebApplication app,
 
     app.MapControllers();
 
-    if (hangfireConfig.UseDashboard && !app.Environment.IsProduction())
+    if (HangfireConfig.UseDashboard && !app.Environment.IsProduction())
     {
         app.MapHangfireDashboard();
     }
@@ -233,18 +226,13 @@ static void ConfigurePipeline(WebApplication app,
 }
 
 static async Task Initialize(WebApplication app,
-    HangfireConfig hangfireConfig,
-    PubSubConfig pubSubConfig,
     CancellationToken cancellationToken = default)
 {
     using IServiceScope serviceScope = app.Services.CreateScope();
 
-    dynamic dynamicData = new ExpandoObject();
-    dynamicData.HangfireConfig = hangfireConfig;
-    dynamicData.PubSubConfig = pubSubConfig;
-
     IMediator mediator = serviceScope.ServiceProvider.GetRequiredService<IMediator>();
-    await mediator.Publish(new ApplicationStartingEvent(dynamicData), cancellationToken);
+
+    await mediator.Publish(new ApplicationStartingEvent(), cancellationToken);
 }
 
 static void OnApplicationStarted()
@@ -254,4 +242,22 @@ static void OnApplicationStarted()
 static void OnApplicationStopped(IEnumerable<IDisposable> resources)
 {
     InfrastructureHelper.CleanResources(resources);
+}
+
+partial class Program
+{
+    static RuntimeConfig RuntimeConfig { get; set; }
+    static WebApplicationConfig WebConfig { get; set; }
+    static Action<MvcOptions> ControllerConfigureAction { get; set; }
+    static string DbContextConnectionString { get; set; }
+    static HangfireConfig HangfireConfig { get; set; }
+    static string HangfireConnectionString { get; set; }
+    static string HangfireMasterConnectionString { get; set; }
+    static IdentityConfig IdentityConfig { get; set; }
+    static JwtConfig JwtConfig { get; set; }
+    static SimulatedAuthConfig SimulatedAuthConfig { get; set; }
+    static ClientsConfig ClientsConfig { get; set; }
+    static ClientConfig ClientConfig { get; set; }
+    static RedisConfig RedisConfig { get; set; }
+    static ApacheKafkaConfig ApacheKafkaConfig { get; set; }
 }

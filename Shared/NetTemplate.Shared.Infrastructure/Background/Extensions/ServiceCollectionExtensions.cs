@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.Extensions.DependencyInjection;
+using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.Infrastructure.Background.Filters;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.Background.Utils;
@@ -46,6 +47,8 @@ namespace NetTemplate.Shared.Infrastructure.Background.Extensions
                 // [IMPORTANT] for job graceful shutdown
                 opt.CancellationCheckInterval = TimeSpan.FromSeconds(5);
             });
+
+            services.ConfigureCopyableConfig(hangfireConfig);
 
             return services;
         }

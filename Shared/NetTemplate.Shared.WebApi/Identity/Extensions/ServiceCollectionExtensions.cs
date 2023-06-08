@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.ApplicationCore.Identity.Interfaces;
 using NetTemplate.Shared.WebApi.Identity.Implementations;
 using NetTemplate.Shared.WebApi.Identity.Models;
@@ -41,6 +42,8 @@ namespace NetTemplate.Shared.WebApi.Identity.Extensions
                             opt.UserCode = simulatedAuthConfig.UserCode;
                             opt.Claims = simulatedAuthConfig.Claims;
                         });
+
+                services.ConfigureCopyableConfig(simulatedAuthConfig);
             }
             else
             {
@@ -60,6 +63,9 @@ namespace NetTemplate.Shared.WebApi.Identity.Extensions
                         };
                     });
             }
+
+            services.ConfigureCopyableConfig(jwtConfig)
+                .ConfigureCopyableConfig(clientsConfig);
 
             return services;
         }

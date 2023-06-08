@@ -16,9 +16,16 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User
         {
         }
 
+        public async Task<bool> Exists(string userCode, CancellationToken cancellationToken = default)
+        {
+            bool exists = await DbSet.ByCode(userCode).AnyAsync();
+
+            return exists;
+        }
+
         public async Task<UserPartialEntity> FindByCode(string userCode, CancellationToken cancellationToken = default)
         {
-            UserPartialEntity entity = await DbSet.Where(e => e.UserCode == userCode).FirstOrDefaultAsync(cancellationToken);
+            UserPartialEntity entity = await DbSet.ByCode(userCode).FirstOrDefaultAsync(cancellationToken);
 
             if (entity != null)
             {

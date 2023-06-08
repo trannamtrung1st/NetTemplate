@@ -17,5 +17,6 @@ namespace NetTemplate.Blog.ApplicationCore.User
             CancellationToken cancellationToken = default);
 
         Task<UserPartialEntity> FindByCode(string userCode, CancellationToken cancellationToken = default);
+        Task<bool> Exists(string userCode, CancellationToken cancellationToken = default);
     }
 }

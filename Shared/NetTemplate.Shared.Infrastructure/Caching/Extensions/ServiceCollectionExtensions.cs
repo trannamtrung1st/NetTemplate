@@ -11,14 +11,14 @@ namespace NetTemplate.Shared.Infrastructure.Caching.Extensions
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddCaching(this IServiceCollection services,
-            bool useRedis = false, RedisConfig redisConfig = null)
+            RedisConfig redisConfig = null)
         {
             return services.AddMemoryCache()
                 .AddEasyCaching(options =>
                 {
                     options.UseInMemory(name: CachingProviders.InMemory);
 
-                    if (useRedis)
+                    if (redisConfig?.Enabled == true)
                     {
                         options.WithJson(name: CachingProviders.Redis);
 

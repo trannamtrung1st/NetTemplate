@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using NetTemplate.Shared.WebApi.Common.Filters;
 using NetTemplate.Shared.WebApi.Common.Middlewares;
-using NetTemplate.Shared.WebApi.Common.Models;
 using NetTemplate.Shared.WebApi.Identity.Extensions;
+using NetTemplate.Shared.WebApi.Identity.Models;
 using NetTemplate.Shared.WebApi.Swagger.Extensions;
 using Newtonsoft.Json.Converters;
 using VersioningConstants = NetTemplate.Shared.WebApi.Common.Constants.Versioning;
@@ -55,8 +55,11 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
         }
 
         public static IServiceCollection AddApiDefaultServices<T>(this IServiceCollection services,
-            ApiDefaultServicesConfig config,
-            IWebHostEnvironment environment) where T : DbContext
+            IWebHostEnvironment environment,
+            JwtConfig jwtConfig,
+            ClientsConfig clientsConfig,
+            SimulatedAuthConfig simulatedAuthConfig,
+            Action<MvcOptions> controllerConfigureAction) where T : DbContext
         {
             bool isProduction = environment.IsProduction();
 
@@ -73,13 +76,13 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
 
             services
                 .AddRequestCurrentUserProvider()
-                .AddAuthenticationDefaults(config.JwtConfig, config.ClientsConfig, environment, config.SimulatedAuthConfig)
+                .AddAuthenticationDefaults(jwtConfig, clientsConfig, environment, simulatedAuthConfig)
                 .AddAuthorizationDefaults();
 
             services
                 .AddEndpointsApiExplorer()
                 .ConfigureApiBehavior()
-                .AddControllersDefaults(config.ControllerConfigureAction)
+                .AddControllersDefaults(controllerConfigureAction)
                 .AddNewtonsoftJson(opt =>
                 {
                     opt.SerializerSettings.Converters.Add(new StringEnumConverter());

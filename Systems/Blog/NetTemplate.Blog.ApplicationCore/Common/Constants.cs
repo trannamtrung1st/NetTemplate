@@ -12,7 +12,6 @@ namespace NetTemplate.Blog.ApplicationCore.Common
         public static class ConfigurationSections
         {
             public const string Views = nameof(ViewsConfig);
-            public const string App = "AppConfig";
         }
     }
 }

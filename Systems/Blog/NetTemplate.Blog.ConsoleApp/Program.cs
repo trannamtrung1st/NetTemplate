@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,20 +14,19 @@ using NetTemplate.Shared.ClientSDK.Common.Models;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.Common.Extensions;
-using NetTemplate.Shared.Infrastructure.Common.Models;
 using NetTemplate.Shared.Infrastructure.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
-using NetTemplate.Shared.Infrastructure.PubSub.Extensions;
-using NetTemplate.Shared.Infrastructure.PubSub.Models;
+using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions;
+using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 using System.Reflection;
 using static NetTemplate.Shared.Infrastructure.Common.Constants;
 using BackgroundConnectionNames = NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames;
-using CommonConfigurationSections = NetTemplate.Blog.ApplicationCore.Common.Constants.ConfigurationSections;
+
 
 // ===== APPLICATION START =====
 
-using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 List<IDisposable> resources = new List<IDisposable>();
+using CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 CancellationToken cancellationToken = cancellationTokenSource.Token;
 
 IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
@@ -36,31 +36,75 @@ IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
     .AddCommandLine(args)
     .AddUserSecrets<Program>();
 
-InfrastructureConfig infrasConfig = new InfrastructureConfig();
 IConfigurationRoot configuration = configurationBuilder.Build();
 IServiceCollection services = new ServiceCollection();
 ContainerBuilder containerBuilder = new ContainerBuilder();
 
-BindConfigurations(configuration, infrasConfig);
+ParseConfigurations(configuration);
 
-DefaultServicesConfig defaultConfig = GetDefaultServicesConfig(
-    configuration,
-    infrasConfig);
+ConfigureServices(services, configuration);
 
-ConfigureServices(defaultConfig, services, configuration);
-
-IContainer container = ConfigureContainer(containerBuilder, services, defaultConfig.ScanningAssemblies);
+IContainer container = ConfigureContainer(containerBuilder, services);
 
 IServiceProvider serviceProvider = new AutofacServiceProvider(container);
 
-await InsertLargeData.Run(serviceProvider, cancellationToken);
-
+await Start(serviceProvider, cancellationToken);
 
 // ===== METHODS =====
 
-static DefaultServicesConfig GetDefaultServicesConfig(
-    IConfiguration configuration,
-    InfrastructureConfig infrasConfig)
+static async Task Start(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
+{
+    string option = string.Empty;
+
+    while (!string.Equals(option, "E", StringComparison.OrdinalIgnoreCase))
+    {
+        Console.Clear();
+        Console.WriteLine("1. Insert large data");
+        Console.WriteLine("2. Simulate identity user created");
+        Console.WriteLine("E. Exit");
+        Console.Write("Choose: ");
+        option = Console.ReadLine()?.Trim() ?? string.Empty;
+
+        switch (option)
+        {
+            case "1": await InsertLargeData.Run(serviceProvider, cancellationToken); break;
+
+            case "2": await SimulateIdentityUserCreated.Run(serviceProvider, cancellationToken); break;
+        }
+
+        Console.WriteLine("Press enter to continue!");
+        Console.ReadLine();
+    }
+}
+
+static void ParseConfigurations(IConfiguration configuration)
+{
+    // Common
+    RuntimeConfig = GetRuntimeConfig();
+    AppConfig = configuration.GetApplicationConfigDefaults<ApplicationConfig>();
+
+    // DbContext
+    DbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
+
+    // Hangfire
+    HangfireConfig = configuration.GetHangfireConfigDefaults();
+    HangfireConnectionString = configuration.GetConnectionString(BackgroundConnectionNames.Hangfire);
+    HangfireMasterConnectionString = configuration.GetConnectionString(BackgroundConnectionNames.Master);
+
+    // Identity
+    IdentityConfig = configuration.GetIdentityConfigDefaults();
+
+    // Client SDK
+    ClientConfig = configuration.GetClientConfigDefaults();
+
+    // Redis
+    RedisConfig = configuration.GetRedisConfigDefaults();
+
+    // Apache Kafka
+    ApacheKafkaConfig = configuration.GetApacheKafkaConfigDefaults();
+}
+
+static RuntimeConfig GetRuntimeConfig()
 {
     // Common
     Type[] representativeTypes = new[]
@@ -70,62 +114,47 @@ static DefaultServicesConfig GetDefaultServicesConfig(
     };
     Assembly[] assemblies = representativeTypes.Select(t => t.Assembly).ToArray();
 
-    // DbContext
-    string dbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
-
-    // Hangfire
-    HangfireConfig hangfireConfig = configuration.GetHangfireConfigDefaults();
-    string hangfireConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Hangfire);
-    string masterConnStr = configuration.GetConnectionString(BackgroundConnectionNames.Master);
-
-    // Identity
-    IdentityConfig identityConfig = configuration.GetIdentityConfigDefaults();
-
-    // Client SDK
-    ClientConfig clientConfig = configuration.GetClientConfigDefaults();
-
-    // PubSubConfig
-    PubSubConfig pubSubConfig = configuration.GetPubSubConfigDefaults();
-
-    // Redis
-    RedisConfig redisConfig = configuration.GetRedisConfigDefaults();
-
-    return new DefaultServicesConfig
+    return new RuntimeConfig
     {
-        ClientConfig = clientConfig,
-        DbContextConnectionString = dbContextConnectionString,
-        DbContextDebugEnabled = infrasConfig.DbContextDebugEnabled,
-        HangfireConfig = hangfireConfig,
-        HangfireConnectionString = hangfireConnStr,
-        HangfireMasterConnectionString = masterConnStr,
-        IdentityConfig = identityConfig,
-        PubSubConfig = pubSubConfig,
-        ScanningAssemblies = assemblies,
-        UseRedis = infrasConfig.UseRedis,
-        RedisConfig = redisConfig
+        ScanningAssemblies = assemblies
     };
-};
-
-static void BindConfigurations(IConfiguration configuration,
-    InfrastructureConfig infrasConfig)
-{
-    configuration.GetSection(CommonConfigurationSections.App).Bind(infrasConfig);
 }
 
-static void ConfigureServices(DefaultServicesConfig defaultConfig,
-    IServiceCollection services, IConfiguration configuration)
+static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
-    services
-        .AddInfrastructureServices(defaultConfig, configuration, isProduction: false);
+    services.AddSingleton(configuration);
+
+    services.AddInfrastructureServices(configuration, isProduction: false,
+        RuntimeConfig, AppConfig,
+        DbContextConnectionString,
+        IdentityConfig,
+        HangfireConfig, HangfireConnectionString, HangfireMasterConnectionString,
+        RedisConfig,
+        ClientConfig,
+        ApacheKafkaConfig);
 }
 
 static IContainer ConfigureContainer(ContainerBuilder containerBuilder,
-    IServiceCollection services,
-    Assembly[] scanningAssemblies)
+    IServiceCollection services)
 {
-    containerBuilder.ConfigureContainerDefaults(scanningAssemblies);
+    containerBuilder.ConfigureContainerDefaults(RuntimeConfig.ScanningAssemblies);
 
     containerBuilder.Populate(services);
 
     return containerBuilder.Build();
+}
+
+partial class Program
+{
+    static RuntimeConfig RuntimeConfig { get; set; }
+    static ApplicationConfig AppConfig { get; set; }
+    static Action<MvcOptions> ControllerConfigureAction { get; set; }
+    static string DbContextConnectionString { get; set; }
+    static HangfireConfig HangfireConfig { get; set; }
+    static string HangfireConnectionString { get; set; }
+    static string HangfireMasterConnectionString { get; set; }
+    static IdentityConfig IdentityConfig { get; set; }
+    static ClientConfig ClientConfig { get; set; }
+    static RedisConfig RedisConfig { get; set; }
+    static ApacheKafkaConfig ApacheKafkaConfig { get; set; }
 }

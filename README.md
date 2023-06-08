@@ -44,6 +44,7 @@
    - Pub/Sub
    - Caching
    - Logging
+   - RateLimiting
    - AspectOriented
    - Persistence
      - EntityFramework

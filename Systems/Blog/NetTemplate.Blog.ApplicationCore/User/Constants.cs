@@ -6,5 +6,10 @@
         {
             public const string SyncUsers = nameof(SyncUsers);
         }
+
+        public static class Messages
+        {
+            public const string UserAlreadyExists = "User already exists";
+        }
     }
 }
