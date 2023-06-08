@@ -39,6 +39,9 @@ namespace NetTemplate.ApacheKafka.Implementations
             offsetStoreInit = false;
         }
 
+        protected abstract string[] Topics { get; }
+        protected abstract string ConsumerName { get; }
+
         private bool _enabled;
         public virtual bool Enabled
         {
@@ -158,9 +161,6 @@ namespace NetTemplate.ApacheKafka.Implementations
                 consumer.Close();
             }
         }
-
-        protected abstract string[] Topics { get; }
-        protected abstract string ConsumerName { get; }
 
         protected virtual CompetingConsumerConfig GetConfig()
         {
