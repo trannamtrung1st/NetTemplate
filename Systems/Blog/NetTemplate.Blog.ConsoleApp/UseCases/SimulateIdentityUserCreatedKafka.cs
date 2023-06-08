@@ -2,15 +2,15 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using NetTemplate.ApacheKafka.Extensions;
+using NetTemplate.ApacheKafka.Models;
 using NetTemplate.ApacheKafka.Utils;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 using TopicNames = NetTemplate.Blog.Infrastructure.Integrations.Identity.Constants.TopicNames;
 
 namespace NetTemplate.Blog.ConsoleApp.UseCases
 {
-    public static class SimulateIdentityUserCreated
+    public static class SimulateIdentityUserCreatedKafka
     {
         public static async Task Run(IServiceProvider provider, CancellationToken cancellationToken = default)
         {

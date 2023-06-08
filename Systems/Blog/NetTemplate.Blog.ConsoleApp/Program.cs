@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetTemplate.ApacheKafka.Extensions;
+using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Blog.ConsoleApp.UseCases;
 using NetTemplate.Blog.Infrastructure.Common.Extensions;
 using NetTemplate.Blog.Infrastructure.Common.Models;
@@ -16,8 +18,6 @@ using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.Common.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 using System.Reflection;
 using static NetTemplate.Shared.Infrastructure.Common.Constants;
 using BackgroundConnectionNames = NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames;
@@ -60,7 +60,8 @@ static async Task Start(IServiceProvider serviceProvider, CancellationToken canc
     {
         Console.Clear();
         Console.WriteLine("1. Insert large data");
-        Console.WriteLine("2. Simulate identity user created");
+        Console.WriteLine("2. Simulate identity user created (Kafka)");
+        Console.WriteLine("3. Simulate identity user created (Redis)");
         Console.WriteLine("E. Exit");
         Console.Write("Choose: ");
         option = Console.ReadLine()?.Trim() ?? string.Empty;
@@ -69,7 +70,9 @@ static async Task Start(IServiceProvider serviceProvider, CancellationToken canc
         {
             case "1": await InsertLargeData.Run(serviceProvider, cancellationToken); break;
 
-            case "2": await SimulateIdentityUserCreated.Run(serviceProvider, cancellationToken); break;
+            case "2": await SimulateIdentityUserCreatedKafka.Run(serviceProvider, cancellationToken); break;
+
+            case "3": await SimulateIdentityUserCreatedRedis.Run(serviceProvider, cancellationToken); break;
         }
 
         Console.WriteLine("Press enter to continue!");
@@ -99,6 +102,7 @@ static void ParseConfigurations(IConfiguration configuration)
 
     // Redis
     RedisConfig = configuration.GetRedisConfigDefaults();
+    RedisPubSubConfig = configuration.GetRedisPubSubConfigDefaults();
 
     // Apache Kafka
     ApacheKafkaConfig = configuration.GetApacheKafkaConfigDefaults();
@@ -129,7 +133,7 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
         DbContextConnectionString,
         IdentityConfig,
         HangfireConfig, HangfireConnectionString, HangfireMasterConnectionString,
-        RedisConfig,
+        RedisConfig, RedisPubSubConfig,
         ClientConfig,
         ApacheKafkaConfig);
 }
@@ -157,4 +161,5 @@ partial class Program
     static ClientConfig ClientConfig { get; set; }
     static RedisConfig RedisConfig { get; set; }
     static ApacheKafkaConfig ApacheKafkaConfig { get; set; }
+    static RedisPubSubConfig RedisPubSubConfig { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models
+namespace NetTemplate.ApacheKafka.Models
 {
     public class CompetingConsumerConfig : ConsumerConfig, ICloneable
     {

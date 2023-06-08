@@ -3,12 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NetTemplate.ApacheKafka.Extensions;
+using NetTemplate.ApacheKafka.Interfaces;
+using NetTemplate.ApacheKafka.Models;
 using NetTemplate.ApacheKafka.Utils;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Interfaces;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 
-namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations
+namespace NetTemplate.ApacheKafka.Implementations
 {
     public abstract class CompetingThreadConsumer<TConsumer, TKey, TValue> : IGeneralConsumer
     {

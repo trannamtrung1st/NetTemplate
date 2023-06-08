@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
+using NetTemplate.ApacheKafka.Models;
 
-namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions
+namespace NetTemplate.ApacheKafka.Extensions
 {
     public static class ConfigurationExtensions
     {

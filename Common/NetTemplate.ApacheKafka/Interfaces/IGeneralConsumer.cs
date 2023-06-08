@@ -1,4 +1,4 @@
-﻿namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Interfaces
+﻿namespace NetTemplate.ApacheKafka.Interfaces
 {
     public interface IGeneralConsumer
     {

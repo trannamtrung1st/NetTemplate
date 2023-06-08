@@ -3,7 +3,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using NetTemplate.Common.Reflection;
-using NetTemplate.Shared.WebApi.Common.Extensions;
 using NetTemplate.Shared.WebApi.Common.Models;
 using NetTemplate.Shared.WebApi.Identity.Schemes.ClientAuthentication;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -13,18 +12,18 @@ namespace NetTemplate.Shared.WebApi.Swagger.Options
     public class ConfigureSwaggerGenOptions : IConfigureNamedOptions<SwaggerGenOptions>
     {
         private readonly IApiVersionDescriptionProvider _provider;
-        private readonly IConfiguration _configuration;
+        private readonly IOptions<WebInfoConfig> _webInfoOptions;
 
         public ConfigureSwaggerGenOptions(IApiVersionDescriptionProvider provider,
-            IConfiguration configuration)
+            IOptions<WebInfoConfig> webInfoOptions)
         {
             _provider = provider;
-            _configuration = configuration;
+            _webInfoOptions = webInfoOptions;
         }
 
         public void Configure(SwaggerGenOptions options)
         {
-            WebInfoConfig webInfoConfig = _configuration.GetWebInfoConfigDefaults();
+            WebInfoConfig webInfoConfig = _webInfoOptions.Value;
 
             foreach (var description in _provider.ApiVersionDescriptions)
             {

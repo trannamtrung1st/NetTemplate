@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using StackExchange.Redis;
 
-namespace NetTemplate.Shared.Infrastructure.MemoryStore.Implementations
+namespace NetTemplate.Redis.Implementations
 {
     public class RedisMemoryStore : IMemoryStore
     {

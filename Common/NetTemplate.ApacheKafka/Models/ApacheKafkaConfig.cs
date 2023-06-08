@@ -2,7 +2,7 @@
 using Confluent.Kafka.Admin;
 using NetTemplate.Common.Objects;
 
-namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models
+namespace NetTemplate.ApacheKafka.Models
 {
     public class ApacheKafkaConfig : ICopyable<ApacheKafkaConfig>
     {

@@ -1,9 +1,9 @@
 ﻿using Confluent.Kafka;
+using NetTemplate.ApacheKafka.Interfaces;
+using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Common.MemoryStore.Interfaces;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Interfaces;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 
-namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations
+namespace NetTemplate.ApacheKafka.Implementations
 {
     public class MemoryOffsetStore : IExternalOffsetStore
     {

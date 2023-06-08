@@ -3,13 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NetTemplate.ApacheKafka.Implementations;
+using NetTemplate.ApacheKafka.Interfaces;
+using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Blog.ApplicationCore.User.Commands.SyncNewUser;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Interfaces;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
-using ConsumerNames = NetTemplate.Blog.Infrastructure.Domains.User.Constants.ConsumerNames;
+using ListenerNames = NetTemplate.Blog.Infrastructure.Domains.User.Constants.ListenerNames;
 using TopicNames = NetTemplate.Blog.Infrastructure.Integrations.Identity.Constants.TopicNames;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.User.Consumers
@@ -34,7 +34,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User.Consumers
         }
 
         protected override string[] Topics => new[] { TopicNames.IdentityUserCreated };
-        protected override string ConsumerName => ConsumerNames.SyncNewUser;
+        protected override string ConsumerName => ListenerNames.SyncNewUser;
 
         protected override async Task Handle(string topic, string key, IdentityUserCreatedEventModel value, IServiceProvider provider, CancellationToken cancellationToken = default)
         {

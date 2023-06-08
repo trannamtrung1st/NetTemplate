@@ -1,6 +1,6 @@
-﻿using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
+﻿using NetTemplate.ApacheKafka.Models;
 
-namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka
+namespace NetTemplate.ApacheKafka
 {
     public static class Constants
     {

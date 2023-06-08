@@ -1,8 +1,8 @@
 ﻿using Confluent.Kafka;
 using Confluent.Kafka.Admin;
 using Microsoft.Extensions.Options;
+using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Blog.Infrastructure.Common.Interfaces;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 
 namespace NetTemplate.Blog.Infrastructure.Common.Implementations
 {

@@ -4,6 +4,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
+using NetTemplate.ApacheKafka.Extensions;
+using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Blog.Infrastructure.Common.Extensions;
 using NetTemplate.Blog.Infrastructure.Common.Models;
 using NetTemplate.Blog.Infrastructure.Persistence;
@@ -20,8 +22,6 @@ using NetTemplate.Shared.Infrastructure.Common.Extensions;
 using NetTemplate.Shared.Infrastructure.Common.Utils;
 using NetTemplate.Shared.Infrastructure.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 using NetTemplate.Shared.WebApi.Common.Extensions;
 using NetTemplate.Shared.WebApi.Common.Utils;
 using NetTemplate.Shared.WebApi.Identity.Extensions;
@@ -112,6 +112,7 @@ static void ParseConfigurations(IConfiguration configuration)
 
     // Redis
     RedisConfig = configuration.GetRedisConfigDefaults();
+    RedisPubSubConfig = configuration.GetRedisPubSubConfigDefaults();
 
     // Apache Kafka
     ApacheKafkaConfig = configuration.GetApacheKafkaConfigDefaults();
@@ -141,7 +142,7 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
         DbContextConnectionString,
         IdentityConfig,
         HangfireConfig, HangfireConnectionString, HangfireMasterConnectionString,
-        RedisConfig,
+        RedisConfig, RedisPubSubConfig,
         ClientConfig,
         ApacheKafkaConfig);
 
@@ -260,4 +261,5 @@ partial class Program
     static ClientConfig ClientConfig { get; set; }
     static RedisConfig RedisConfig { get; set; }
     static ApacheKafkaConfig ApacheKafkaConfig { get; set; }
+    static RedisPubSubConfig RedisPubSubConfig { get; set; }
 }
