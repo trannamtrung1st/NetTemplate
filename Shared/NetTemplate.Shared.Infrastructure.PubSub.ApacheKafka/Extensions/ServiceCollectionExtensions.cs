@@ -23,6 +23,6 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions
         }
 
         public static IServiceCollection AddMemoryOffsetStore(this IServiceCollection services)
-            => services.AddScoped<IOffsetStore, MemoryOffsetStore>();
+            => services.AddScoped<IExternalOffsetStore, MemoryOffsetStore>();
     }
 }

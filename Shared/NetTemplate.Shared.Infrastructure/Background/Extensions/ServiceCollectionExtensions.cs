@@ -40,13 +40,16 @@ namespace NetTemplate.Shared.Infrastructure.Background.Extensions
                     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170);
             });
 
-            services.AddHangfireServer(opt =>
+            if (hangfireConfig.StartServer)
             {
-                opt.ServerName = hangfireConfig.ServerName;
+                services.AddHangfireServer(opt =>
+                {
+                    opt.ServerName = hangfireConfig.ServerName;
 
-                // [IMPORTANT] for job graceful shutdown
-                opt.CancellationCheckInterval = TimeSpan.FromSeconds(5);
-            });
+                    // [IMPORTANT] for job graceful shutdown
+                    opt.CancellationCheckInterval = TimeSpan.FromSeconds(5);
+                });
+            }
 
             services.ConfigureCopyableConfig(hangfireConfig);
 

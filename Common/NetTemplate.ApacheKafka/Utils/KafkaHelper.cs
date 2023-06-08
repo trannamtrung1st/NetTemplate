@@ -28,7 +28,7 @@ namespace NetTemplate.ApacheKafka.Utils
 
             Type valueType = typeof(TValue);
 
-            if (valueType.IsClass || valueType.IsInterface)
+            if (valueType != typeof(string) && (valueType.IsClass || valueType.IsInterface))
             {
                 builder.SetValueDeserializer(new SimpleJsonSerdes<TValue>());
             }

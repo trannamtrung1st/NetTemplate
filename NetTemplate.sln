@@ -44,7 +44,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{7092AF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.ApacheKafka", "Common\NetTemplate.ApacheKafka\NetTemplate.ApacheKafka.csproj", "{AD740E04-B99F-4573-9A8F-0F597FDFECBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka", "Shared\NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka\NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.csproj", "{7F45CD0D-6313-42A3-8ED1-EB84BC50855A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka", "Shared\NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka\NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.csproj", "{7F45CD0D-6313-42A3-8ED1-EB84BC50855A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTemplate.Blog.ConsumersWorker", "Systems\Blog\NetTemplate.Blog.ConsumersWorker\NetTemplate.Blog.ConsumersWorker.csproj", "{48B38A12-08C5-45BD-9D37-4A8AA5102C3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -108,6 +110,10 @@ Global
 		{7F45CD0D-6313-42A3-8ED1-EB84BC50855A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F45CD0D-6313-42A3-8ED1-EB84BC50855A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F45CD0D-6313-42A3-8ED1-EB84BC50855A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48B38A12-08C5-45BD-9D37-4A8AA5102C3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48B38A12-08C5-45BD-9D37-4A8AA5102C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48B38A12-08C5-45BD-9D37-4A8AA5102C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48B38A12-08C5-45BD-9D37-4A8AA5102C3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +136,7 @@ Global
 		{7092AFBA-A748-4F3D-AF59-9B6BEA8DBF53} = {6C99D2B1-F5FF-455A-BE67-BD8ADD1FD4E6}
 		{AD740E04-B99F-4573-9A8F-0F597FDFECBF} = {B43C91A4-83AC-4DE1-BC96-52D35BDBB3FA}
 		{7F45CD0D-6313-42A3-8ED1-EB84BC50855A} = {34C75EB4-F01E-444C-A48E-D4E863BDC178}
+		{48B38A12-08C5-45BD-9D37-4A8AA5102C3E} = {6C99D2B1-F5FF-455A-BE67-BD8ADD1FD4E6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2119FE8C-EDF8-4B3A-B6DC-A62DC2C39512}

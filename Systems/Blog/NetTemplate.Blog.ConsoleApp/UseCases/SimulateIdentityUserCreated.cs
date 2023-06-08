@@ -61,9 +61,11 @@ namespace NetTemplate.Blog.ConsoleApp.UseCases
 
         static CloneableProducerConfig GetConfig(IConfiguration configuration, CloneableProducerConfig commonConfig)
         {
+            IConfigurationSection section = configuration.GetProducerConfig("SimulateIdentityUserCreated");
+
             CloneableProducerConfig producerConfig = (CloneableProducerConfig)commonConfig.Clone();
 
-            configuration.BindProducerConfig("SimulateIdentityUserCreated", producerConfig);
+            section.Bind(producerConfig);
 
             return producerConfig;
         }

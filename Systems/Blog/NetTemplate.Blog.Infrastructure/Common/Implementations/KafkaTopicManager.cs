@@ -26,7 +26,9 @@ namespace NetTemplate.Blog.Infrastructure.Common.Implementations
 
             Metadata metadata = _adminClient.GetMetadata(TimeSpan.FromSeconds(10));
 
-            string[] topicNames = metadata.Topics.Select(t => t.Topic).ToArray();
+            string[] topicNames = metadata.Topics
+                .Where(t => !t.Topic.StartsWith(Constants.BuiltInTopicPrefix))
+                .Select(t => t.Topic).ToArray();
 
             TopicSpecification[] newTopicSpecs = configuredTopics.Where(t => !topicNames.Contains(t.Name)).ToArray();
 
@@ -41,6 +43,11 @@ namespace NetTemplate.Blog.Infrastructure.Common.Implementations
             {
                 await _adminClient.DeleteTopicsAsync(removedTopics);
             }
+        }
+
+        static class Constants
+        {
+            public const string BuiltInTopicPrefix = "__";
         }
     }
 }

@@ -16,7 +16,7 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models
         {
         }
 
-        public bool UseOffsetStore { get; set; }
+        public bool UseExternalOffsetStore { get; set; }
         public int DefaultRetryAfter { get; set; }
         public int ConsumerCount { get; set; }
 
@@ -26,7 +26,7 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models
 
             return new CompetingConsumerConfig(config)
             {
-                UseOffsetStore = UseOffsetStore,
+                UseExternalOffsetStore = UseExternalOffsetStore,
                 DefaultRetryAfter = DefaultRetryAfter,
                 ConsumerCount = ConsumerCount,
             };

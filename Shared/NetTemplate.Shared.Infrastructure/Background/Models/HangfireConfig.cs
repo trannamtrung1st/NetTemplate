@@ -6,6 +6,7 @@ namespace NetTemplate.Shared.Infrastructure.Background.Models
     public class HangfireConfig : ICopyable<HangfireConfig>
     {
         public string ServerName { get; set; }
+        public bool StartServer { get; set; }
         public bool UseDashboard { get; set; }
         public string TimeZone { get; set; }
         public string DatabaseName { get; set; }

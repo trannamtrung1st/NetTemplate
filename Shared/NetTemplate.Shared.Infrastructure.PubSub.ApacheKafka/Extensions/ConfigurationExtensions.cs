@@ -8,10 +8,10 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions
         public static ApacheKafkaConfig GetApacheKafkaConfigDefaults(this IConfiguration configuration)
             => configuration.GetSection(Constants.ConfigurationSections.ApacheKafka).Get<ApacheKafkaConfig>();
 
-        public static void BindConsumerConfig(this IConfiguration configuration, string name, object config)
-            => configuration.GetSection(Constants.ConfigurationSections.GetConsumerSection(name)).Bind(config);
+        public static IConfigurationSection GetConsumerConfig(this IConfiguration configuration, string name)
+            => configuration.GetSection(Constants.ConfigurationSections.GetConsumerSection(name));
 
-        public static void BindProducerConfig(this IConfiguration configuration, string name, object config)
-            => configuration.GetSection(Constants.ConfigurationSections.GetProducerSection(name)).Bind(config);
+        public static IConfigurationSection GetProducerConfig(this IConfiguration configuration, string name)
+            => configuration.GetSection(Constants.ConfigurationSections.GetProducerSection(name));
     }
 }

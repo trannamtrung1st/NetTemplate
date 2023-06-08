@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NetTemplate.ApacheKafka.Utils;
+using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions;
 using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Interfaces;
 using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 
@@ -10,35 +12,58 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations
 {
     public abstract class CompetingThreadConsumer<TConsumer, TKey, TValue> : IGeneralConsumer
     {
+        private IConfigurationSection _consumerConfigurationSection;
+
         protected readonly IServiceProvider provider;
-        protected readonly IOffsetStore offsetStore;
+        protected readonly IExternalOffsetStore externalOffsetStore;
         protected readonly IConfiguration configuration;
         protected readonly ILogger<TConsumer> logger;
-        protected readonly SemaphoreSlim offsetLock;
-        protected bool offsetInit;
+        protected readonly IOptions<ApacheKafkaConfig> kafkaOptions;
+        protected readonly SemaphoreSlim offsetStoreLock;
+        protected bool offsetStoreInit;
 
         public CompetingThreadConsumer(
             IServiceProvider provider,
-            IOffsetStore offsetStore,
+            IExternalOffsetStore externalOffsetStore,
             IConfiguration configuration,
+            IOptions<ApacheKafkaConfig> kafkaOptions,
             ILogger<TConsumer> logger)
         {
             this.provider = provider;
-            this.offsetStore = offsetStore;
+            this.externalOffsetStore = externalOffsetStore;
             this.configuration = configuration;
+            this.kafkaOptions = kafkaOptions;
             this.logger = logger;
 
-            offsetLock = new SemaphoreSlim(1);
-            offsetInit = false;
+            offsetStoreLock = new SemaphoreSlim(1);
+            offsetStoreInit = false;
         }
 
-        public Task Start(CompetingConsumerConfig commonConfig, CancellationToken cancellationToken = default)
+        private bool _enabled;
+        public virtual bool Enabled
         {
-            CompetingConsumerConfig consumerConfig = GetConfig(commonConfig);
-
-            for (int i = 1; i <= consumerConfig.ConsumerCount; i++)
+            get
             {
-                StartThread(i, consumerConfig, cancellationToken);
+                if (_consumerConfigurationSection == null)
+                {
+                    _consumerConfigurationSection = configuration.GetConsumerConfig(ConsumerName);
+                    _enabled = _consumerConfigurationSection.Exists();
+                }
+
+                return _enabled;
+            }
+        }
+
+        public virtual Task Start(CancellationToken cancellationToken = default)
+        {
+            CompetingConsumerConfig consumerConfig = GetConfig();
+
+            if (consumerConfig != null)
+            {
+                for (int i = 1; i <= consumerConfig.ConsumerCount; i++)
+                {
+                    StartThread(i, consumerConfig, cancellationToken);
+                }
             }
 
             return Task.CompletedTask;
@@ -80,24 +105,24 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations
             {
                 consumer.Subscribe(Topics);
 
-                if (consumerConfig.UseOffsetStore)
+                if (consumerConfig.UseExternalOffsetStore)
                 {
                     try
                     {
-                        offsetLock.Wait(cancellationToken);
+                        offsetStoreLock.Wait(cancellationToken);
 
-                        if (!offsetInit)
+                        if (!offsetStoreInit)
                         {
-                            IEnumerable<TopicPartitionOffset> offsets = await offsetStore.GetStoredOffsets(Topics, consumerConfig.GroupId);
+                            IEnumerable<TopicPartitionOffset> offsets = await externalOffsetStore.GetStoredOffsets(Topics, consumerConfig.GroupId);
 
                             consumer.Commit(offsets);
 
-                            offsetInit = true;
+                            offsetStoreInit = true;
                         }
                     }
                     finally
                     {
-                        offsetLock.Release();
+                        offsetStoreLock.Release();
                     }
                 }
 
@@ -116,9 +141,9 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations
                         {
                             consumer.Commit();
 
-                            if (consumerConfig.UseOffsetStore)
+                            if (consumerConfig.UseExternalOffsetStore)
                             {
-                                await offsetStore.StoreOffsets(new[] { message.TopicPartitionOffset }, consumerConfig.GroupId);
+                                await externalOffsetStore.StoreOffsets(new[] { message.TopicPartitionOffset }, consumerConfig.GroupId);
                             }
                         }
                         catch (Exception ex)
@@ -135,8 +160,18 @@ namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations
         }
 
         protected abstract string[] Topics { get; }
+        protected abstract string ConsumerName { get; }
 
-        protected abstract CompetingConsumerConfig GetConfig(CompetingConsumerConfig commonConfig);
+        protected virtual CompetingConsumerConfig GetConfig()
+        {
+            if (!Enabled) throw new InvalidOperationException();
+
+            CompetingConsumerConfig consumerConfig = (CompetingConsumerConfig)kafkaOptions.Value.CommonConsumerConfig.Clone();
+
+            _consumerConfigurationSection.Bind(consumerConfig);
+
+            return consumerConfig;
+        }
 
         protected abstract Task Handle(string topic, TKey key, TValue value, IServiceProvider provider, CancellationToken cancellationToken = default);
     }

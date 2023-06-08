@@ -5,7 +5,7 @@ using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
 
 namespace NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations
 {
-    public class MemoryOffsetStore : IOffsetStore
+    public class MemoryOffsetStore : IExternalOffsetStore
     {
         private readonly IMemoryStore _memoryStore;
         private readonly IAdminClient _adminClient;

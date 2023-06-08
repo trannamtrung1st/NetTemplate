@@ -2,10 +2,10 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NetTemplate.Blog.ApplicationCore.User.Commands.SyncNewUser;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
-using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Extensions;
 using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Implementations;
 using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Interfaces;
 using NetTemplate.Shared.Infrastructure.PubSub.ApacheKafka.Models;
@@ -18,30 +18,23 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User.Consumers
     {
     }
 
-    [ScopedService]
+    [SingletonService]
     public class SyncNewUserConsumer
         : CompetingThreadConsumer<SyncNewUserConsumer, string, IdentityUserCreatedEventModel>
         , ISyncNewUserConsumer
     {
         public SyncNewUserConsumer(
             IServiceProvider provider,
-            IOffsetStore offsetStore,
+            IExternalOffsetStore externalOffsetStore,
             IConfiguration configuration,
+            IOptions<ApacheKafkaConfig> kafkaOptions,
             ILogger<SyncNewUserConsumer> logger)
-            : base(provider, offsetStore, configuration, logger)
+            : base(provider, externalOffsetStore, configuration, kafkaOptions, logger)
         {
         }
 
         protected override string[] Topics => new[] { TopicNames.IdentityUserCreated };
-
-        protected override CompetingConsumerConfig GetConfig(CompetingConsumerConfig commonConfig)
-        {
-            CompetingConsumerConfig consumerConfig = (CompetingConsumerConfig)commonConfig.Clone();
-
-            configuration.BindConsumerConfig(ConsumerNames.SyncNewUser, consumerConfig);
-
-            return consumerConfig;
-        }
+        protected override string ConsumerName => ConsumerNames.SyncNewUser;
 
         protected override async Task Handle(string topic, string key, IdentityUserCreatedEventModel value, IServiceProvider provider, CancellationToken cancellationToken = default)
         {
