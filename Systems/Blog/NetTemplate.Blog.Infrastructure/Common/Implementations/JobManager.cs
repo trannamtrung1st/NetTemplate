@@ -5,7 +5,6 @@ using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
 using NetTemplate.Shared.Infrastructure.Background.Interfaces;
 using NetTemplate.Shared.Infrastructure.Background.Models;
-using NetTemplate.Shared.Infrastructure.PubSub.Interfaces;
 using CommonJobNames = NetTemplate.Blog.ApplicationCore.Common.Constants.JobNames;
 using UserJobNames = NetTemplate.Blog.ApplicationCore.User.Constants.JobNames;
 
