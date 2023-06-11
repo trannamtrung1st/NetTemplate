@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Options;
-using NetTemplate.Blog.Infrastructure.Common.Interfaces;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Shared.ApplicationCore.Common.Events;
+using NetTemplate.Shared.Infrastructure.Background.Interfaces;
 using NetTemplate.Shared.Infrastructure.Background.Models;
+using NetTemplate.Shared.Infrastructure.PubSub.Interfaces;
 
 namespace NetTemplate.Blog.WebApi.System.Handlers
 {

@@ -1,10 +1,11 @@
 ﻿using Hangfire;
 using NetTemplate.Blog.ApplicationCore.User.Jobs.SyncUsers;
-using NetTemplate.Blog.Infrastructure.Common.Interfaces;
 using NetTemplate.Blog.Infrastructure.Domains.User.JobRunners;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
+using NetTemplate.Shared.Infrastructure.Background.Interfaces;
 using NetTemplate.Shared.Infrastructure.Background.Models;
+using NetTemplate.Shared.Infrastructure.PubSub.Interfaces;
 using CommonJobNames = NetTemplate.Blog.ApplicationCore.Common.Constants.JobNames;
 using UserJobNames = NetTemplate.Blog.ApplicationCore.User.Constants.JobNames;
 

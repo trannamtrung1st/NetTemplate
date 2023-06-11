@@ -1,6 +1,6 @@
 ﻿using NetTemplate.Shared.Infrastructure.Background.Models;
 
-namespace NetTemplate.Blog.Infrastructure.Common.Interfaces
+namespace NetTemplate.Shared.Infrastructure.Background.Interfaces
 {
     public interface IJobManager
     {

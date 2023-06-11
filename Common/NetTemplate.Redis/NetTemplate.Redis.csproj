@@ -16,4 +16,8 @@
 	  <ProjectReference Include="..\NetTemplate.Common\NetTemplate.Common.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Interfaces\" />
+	</ItemGroup>
+
 </Project>

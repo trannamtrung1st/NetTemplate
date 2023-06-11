@@ -10,6 +10,8 @@ using NetTemplate.Blog.ConsoleApp.UseCases;
 using NetTemplate.Blog.Infrastructure.Common.Extensions;
 using NetTemplate.Blog.Infrastructure.Common.Models;
 using NetTemplate.Blog.Infrastructure.Persistence;
+using NetTemplate.Blog.Infrastructure.PubSub.Extensions;
+using NetTemplate.Blog.Infrastructure.PubSub.Models;
 using NetTemplate.Redis.Extensions;
 using NetTemplate.Redis.Models;
 using NetTemplate.Shared.ClientSDK.Common.Models;
@@ -106,6 +108,9 @@ static void ParseConfigurations(IConfiguration configuration)
 
     // Apache Kafka
     ApacheKafkaConfig = configuration.GetApacheKafkaConfigDefaults();
+
+    // PubSub
+    PubSubConfig = configuration.GetPubSubConfigDefaults();
 }
 
 static RuntimeConfig GetRuntimeConfig()
@@ -135,7 +140,8 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
         HangfireConfig, HangfireConnectionString, HangfireMasterConnectionString,
         RedisConfig, RedisPubSubConfig,
         ClientConfig,
-        ApacheKafkaConfig);
+        ApacheKafkaConfig,
+        PubSubConfig);
 }
 
 static IContainer ConfigureContainer(ContainerBuilder containerBuilder,
@@ -162,4 +168,5 @@ partial class Program
     static RedisConfig RedisConfig { get; set; }
     static ApacheKafkaConfig ApacheKafkaConfig { get; set; }
     static RedisPubSubConfig RedisPubSubConfig { get; set; }
+    static PubSubConfig PubSubConfig { get; set; }
 }

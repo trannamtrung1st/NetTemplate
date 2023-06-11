@@ -3,11 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using NetTemplate.ApacheKafka.Extensions;
 using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Blog.ApplicationCore.Common.Extensions;
-using NetTemplate.Blog.Infrastructure.Common.Implementations;
-using NetTemplate.Blog.Infrastructure.Common.Interfaces;
 using NetTemplate.Blog.Infrastructure.Common.Models;
 using NetTemplate.Blog.Infrastructure.Domains.Post.Extensions;
 using NetTemplate.Blog.Infrastructure.Persistence;
+using NetTemplate.Blog.Infrastructure.PubSub.Extensions;
+using NetTemplate.Blog.Infrastructure.PubSub.Models;
 using NetTemplate.Common.DependencyInjection;
 using NetTemplate.Redis.Extensions;
 using NetTemplate.Redis.Models;
@@ -28,7 +28,8 @@ namespace NetTemplate.Blog.Infrastructure.Common.Extensions
             HangfireConfig hangfireConfig, string hangfireConnectionString, string hangfireMasterConnectionString,
             RedisConfig redisConfig, RedisPubSubConfig redisPubSubConfig,
             ClientConfig clientConfig,
-            ApacheKafkaConfig apacheKafkaConfig)
+            ApacheKafkaConfig apacheKafkaConfig,
+            PubSubConfig pubSubConfig)
         {
             services.AddInfrastructureDefaultServices<MainDbContext>(isProduction,
                 dbContextConnectionString, appConfig.DbContextDebugEnabled,
@@ -44,9 +45,8 @@ namespace NetTemplate.Blog.Infrastructure.Common.Extensions
 
             if (redisConfig.Enabled)
             {
-                services.AddRedisServices(redisConfig, redisPubSubConfig)
-                    .AddSingleton<ITopicManager, NullTopicManager>()
-                    .AddSingleton<ITopicListenerManager, RedisSubscriberManager>();
+                services.AddRedisServices(redisConfig)
+                    .AddRedisPostCache();
             }
             else
             {
@@ -55,10 +55,10 @@ namespace NetTemplate.Blog.Infrastructure.Common.Extensions
 
             if (apacheKafkaConfig.Enabled)
             {
-                services.AddKafkaServices(apacheKafkaConfig)
-                    .AddSingleton<ITopicManager, KafkaTopicManager>()
-                    .AddSingleton<ITopicListenerManager, KafkaConsumerManager>();
+                services.AddKafkaServices(apacheKafkaConfig);
             }
+
+            services.AddPubSub(pubSubConfig, redisPubSubConfig);
 
             return services;
         }
@@ -70,12 +70,10 @@ namespace NetTemplate.Blog.Infrastructure.Common.Extensions
         }
 
         public static IServiceCollection AddRedisServices(this IServiceCollection services,
-            RedisConfig redisConfig, RedisPubSubConfig redisPubSubConfig)
+            RedisConfig redisConfig)
         {
             return services.AddRedis(redisConfig)
-                .AddRedisMemoryStore()
-                .AddRedisPostCache()
-                .AddRedisPubSub(redisPubSubConfig);
+                .AddRedisMemoryStore();
         }
     }
 }

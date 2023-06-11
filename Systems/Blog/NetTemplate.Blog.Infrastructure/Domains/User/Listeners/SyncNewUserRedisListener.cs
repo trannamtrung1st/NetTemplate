@@ -3,9 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NetTemplate.Blog.ApplicationCore.User.Commands.SyncNewUser;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Blog.Infrastructure.Domains.User.Interfaces;
 using NetTemplate.Redis.Implementations;
-using NetTemplate.Redis.Interfaces;
 using NetTemplate.Redis.Models;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
 using Newtonsoft.Json;
@@ -13,20 +12,15 @@ using StackExchange.Redis;
 using ListenerNames = NetTemplate.Blog.Infrastructure.Domains.User.Constants.ListenerNames;
 using TopicNames = NetTemplate.Blog.Infrastructure.Integrations.Identity.Constants.TopicNames;
 
-namespace NetTemplate.Blog.Infrastructure.Domains.User.Subscribers
+namespace NetTemplate.Blog.Infrastructure.Domains.User.Listeners
 {
-    public interface ISyncNewUserSubscriber : IGeneralSubscriber
+    public class SyncNewUserRedisListener : BaseSubscriber<SyncNewUserRedisListener>, ISyncNewUserListener
     {
-    }
-
-    [SingletonService]
-    public class SyncNewUserSubscriber : BaseSubscriber<SyncNewUserSubscriber>, ISyncNewUserSubscriber
-    {
-        public SyncNewUserSubscriber(
+        public SyncNewUserRedisListener(
             IServiceProvider provider,
             ConnectionMultiplexer connectionMultiplexer,
             IOptions<RedisPubSubConfig> pubSubOptions,
-            ILogger<SyncNewUserSubscriber> logger)
+            ILogger<SyncNewUserRedisListener> logger)
             : base(provider, connectionMultiplexer, pubSubOptions, logger)
         {
         }

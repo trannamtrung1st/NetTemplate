@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NetTemplate.Redis.Interfaces;
 using NetTemplate.Redis.Models;
 using StackExchange.Redis;
 
 namespace NetTemplate.Redis.Implementations
 {
-    public abstract class BaseSubscriber<T> : IGeneralSubscriber
+    public abstract class BaseSubscriber<T>
     {
         protected readonly IServiceProvider provider;
         protected readonly ConnectionMultiplexer connectionMultiplexer;

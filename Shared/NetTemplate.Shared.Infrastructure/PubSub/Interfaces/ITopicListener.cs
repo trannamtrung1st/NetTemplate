@@ -1,6 +1,6 @@
-﻿namespace NetTemplate.Redis.Interfaces
+﻿namespace NetTemplate.Shared.Infrastructure.PubSub.Interfaces
 {
-    public interface IGeneralSubscriber
+    public interface ITopicListener
     {
         bool Enabled { get; }
         Task Start(CancellationToken cancellationToken = default);

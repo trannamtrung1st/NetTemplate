@@ -10,7 +10,7 @@ using NetTemplate.ApacheKafka.Utils;
 
 namespace NetTemplate.ApacheKafka.Implementations
 {
-    public abstract class CompetingThreadConsumer<TConsumer, TKey, TValue> : IGeneralConsumer
+    public abstract class CompetingThreadConsumer<TConsumer, TKey, TValue>
     {
         private IConfigurationSection _consumerConfigurationSection;
 

@@ -7,28 +7,23 @@ using NetTemplate.ApacheKafka.Implementations;
 using NetTemplate.ApacheKafka.Interfaces;
 using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Blog.ApplicationCore.User.Commands.SyncNewUser;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Blog.Infrastructure.Domains.User.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
 using ListenerNames = NetTemplate.Blog.Infrastructure.Domains.User.Constants.ListenerNames;
 using TopicNames = NetTemplate.Blog.Infrastructure.Integrations.Identity.Constants.TopicNames;
 
-namespace NetTemplate.Blog.Infrastructure.Domains.User.Consumers
+namespace NetTemplate.Blog.Infrastructure.Domains.User.Listeners
 {
-    public interface ISyncNewUserConsumer : IGeneralConsumer
+    public class SyncNewUserKafkaListener
+        : CompetingThreadConsumer<SyncNewUserKafkaListener, string, IdentityUserCreatedEventModel>
+        , ISyncNewUserListener
     {
-    }
-
-    [SingletonService]
-    public class SyncNewUserConsumer
-        : CompetingThreadConsumer<SyncNewUserConsumer, string, IdentityUserCreatedEventModel>
-        , ISyncNewUserConsumer
-    {
-        public SyncNewUserConsumer(
+        public SyncNewUserKafkaListener(
             IServiceProvider provider,
             IExternalOffsetStore externalOffsetStore,
             IConfiguration configuration,
             IOptions<ApacheKafkaConfig> kafkaOptions,
-            ILogger<SyncNewUserConsumer> logger)
+            ILogger<SyncNewUserKafkaListener> logger)
             : base(provider, externalOffsetStore, configuration, kafkaOptions, logger)
         {
         }

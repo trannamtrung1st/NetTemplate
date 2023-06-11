@@ -1,4 +1,4 @@
-﻿namespace NetTemplate.Blog.Infrastructure.Common.Interfaces
+﻿namespace NetTemplate.Shared.Infrastructure.PubSub.Interfaces
 {
     public interface ITopicManager
     {

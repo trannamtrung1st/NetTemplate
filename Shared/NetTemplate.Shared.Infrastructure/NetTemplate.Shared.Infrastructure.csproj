@@ -38,6 +38,7 @@
 		<Folder Include="Common\Models\" />
 		<Folder Include="Persistence\Implementations\" />
 		<Folder Include="Persistence\Models\" />
+		<Folder Include="PubSub\Extensions\" />
 	</ItemGroup>
 
 </Project>

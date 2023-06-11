@@ -1,4 +1,4 @@
-using NetTemplate.Blog.Infrastructure.Common.Interfaces;
+using NetTemplate.Shared.Infrastructure.PubSub.Interfaces;
 
 namespace NetTemplate.Blog.ConsumersWorker
 {
