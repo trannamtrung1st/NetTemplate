@@ -21,5 +21,7 @@ namespace NetTemplate.Shared.Infrastructure.Background.Models
             other.DatabaseName = DatabaseName;
             other.Jobs = Jobs;
         }
+
+        public const string ConfigurationSection = nameof(HangfireConfig);
     }
 }

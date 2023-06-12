@@ -44,9 +44,5 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Implementations
 
             return view;
         }
-
-        private static class Constants
-        {
-        }
     }
 }

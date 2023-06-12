@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
-using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
 using CommonMessages = NetTemplate.Shared.ApplicationCore.Common.Constants.Messages;
 
 namespace NetTemplate.Shared.ApplicationCore.Common.Utils
@@ -8,7 +8,7 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Utils
     public static class ApplicationValidation
     {
         public static bool ValidateMaxLength(IEnumerable<string> values,
-            int maxLength = CommonConstraints.MaxStringLength)
+            int maxLength = AppEntity.Constraints.MaxStringLength)
             => values.All(val => !(val?.Length > maxLength));
 
         public static IConditionBuilder ValidateSortableQuery<T, TSortBy>(this AbstractValidator<T> validator)

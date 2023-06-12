@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.ApplicationCore.User;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
 using CommonConstraintNames = NetTemplate.Shared.Infrastructure.Persistence.Constants.ConstraintNames;
-using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.Post.EntityConfigs
 {
@@ -13,7 +13,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.EntityConfigs
         public void Configure(EntityTypeBuilder<PostTagEntity> builder)
         {
             builder.Property(e => e.Value)
-                .HasMaxLength(CommonConstraints.MaxStringLength)
+                .HasMaxLength(AppEntity.Constraints.MaxStringLength)
                 .IsRequired();
 
             builder.HasOne<PostEntity>()

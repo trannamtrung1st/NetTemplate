@@ -1,19 +1,15 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NetTemplate.Blog.ApplicationCore.Common.Models;
-using ConfigurationSections = NetTemplate.Blog.ApplicationCore.Common.Constants.ConfigurationSections;
+using NetTemplate.Common.DependencyInjection;
 
 namespace NetTemplate.Blog.ApplicationCore.Common.Extensions
 {
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection ConfigureViewConfigs(this IServiceCollection services,
-            IConfiguration configuration)
+            ViewsConfig viewsConfig)
         {
-            return services.Configure<ViewsConfig>(opt =>
-            {
-                configuration.GetSection(ConfigurationSections.Views).Bind(opt);
-            });
+            return services.ConfigureCopyableConfig(viewsConfig);
         }
     }
 }

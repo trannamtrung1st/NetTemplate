@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NetTemplate.ApacheKafka.Extensions;
 using NetTemplate.ApacheKafka.Models;
+using NetTemplate.Blog.ApplicationCore.Common.Extensions;
+using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.ConsoleApp.UseCases;
 using NetTemplate.Blog.Infrastructure.Common.Extensions;
 using NetTemplate.Blog.Infrastructure.Common.Models;
@@ -21,7 +23,6 @@ using NetTemplate.Shared.Infrastructure.Common.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Extensions;
 using NetTemplate.Shared.Infrastructure.Identity.Models;
 using System.Reflection;
-using static NetTemplate.Shared.Infrastructure.Common.Constants;
 using BackgroundConnectionNames = NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames;
 
 
@@ -33,7 +34,7 @@ CancellationToken cancellationToken = cancellationTokenSource.Token;
 
 IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
     .InsertSharedJson()
-    .AddJsonFile(DefaultPaths.AppsettingsPath, optional: false)
+    .AddAppsettingsJson()
     .AddEnvironmentVariables()
     .AddCommandLine(args)
     .AddUserSecrets<Program>();
@@ -87,6 +88,7 @@ static void ParseConfigurations(IConfiguration configuration)
     // Common
     RuntimeConfig = GetRuntimeConfig();
     AppConfig = configuration.GetApplicationConfigDefaults<ApplicationConfig>();
+    ViewsConfig = configuration.GetViewsConfigDefaults();
 
     // DbContext
     DbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
@@ -141,7 +143,8 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
         RedisConfig, RedisPubSubConfig,
         ClientConfig,
         ApacheKafkaConfig,
-        PubSubConfig);
+        PubSubConfig,
+        ViewsConfig);
 }
 
 static IContainer ConfigureContainer(ContainerBuilder containerBuilder,
@@ -169,4 +172,5 @@ partial class Program
     static ApacheKafkaConfig ApacheKafkaConfig { get; set; }
     static RedisPubSubConfig RedisPubSubConfig { get; set; }
     static PubSubConfig PubSubConfig { get; set; }
+    static ViewsConfig ViewsConfig { get; set; }
 }

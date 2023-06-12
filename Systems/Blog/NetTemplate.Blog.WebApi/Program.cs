@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using NetTemplate.ApacheKafka.Extensions;
 using NetTemplate.ApacheKafka.Models;
+using NetTemplate.Blog.ApplicationCore.Common.Extensions;
+using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.Infrastructure.Common.Extensions;
 using NetTemplate.Blog.Infrastructure.Common.Models;
 using NetTemplate.Blog.Infrastructure.Persistence;
@@ -13,6 +15,7 @@ using NetTemplate.Blog.Infrastructure.PubSub.Extensions;
 using NetTemplate.Blog.Infrastructure.PubSub.Models;
 using NetTemplate.Blog.WebApi.Common.Extensions;
 using NetTemplate.Blog.WebApi.Common.Models;
+using NetTemplate.Common.Logging.Options;
 using NetTemplate.Common.Web.Middlewares;
 using NetTemplate.Redis.Extensions;
 using NetTemplate.Redis.Models;
@@ -35,7 +38,6 @@ using System.Reflection;
 using ApiRoutes = NetTemplate.Blog.WebApi.Common.Constants.ApiRoutes;
 using BackgroundConnectionNames = NetTemplate.Shared.Infrastructure.Background.Constants.ConnectionNames;
 using CacheProfiles = NetTemplate.Blog.WebApi.Common.Constants.CacheProfiles;
-using WebLoggingConfigurationSections = NetTemplate.Shared.WebApi.Logging.Constants.ConfigurationSections;
 
 
 // ===== APPLICATION START =====
@@ -94,6 +96,7 @@ static void ParseConfigurations(IConfiguration configuration)
             Duration = WebConfig.ResponseCacheTtl
         });
     };
+    ViewsConfig = configuration.GetViewsConfigDefaults();
 
     // DbContext
     DbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
@@ -107,7 +110,7 @@ static void ParseConfigurations(IConfiguration configuration)
     IdentityConfig = configuration.GetIdentityConfigDefaults();
     JwtConfig = configuration.GetJwtConfigDefaults();
     SimulatedAuthConfig = configuration.GetSimulatedAuthConfigDefaults();
-    ClientsConfig = configuration.GetClientsConfigDefaults();
+    ApplicationClientsConfig = configuration.GetClientsConfigDefaults();
 
     // Client SDK
     ClientConfig = configuration.GetClientConfigDefaults();
@@ -150,12 +153,13 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
         RedisConfig, RedisPubSubConfig,
         ClientConfig,
         ApacheKafkaConfig,
-        PubSubConfig);
+        PubSubConfig,
+        ViewsConfig);
 
     services.AddApiServices(env,
         WebConfig,
         JwtConfig,
-        ClientsConfig,
+        ApplicationClientsConfig,
         SimulatedAuthConfig,
         ControllerConfigureAction);
 }
@@ -214,7 +218,7 @@ static void ConfigurePipeline(WebApplication app, List<IDisposable> resources)
     app.UseRequestDataExtraction();
 
     app.UseRequestLogging(app.Configuration,
-        requestLoggingSection: WebLoggingConfigurationSections.RequestLogging,
+        requestLoggingSection: RequestLoggingOptions.ConfigurationSection,
         out IDisposable customRequestLogger);
 
     if (customRequestLogger != null) resources.Add(customRequestLogger);
@@ -263,10 +267,11 @@ partial class Program
     static IdentityConfig IdentityConfig { get; set; }
     static JwtConfig JwtConfig { get; set; }
     static SimulatedAuthConfig SimulatedAuthConfig { get; set; }
-    static ClientsConfig ClientsConfig { get; set; }
+    static ApplicationClientsConfig ApplicationClientsConfig { get; set; }
     static ClientConfig ClientConfig { get; set; }
     static RedisConfig RedisConfig { get; set; }
     static ApacheKafkaConfig ApacheKafkaConfig { get; set; }
     static RedisPubSubConfig RedisPubSubConfig { get; set; }
     static PubSubConfig PubSubConfig { get; set; }
+    static ViewsConfig ViewsConfig { get; set; }
 }

@@ -2,13 +2,16 @@
 
 namespace NetTemplate.Shared.WebApi.Identity.Models
 {
-    public class ClientsConfig : ICopyable<ClientsConfig>
+    public class ApplicationClientsConfig : ICopyable<ApplicationClientsConfig>
     {
         public IEnumerable<ApplicationClient> Clients { get; set; }
 
-        public void CopyTo(ClientsConfig other)
+        public void CopyTo(ApplicationClientsConfig other)
         {
             other.Clients = Clients;
         }
+
+
+        public const string ConfigurationSection = nameof(ApplicationClientsConfig);
     }
 }

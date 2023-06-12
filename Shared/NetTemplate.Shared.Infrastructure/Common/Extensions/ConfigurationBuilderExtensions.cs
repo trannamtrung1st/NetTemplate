@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.FileProviders;
-using DefaultPaths = NetTemplate.Shared.Infrastructure.Common.Constants.DefaultPaths;
 
 namespace NetTemplate.Shared.Infrastructure.Common.Extensions
 {
@@ -11,17 +10,17 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
         {
             builder.Sources.Insert(0, new JsonConfigurationSource
             {
-                Path = DefaultPaths.AppsettingsSharedPath,
+                Path = AppsettingsSharedPath,
                 Optional = true
             });
 
-            string devSharedDir = Path.GetFullPath(DefaultPaths.DevelopmentSharedDirectory);
+            string devSharedDir = Path.GetFullPath(DevelopmentSharedDirectory);
 
             if (Directory.Exists(devSharedDir))
             {
                 builder.Sources.Insert(0, new JsonConfigurationSource
                 {
-                    Path = DefaultPaths.AppsettingsSharedPath,
+                    Path = AppsettingsSharedPath,
                     Optional = true,
                     FileProvider = new PhysicalFileProvider(devSharedDir)
                 });
@@ -29,5 +28,16 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
 
             return builder;
         }
+
+        public static IConfigurationBuilder AddAppsettingsJson(this IConfigurationBuilder builder,
+            bool optional = false)
+        {
+            return builder.AddJsonFile(AppsettingsPath, optional);
+        }
+
+
+        public const string DevelopmentSharedDirectory = "../Shared/";
+        public const string AppsettingsPath = "appsettings.json";
+        public const string AppsettingsSharedPath = "appsettings.shared.json";
     }
 }

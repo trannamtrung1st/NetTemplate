@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTemplate.Blog.ApplicationCore.Post;
-using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.Post.EntityConfigs
 {
@@ -10,7 +10,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.EntityConfigs
         public void Configure(EntityTypeBuilder<PostEntity> builder)
         {
             builder.Property(e => e.Title)
-                .HasMaxLength(CommonConstraints.MaxStringLength)
+                .HasMaxLength(AppEntity.Constraints.MaxStringLength)
                 .IsRequired();
 
             builder.HasIndex(e => e.Title)

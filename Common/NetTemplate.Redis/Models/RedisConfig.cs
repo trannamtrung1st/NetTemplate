@@ -16,5 +16,7 @@ namespace NetTemplate.Redis.Models
             other.Password = Password;
             other.Endpoints = Endpoints;
         }
+
+        public const string ConfigurationSection = nameof(RedisConfig);
     }
 }

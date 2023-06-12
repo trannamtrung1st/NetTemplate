@@ -7,7 +7,6 @@ using NetTemplate.Shared.WebApi.Identity.Extensions;
 using NetTemplate.Shared.WebApi.Identity.Models;
 using NetTemplate.Shared.WebApi.Swagger.Extensions;
 using Newtonsoft.Json.Converters;
-using VersioningConstants = NetTemplate.Shared.WebApi.Common.Constants.Versioning;
 
 namespace NetTemplate.Shared.WebApi.Common.Extensions
 {
@@ -27,7 +26,7 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
             })
                 .AddVersionedApiExplorer(opt =>
                 {
-                    opt.GroupNameFormat = VersioningConstants.GroupNameFormat;
+                    opt.GroupNameFormat = ApiVersionGroupNameFormat;
                     //opt.SubstituteApiVersionInUrl = true;
                 });
         }
@@ -57,7 +56,7 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
         public static IServiceCollection AddApiDefaultServices<T>(this IServiceCollection services,
             IWebHostEnvironment environment,
             JwtConfig jwtConfig,
-            ClientsConfig clientsConfig,
+            ApplicationClientsConfig applicationClientsConfig,
             SimulatedAuthConfig simulatedAuthConfig,
             Action<MvcOptions> controllerConfigureAction) where T : DbContext
         {
@@ -76,7 +75,7 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
 
             services
                 .AddRequestCurrentUserProvider()
-                .AddAuthenticationDefaults(jwtConfig, clientsConfig, environment, simulatedAuthConfig)
+                .AddAuthenticationDefaults(jwtConfig, applicationClientsConfig, environment, simulatedAuthConfig)
                 .AddAuthorizationDefaults();
 
             services
@@ -90,5 +89,8 @@ namespace NetTemplate.Shared.WebApi.Common.Extensions
 
             return services;
         }
+
+
+        public const string ApiVersionGroupNameFormat = "'v'VVV";
     }
 }

@@ -7,7 +7,7 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
     {
         public static ClientConfig GetClientConfigDefaults(this IConfiguration configuration)
             => configuration
-                .GetSection(Constants.ConfigurationSections.ClientSDK)
+                .GetSection(ClientConfig.ConfigurationSection)
                 .Get<ClientConfig>();
     }
 }

@@ -27,7 +27,7 @@ namespace NetTemplate.Blog.Infrastructure.Common.Implementations
             Metadata metadata = _adminClient.GetMetadata(TimeSpan.FromSeconds(10));
 
             string[] topicNames = metadata.Topics
-                .Where(t => !t.Topic.StartsWith(Constants.BuiltInTopicPrefix))
+                .Where(t => !t.Topic.StartsWith(BuiltInTopicPrefix))
                 .Select(t => t.Topic).ToArray();
 
             TopicSpecification[] newTopicSpecs = configuredTopics.Where(t => !topicNames.Contains(t.Name)).ToArray();
@@ -45,9 +45,7 @@ namespace NetTemplate.Blog.Infrastructure.Common.Implementations
             }
         }
 
-        static class Constants
-        {
-            public const string BuiltInTopicPrefix = "__";
-        }
+
+        public const string BuiltInTopicPrefix = "__";
     }
 }

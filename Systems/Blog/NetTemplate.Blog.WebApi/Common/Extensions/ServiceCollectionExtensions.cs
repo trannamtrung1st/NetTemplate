@@ -12,7 +12,7 @@ namespace NetTemplate.Blog.WebApi.Common.Extensions
         public static IServiceCollection AddApiServices(this IServiceCollection services, IWebHostEnvironment env,
             WebApplicationConfig webConfig,
             JwtConfig jwtConfig,
-            ClientsConfig clientsConfig,
+            ApplicationClientsConfig clientsConfig,
             SimulatedAuthConfig simulatedAuthConfig,
             Action<MvcOptions> controllerConfigureAction)
         {

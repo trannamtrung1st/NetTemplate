@@ -16,5 +16,8 @@ namespace NetTemplate.Shared.WebApi.Identity.Models
             other.Issuer = Issuer;
             other.TokenLifeTimeInSeconds = TokenLifeTimeInSeconds;
         }
+
+
+        public const string ConfigurationSection = nameof(JwtConfig);
     }
 }

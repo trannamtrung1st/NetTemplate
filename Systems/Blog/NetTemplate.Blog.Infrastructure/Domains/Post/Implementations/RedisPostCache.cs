@@ -106,11 +106,9 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.Implementations
             return await trans.ExecuteAsync();
         }
 
-        private static string GetCacheKey(object entityKey) => $"{Constants.PostViewPrefix}{entityKey}";
+        private static string GetCacheKey(object entityKey) => $"{PostViewPrefix}{entityKey}";
 
-        private static class Constants
-        {
-            public const string PostViewPrefix = $"{nameof(RedisPostCache)}_{nameof(PostView)}_";
-        }
+
+        public const string PostViewPrefix = $"{nameof(RedisPostCache)}_{nameof(PostView)}_";
     }
 }

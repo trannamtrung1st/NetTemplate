@@ -6,6 +6,6 @@ namespace NetTemplate.Shared.Infrastructure.Background.Extensions
     public static class ConfigurationExtensions
     {
         public static HangfireConfig GetHangfireConfigDefaults(this IConfiguration configuration)
-            => configuration.GetSection(Constants.ConfigurationSection).Get<HangfireConfig>();
+            => configuration.GetSection(HangfireConfig.ConfigurationSection).Get<HangfireConfig>();
     }
 }

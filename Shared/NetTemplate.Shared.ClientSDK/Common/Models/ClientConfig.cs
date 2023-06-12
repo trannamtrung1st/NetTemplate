@@ -14,5 +14,8 @@ namespace NetTemplate.Shared.ClientSDK.Common.Models
             other.ClientSecret = ClientSecret;
             other.IdentityServerUrl = IdentityServerUrl;
         }
+
+
+        public const string ConfigurationSection = nameof(ClientConfig);
     }
 }

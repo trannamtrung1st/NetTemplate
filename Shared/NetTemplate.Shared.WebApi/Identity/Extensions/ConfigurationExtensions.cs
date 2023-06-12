@@ -1,17 +1,16 @@
 ﻿using NetTemplate.Shared.WebApi.Identity.Models;
-using ConfigurationSections = NetTemplate.Shared.WebApi.Identity.Constants.ConfigurationSections;
 
 namespace NetTemplate.Shared.WebApi.Identity.Extensions
 {
     public static class ConfigurationExtensions
     {
         public static JwtConfig GetJwtConfigDefaults(this IConfiguration configuration)
-            => configuration.GetSection(ConfigurationSections.Jwt).Get<JwtConfig>();
+            => configuration.GetSection(JwtConfig.ConfigurationSection).Get<JwtConfig>();
 
-        public static ClientsConfig GetClientsConfigDefaults(this IConfiguration configuration)
-            => configuration.GetSection(ConfigurationSections.Clients).Get<ClientsConfig>();
+        public static ApplicationClientsConfig GetClientsConfigDefaults(this IConfiguration configuration)
+            => configuration.GetSection(ApplicationClientsConfig.ConfigurationSection).Get<ApplicationClientsConfig>();
 
         public static SimulatedAuthConfig GetSimulatedAuthConfigDefaults(this IConfiguration configuration)
-            => configuration.GetSection(ConfigurationSections.SimulatedAuth).Get<SimulatedAuthConfig>();
+            => configuration.GetSection(SimulatedAuthConfig.ConfigurationSection).Get<SimulatedAuthConfig>();
     }
 }

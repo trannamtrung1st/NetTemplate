@@ -5,6 +5,11 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Entities
 {
     public abstract class AppEntity : DomainEntity
     {
+        public static class Constraints
+        {
+            public const int MaxStringLength = 255;
+            public const int IdMaxLength = 50;
+        }
     }
 
     public abstract class AppEntity<TId> : AppEntity, IHasId<TId>

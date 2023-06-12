@@ -2,6 +2,8 @@ using Autofac;
 using Microsoft.AspNetCore.Hosting;
 using NetTemplate.ApacheKafka.Extensions;
 using NetTemplate.ApacheKafka.Models;
+using NetTemplate.Blog.ApplicationCore.Common.Extensions;
+using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.ConsumersWorker;
 using NetTemplate.Blog.Infrastructure.Common.Extensions;
 using NetTemplate.Blog.Infrastructure.Common.Models;
@@ -71,6 +73,7 @@ static void ParseConfigurations(IConfiguration configuration)
     // Common
     RuntimeConfig = GetRuntimeConfig();
     AppConfig = configuration.GetApplicationConfigDefaults<ApplicationConfig>();
+    ViewsConfig = configuration.GetViewsConfigDefaults();
 
     // DbContext
     DbContextConnectionString = configuration.GetConnectionString(nameof(MainDbContext));
@@ -126,7 +129,8 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
         RedisConfig, RedisPubSubConfig,
         ClientConfig,
         ApacheKafkaConfig,
-        PubSubConfig);
+        PubSubConfig,
+        ViewsConfig);
 }
 
 static void ConfigureContainer(IHostBuilder hostBuilder,
@@ -152,4 +156,5 @@ partial class Program
     static ApacheKafkaConfig ApacheKafkaConfig { get; set; }
     static RedisPubSubConfig RedisPubSubConfig { get; set; }
     static PubSubConfig PubSubConfig { get; set; }
+    static ViewsConfig ViewsConfig { get; set; }
 }

@@ -19,7 +19,7 @@ namespace NetTemplate.Shared.WebApi.Identity.Extensions
             => services.AddScoped<ICurrentUserProvider, RequestCurrentUserProvider>();
 
         public static IServiceCollection AddAuthenticationDefaults(this IServiceCollection services,
-            JwtConfig jwtConfig, ClientsConfig clientsConfig, IWebHostEnvironment environment,
+            JwtConfig jwtConfig, ApplicationClientsConfig applicationClientsConfig, IWebHostEnvironment environment,
             SimulatedAuthConfig simulatedAuthConfig = null)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
@@ -29,7 +29,7 @@ namespace NetTemplate.Shared.WebApi.Identity.Extensions
                 .AddScheme<ClientAuthenticationOptions, ClientAuthenticationHandler>(
                     ClientAuthenticationDefaults.AuthenticationScheme, opt =>
                     {
-                        opt.Clients = clientsConfig?.Clients;
+                        opt.Clients = applicationClientsConfig?.Clients;
                     });
 
             if (simulatedAuthConfig?.Enabled == true)
@@ -65,7 +65,7 @@ namespace NetTemplate.Shared.WebApi.Identity.Extensions
             }
 
             services.ConfigureCopyableConfig(jwtConfig)
-                .ConfigureCopyableConfig(clientsConfig);
+                .ConfigureCopyableConfig(applicationClientsConfig);
 
             return services;
         }

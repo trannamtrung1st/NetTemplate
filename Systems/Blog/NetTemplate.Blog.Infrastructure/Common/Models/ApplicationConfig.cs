@@ -10,5 +10,8 @@ namespace NetTemplate.Blog.Infrastructure.Common.Models
         {
             other.DbContextDebugEnabled = DbContextDebugEnabled;
         }
+
+
+        public const string ConfigurationSection = nameof(ApplicationConfig);
     }
 }

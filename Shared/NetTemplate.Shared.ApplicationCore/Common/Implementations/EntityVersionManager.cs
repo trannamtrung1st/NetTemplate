@@ -40,11 +40,9 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Implementations
         private static string GetNewVersion() => DateTime.UtcNow.Ticks.ToString();
 
         private static string GetKey(string entityName, string key)
-            => Constants.EntityVersionCacheKeyTemplate.Replace("{EntityName}", entityName).Replace("{Key}", key);
+            => EntityVersionCacheKeyTemplate.Replace("{EntityName}", entityName).Replace("{Key}", key);
 
-        private static class Constants
-        {
-            public const string EntityVersionCacheKeyTemplate = $"{nameof(EntityVersionManager)}_{{EntityName}}_{{Key}}";
-        }
+
+        public const string EntityVersionCacheKeyTemplate = $"{nameof(EntityVersionManager)}_{{EntityName}}_{{Key}}";
     }
 }

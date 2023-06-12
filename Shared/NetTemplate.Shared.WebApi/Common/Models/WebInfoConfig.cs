@@ -4,5 +4,8 @@
     {
         public string ApiTitle { get; set; }
         public string ApiDescription { get; set; }
+
+
+        public const string ConfigurationSection = nameof(WebInfoConfig);
     }
 }

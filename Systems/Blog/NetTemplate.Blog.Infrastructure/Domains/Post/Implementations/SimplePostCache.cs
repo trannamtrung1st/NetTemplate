@@ -91,13 +91,11 @@ namespace NetTemplate.Blog.Infrastructure.Domains.Post.Implementations
             return true;
         }
 
-        private static string GetCacheKey(object entityKey) => $"{Constants.PostViewPrefix}{entityKey}";
-        private static string GetCacheVersionKey(object entityKey) => $"{Constants.PostViewVersionPrefix}{entityKey}";
+        private static string GetCacheKey(object entityKey) => $"{PostViewPrefix}{entityKey}";
+        private static string GetCacheVersionKey(object entityKey) => $"{PostViewVersionPrefix}{entityKey}";
 
-        private static class Constants
-        {
-            public const string PostViewPrefix = $"{nameof(SimplePostCache)}_{nameof(PostView)}_";
-            public const string PostViewVersionPrefix = $"{ViewPreservedKeys.Version}_{PostViewPrefix}";
-        }
+
+        public const string PostViewPrefix = $"{nameof(SimplePostCache)}_{nameof(PostView)}_";
+        public const string PostViewVersionPrefix = $"{ViewPreservedKeys.Version}_{PostViewPrefix}";
     }
 }

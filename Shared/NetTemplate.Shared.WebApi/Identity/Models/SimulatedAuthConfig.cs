@@ -16,5 +16,8 @@ namespace NetTemplate.Shared.WebApi.Identity.Models
             other.UserCode = UserCode;
             other.Claims = Claims;
         }
+
+
+        public const string ConfigurationSection = nameof(SimulatedAuthConfig);
     }
 }

@@ -50,7 +50,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
             ThrowIfPostCategoryNotAvailable();
 
             PostCategoryView[] views = await _memoryStore.HashGetAll<PostCategoryView>(
-                key: Constants.CacheKeys.PostCategoryView,
+                key: CacheKeys.PostCategoryView,
                 exceptKeys: ViewPreservedKeys.All,
                 cancellationToken);
 
@@ -77,7 +77,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
             ThrowIfPostCategoryNotAvailable();
 
             PostCategoryView view = await _memoryStore.HashGet<PostCategoryView>(
-                key: Constants.CacheKeys.PostCategoryView,
+                key: CacheKeys.PostCategoryView,
                 itemKey: id.ToString(),
                 cancellationToken);
 
@@ -86,7 +86,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
         public async Task Initialize(CancellationToken cancellationToken = default)
         {
-            await Initialize(Constants.CacheKeys.PostCategoryView,
+            await Initialize(CacheKeys.PostCategoryView,
                 _viewsOptions.Value.PostCategoryViewVersion,
                 RebuildPostCategoryViews,
                 (_) =>
@@ -110,7 +110,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
             PostCategoryView[] views = query.ToArray();
 
-            string setKey = Constants.CacheKeys.PostCategoryView;
+            string setKey = CacheKeys.PostCategoryView;
 
             await _memoryStore.RemoveKey(setKey, cancellationToken);
 
@@ -128,7 +128,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
             PostCategoryView view = await ConstructPostCategoryViewById(@event.Entity.Id, cancellationToken);
 
-            await _memoryStore.HashSet(Constants.CacheKeys.PostCategoryView, view.Id.ToString(), view, cancellationToken);
+            await _memoryStore.HashSet(CacheKeys.PostCategoryView, view.Id.ToString(), view, cancellationToken);
         }
 
         public async Task UpdateViewsOnEvent(PostCategoryUpdatedEvent @event, CancellationToken cancellationToken = default)
@@ -137,14 +137,14 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
 
             PostCategoryView view = await ConstructPostCategoryViewById(@event.EntityId, cancellationToken);
 
-            await _memoryStore.HashSet(Constants.CacheKeys.PostCategoryView, view.Id.ToString(), view, cancellationToken);
+            await _memoryStore.HashSet(CacheKeys.PostCategoryView, view.Id.ToString(), view, cancellationToken);
         }
 
         public async Task UpdateViewsOnEvent(PostCategoryDeletedEvent @event, CancellationToken cancellationToken = default)
         {
             ThrowIfPostCategoryNotAvailable();
 
-            await _memoryStore.HashRemove(Constants.CacheKeys.PostCategoryView, @event.EntityId.ToString(), cancellationToken);
+            await _memoryStore.HashRemove(CacheKeys.PostCategoryView, @event.EntityId.ToString(), cancellationToken);
         }
 
         private async Task<PostCategoryView> ConstructPostCategoryViewById(int id, CancellationToken cancellationToken = default)
@@ -161,12 +161,10 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
             if (!_isPostCategoryAvailable) throw new InvalidOperationException();
         }
 
-        private static class Constants
+
+        public static class CacheKeys
         {
-            public static class CacheKeys
-            {
-                public const string PostCategoryView = $"{nameof(PostCategoryViewManager)}_{nameof(PostCategoryView)}";
-            }
+            public const string PostCategoryView = $"{nameof(PostCategoryViewManager)}_{nameof(PostCategoryView)}";
         }
     }
 }

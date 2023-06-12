@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Models;
-using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory.Validators
 {
@@ -8,7 +8,7 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Validators
     {
         public BasePostCategoryModelValidator()
         {
-            RuleFor(e => e.Name).NotEmpty().MaximumLength(CommonConstraints.MaxStringLength);
+            RuleFor(e => e.Name).NotEmpty().MaximumLength(AppEntity.Constraints.MaxStringLength);
         }
     }
 }

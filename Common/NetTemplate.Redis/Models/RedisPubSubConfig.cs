@@ -10,5 +10,7 @@ namespace NetTemplate.Redis.Models
         {
             other.Subscribers = Subscribers;
         }
+
+        public const string ConfigurationSection = nameof(RedisPubSubConfig);
     }
 }

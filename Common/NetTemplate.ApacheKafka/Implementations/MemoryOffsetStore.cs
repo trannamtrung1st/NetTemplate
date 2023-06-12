@@ -23,7 +23,7 @@ namespace NetTemplate.ApacheKafka.Implementations
 
             foreach (string topic in topics)
             {
-                Metadata metadata = _adminClient.GetMetadata(topic, Constants.DefaultTimeout);
+                Metadata metadata = _adminClient.GetMetadata(topic, DefaultTimeout);
 
                 TopicMetadata topicMetadata = metadata.Topics.FirstOrDefault();
 
@@ -37,7 +37,7 @@ namespace NetTemplate.ApacheKafka.Implementations
 
             foreach (string key in keys)
             {
-                TopicPartitionOffsetStoreModel offset = await _memoryStore.HashGet<TopicPartitionOffsetStoreModel>(Constants.ContainerKey, key, cancellationToken);
+                TopicPartitionOffsetStoreModel offset = await _memoryStore.HashGet<TopicPartitionOffsetStoreModel>(ContainerKey, key, cancellationToken);
 
                 if (offset != null) offsets.Add(offset.ToOffset());
             }
@@ -51,23 +51,21 @@ namespace NetTemplate.ApacheKafka.Implementations
             {
                 string key = GetKey(offset.Topic, offset.Partition, groupId);
 
-                TopicPartitionOffsetStoreModel currentOffset = await _memoryStore.HashGet<TopicPartitionOffsetStoreModel>(Constants.ContainerKey, key, cancellationToken);
+                TopicPartitionOffsetStoreModel currentOffset = await _memoryStore.HashGet<TopicPartitionOffsetStoreModel>(ContainerKey, key, cancellationToken);
 
                 if (currentOffset == null || currentOffset.Offset < offset.Offset + 1)
                 {
-                    await _memoryStore.HashSet(Constants.ContainerKey, key, new TopicPartitionOffsetStoreModel(offset), cancellationToken);
+                    await _memoryStore.HashSet(ContainerKey, key, new TopicPartitionOffsetStoreModel(offset), cancellationToken);
                 }
             }
         }
 
         private static string GetKey(string topic, int partition, string groupId)
-            => $"{Constants.KeyPrefix}_{groupId}_{topic}_{partition}";
+            => $"{KeyPrefix}_{groupId}_{topic}_{partition}";
 
-        private static class Constants
-        {
-            public const string ContainerKey = nameof(MemoryOffsetStore);
-            public const string KeyPrefix = nameof(MemoryOffsetStore);
-            public static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(10);
-        }
+
+        public const string ContainerKey = nameof(MemoryOffsetStore);
+        public const string KeyPrefix = nameof(MemoryOffsetStore);
+        public static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(10);
     }
 }

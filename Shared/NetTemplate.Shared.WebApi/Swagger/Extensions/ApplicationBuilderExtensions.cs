@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using SwaggerConstants = NetTemplate.Shared.WebApi.Swagger.Constants;
 
 namespace NetTemplate.Shared.WebApi.Swagger.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseApplicationSwagger(this IApplicationBuilder app,
-            IApiVersionDescriptionProvider apiVersionProvider)
+            IApiVersionDescriptionProvider apiVersionProvider,
+            string docEndpointFormat = DefaultDocEndpointFormat,
+            string routePrefix = DefaultRoutePrefix)
         {
             return app
                 .UseSwagger()
@@ -16,12 +17,16 @@ namespace NetTemplate.Shared.WebApi.Swagger.Extensions
                     {
                         var versionStr = description.GroupName;
                         options.SwaggerEndpoint(
-                            string.Format(SwaggerConstants.DocEndpointFormat, versionStr),
+                            string.Format(docEndpointFormat, versionStr),
                             versionStr);
                     }
 
-                    options.RoutePrefix = SwaggerConstants.Prefix;
+                    options.RoutePrefix = routePrefix;
                 });
         }
+
+
+        public const string DefaultRoutePrefix = "swagger";
+        public const string DefaultDocEndpointFormat = "/swagger/{0}/swagger.json";
     }
 }

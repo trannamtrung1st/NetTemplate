@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NetTemplate.ApacheKafka.Extensions;
 using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Blog.ApplicationCore.Common.Extensions;
+using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.Infrastructure.Common.Models;
 using NetTemplate.Blog.Infrastructure.Domains.Post.Extensions;
 using NetTemplate.Blog.Infrastructure.Persistence;
@@ -29,7 +30,8 @@ namespace NetTemplate.Blog.Infrastructure.Common.Extensions
             RedisConfig redisConfig, RedisPubSubConfig redisPubSubConfig,
             ClientConfig clientConfig,
             ApacheKafkaConfig apacheKafkaConfig,
-            PubSubConfig pubSubConfig)
+            PubSubConfig pubSubConfig,
+            ViewsConfig viewsConfig)
         {
             services.AddInfrastructureDefaultServices<MainDbContext>(isProduction,
                 dbContextConnectionString, appConfig.DbContextDebugEnabled,
@@ -39,7 +41,7 @@ namespace NetTemplate.Blog.Infrastructure.Common.Extensions
                 redisConfig,
                 clientConfig);
 
-            services.ConfigureViewConfigs(configuration)
+            services.ConfigureViewConfigs(viewsConfig)
                 .ConfigureCopyableConfig(appConfig)
                 .ConfigureCopyableConfig(runtimeConfig);
 

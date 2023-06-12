@@ -20,5 +20,12 @@ namespace NetTemplate.ApacheKafka.Models
             other.CommonConsumerConfig = CommonConsumerConfig;
             other.CommonProducerConfig = CommonProducerConfig;
         }
+
+        public const string ConfigurationSection = nameof(ApacheKafkaConfig);
+        public const string ConsumersConfigurationSection = "ApacheKafkaConsumers";
+        public const string ProducersConfigurationSection = "ApacheKafkaProducers";
+
+        public static string GetConsumerSection(string name) => $"{ConsumersConfigurationSection}:{name}";
+        public static string GetProducerSection(string name) => $"{ProducersConfigurationSection}:{name}";
     }
 }

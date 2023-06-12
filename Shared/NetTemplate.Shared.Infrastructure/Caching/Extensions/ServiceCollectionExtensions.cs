@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using NetTemplate.Redis.Models;
 using NetTemplate.Shared.ApplicationCore.Caching.Interfaces;
 using NetTemplate.Shared.Infrastructure.Caching.Implementations;
-using CachingProviders = NetTemplate.Shared.Infrastructure.Caching.Constants.CachingProviders;
 
 namespace NetTemplate.Shared.Infrastructure.Caching.Extensions
 {
@@ -16,15 +15,15 @@ namespace NetTemplate.Shared.Infrastructure.Caching.Extensions
             return services.AddMemoryCache()
                 .AddEasyCaching(options =>
                 {
-                    options.UseInMemory(name: CachingProviders.InMemory);
+                    options.UseInMemory(name: RedisCachingProvider);
 
                     if (redisConfig?.Enabled == true)
                     {
-                        options.WithJson(name: CachingProviders.Redis);
+                        options.WithJson(name: RedisCachingProvider);
 
                         options.UseRedis(redisOpt =>
                         {
-                            redisOpt.SerializerName = CachingProviders.Redis;
+                            redisOpt.SerializerName = RedisCachingProvider;
                             RedisDBOptions dbConfig = redisOpt.DBConfig;
                             dbConfig.Username = redisConfig.User;
                             dbConfig.Password = redisConfig.Password;
@@ -36,10 +35,13 @@ namespace NetTemplate.Shared.Infrastructure.Caching.Extensions
                                 int port = parts.Length > 1 ? int.Parse(parts[1]) : 6379;
                                 dbConfig.Endpoints.Add(new ServerEndPoint(host, port));
                             }
-                        }, name: CachingProviders.Redis);
+                        }, name: RedisCachingProvider);
                     }
                 })
                 .AddSingleton<IApplicationCache, ApplicationCache>();
         }
+
+        public const string InMemoryCachingProvider = "InMemory";
+        public const string RedisCachingProvider = "Redis";
     }
 }

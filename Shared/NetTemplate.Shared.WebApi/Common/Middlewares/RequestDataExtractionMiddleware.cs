@@ -1,6 +1,5 @@
 ﻿using NetTemplate.Shared.ApplicationCore.Identity.Interfaces;
 using Serilog.Context;
-using LogProperties = NetTemplate.Shared.WebApi.Common.Constants.LogProperties;
 
 namespace NetTemplate.Shared.WebApi.Common.Middlewares
 {
@@ -21,6 +20,12 @@ namespace NetTemplate.Shared.WebApi.Common.Middlewares
             }
 
             await next(context);
+        }
+
+
+        public static class LogProperties
+        {
+            public const string UserCode = nameof(UserCode);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NetTemplate.Blog.ApplicationCore.User;
-using CommonConstraints = NetTemplate.Shared.ApplicationCore.Common.Constants.Constraints;
+using NetTemplate.Shared.ApplicationCore.Common.Entities;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.User.EntityConfigs
 {
@@ -10,15 +10,15 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User.EntityConfigs
         public void Configure(EntityTypeBuilder<UserPartialEntity> builder)
         {
             builder.Property(e => e.UserCode)
-                .HasMaxLength(CommonConstraints.MaxStringLength)
+                .HasMaxLength(AppEntity.Constraints.MaxStringLength)
                 .IsRequired();
 
             builder.Property(e => e.FirstName)
-                .HasMaxLength(CommonConstraints.MaxStringLength)
+                .HasMaxLength(AppEntity.Constraints.MaxStringLength)
                 .IsRequired();
 
             builder.Property(e => e.LastName)
-                .HasMaxLength(CommonConstraints.MaxStringLength)
+                .HasMaxLength(AppEntity.Constraints.MaxStringLength)
                 .IsRequired();
         }
     }
