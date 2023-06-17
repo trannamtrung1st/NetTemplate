@@ -1,4 +1,4 @@
-﻿using NetTemplate.Common.Reflection;
+﻿using NetTemplate.Common.Reflection.Extensions;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Shared.ApplicationCore.Common.Entities

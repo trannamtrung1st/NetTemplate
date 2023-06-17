@@ -2,7 +2,7 @@
 using NetTemplate.Blog.ApplicationCore.Post.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.ApplicationCore.User;
-using NetTemplate.Common.Validation;
+using NetTemplate.Common.Validation.Utils;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;

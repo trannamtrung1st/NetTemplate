@@ -1,4 +1,4 @@
-﻿using NetTemplate.Common.Reflection;
+﻿using NetTemplate.Common.Reflection.Extensions;
 using System.Reflection;
 
 namespace NetTemplate.Common.Logging.Extensions

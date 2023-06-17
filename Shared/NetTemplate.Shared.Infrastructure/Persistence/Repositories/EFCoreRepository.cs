@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using NetTemplate.Common.Mapping.Extensions;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
 

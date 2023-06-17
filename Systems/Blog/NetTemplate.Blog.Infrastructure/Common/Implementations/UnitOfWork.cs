@@ -1,5 +1,5 @@
 ﻿using NetTemplate.Blog.Infrastructure.Persistence;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Attributes;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace NetTemplate.Blog.Infrastructure.Common.Implementations

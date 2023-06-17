@@ -1,7 +1,7 @@
 ﻿using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.Extensions.DependencyInjection;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Extensions;
 using NetTemplate.Shared.Infrastructure.Background.Filters;
 using NetTemplate.Shared.Infrastructure.Background.Models;
 using NetTemplate.Shared.Infrastructure.Background.Utils;

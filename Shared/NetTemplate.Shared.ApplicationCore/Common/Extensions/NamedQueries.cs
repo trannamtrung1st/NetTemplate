@@ -1,4 +1,5 @@
-﻿using NetTemplate.Common.Enumerations;
+﻿using NetTemplate.Common.Enumerations.Extensions;
+using NetTemplate.Common.Queries.Extensions;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 
 namespace System.Linq

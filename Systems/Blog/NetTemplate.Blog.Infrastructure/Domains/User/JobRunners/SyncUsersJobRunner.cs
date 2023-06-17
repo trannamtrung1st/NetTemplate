@@ -1,6 +1,6 @@
 ﻿using Hangfire;
 using NetTemplate.Blog.ApplicationCore.User.Jobs.SyncUsers;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Attributes;
 using NetTemplate.Shared.Infrastructure.Background.Filters;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.User.JobRunners

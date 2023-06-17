@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Attributes;
 using NetTemplate.Common.Logging.Interceptors;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using System.Reflection;

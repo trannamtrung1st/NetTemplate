@@ -3,7 +3,7 @@ using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Events;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces;
 using NetTemplate.Blog.ApplicationCore.PostCategory.Views;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Attributes;
 using NetTemplate.Common.MemoryStore.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Implementations;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;

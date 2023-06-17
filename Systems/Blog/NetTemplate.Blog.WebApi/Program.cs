@@ -16,7 +16,7 @@ using NetTemplate.Blog.Infrastructure.PubSub.Models;
 using NetTemplate.Blog.WebApi.Common.Extensions;
 using NetTemplate.Blog.WebApi.Common.Models;
 using NetTemplate.Common.Logging.Options;
-using NetTemplate.Common.Web.Middlewares;
+using NetTemplate.Common.Web.Middleware.Implementations;
 using NetTemplate.Redis.Extensions;
 using NetTemplate.Redis.Models;
 using NetTemplate.Shared.ApplicationCore.Common.Events;

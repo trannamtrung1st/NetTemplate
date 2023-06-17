@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Blog.WebApi.Common.Models;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Extensions;
 using NetTemplate.Shared.WebApi.Common.Extensions;
 using NetTemplate.Shared.WebApi.Identity.Models;
 

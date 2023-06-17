@@ -9,7 +9,7 @@ using NetTemplate.Blog.Infrastructure.Domains.Post.Extensions;
 using NetTemplate.Blog.Infrastructure.Persistence;
 using NetTemplate.Blog.Infrastructure.PubSub.Extensions;
 using NetTemplate.Blog.Infrastructure.PubSub.Models;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Extensions;
 using NetTemplate.Redis.Extensions;
 using NetTemplate.Redis.Models;
 using NetTemplate.Shared.ClientSDK.Common.Models;
@@ -48,7 +48,8 @@ namespace NetTemplate.Blog.Infrastructure.Common.Extensions
             if (redisConfig.Enabled)
             {
                 services.AddRedisServices(redisConfig)
-                    .AddRedisPostCache();
+                    .AddRedisPostCache()
+                    .AddRedisSimpleLock();
             }
             else
             {

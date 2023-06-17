@@ -1,5 +1,5 @@
 ﻿using NetTemplate.Blog.ApplicationCore.PostCategory.Interfaces;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Attributes;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 
 namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations

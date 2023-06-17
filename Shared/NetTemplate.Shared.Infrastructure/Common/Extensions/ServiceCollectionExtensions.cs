@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Attributes;
 using NetTemplate.Common.MemoryStore.Extensions;
+using NetTemplate.Common.Synchronization.Extensions;
 using NetTemplate.Redis.Models;
 using NetTemplate.Shared.ApplicationCore.Common.Extensions;
 using NetTemplate.Shared.ApplicationCore.Identity.Extensions;
@@ -111,7 +112,8 @@ namespace NetTemplate.Shared.Infrastructure.Common.Extensions
                 .AddClientSdkServices(clientConfig)
                 .AddIdentityService()
                 .AddNullCurrentUserProvider()
-                .AddEntityVersionManager();
+                .AddEntityVersionManager()
+                .AddSemaphoreSlimLock();
 
             if (!isProduction)
             {

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using NetTemplate.Common.Logging.Attributes;
 using NetTemplate.Common.Logging.Extensions;
-using NetTemplate.Common.Reflection;
+using NetTemplate.Common.Reflection.Extensions;
 using System.Diagnostics;
 
 namespace NetTemplate.Common.Logging.Interceptors

@@ -1,5 +1,5 @@
 ﻿using NetTemplate.Blog.Infrastructure.Common.Models;
-using NetTemplate.Common.Objects;
+using NetTemplate.Common.Objects.Interfaces;
 
 namespace NetTemplate.Blog.WebApi.Common.Models
 {

@@ -2,7 +2,7 @@
 using Hangfire.Logging;
 using Hangfire.Server;
 using NetTemplate.Common.Logging.Extensions;
-using NetTemplate.Common.Reflection;
+using NetTemplate.Common.Reflection.Extensions;
 
 namespace NetTemplate.Shared.Infrastructure.Background.Filters
 {

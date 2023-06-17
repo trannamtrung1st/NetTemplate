@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using NetTemplate.Blog.ApplicationCore.Post;
 using NetTemplate.Blog.Infrastructure.Persistence;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Attributes;
+using NetTemplate.Common.Mapping.Extensions;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Models;
 using NetTemplate.Shared.Infrastructure.Persistence.Repositories;

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Extensions;
 using NetTemplate.Shared.ApplicationCore.Identity.Interfaces;
 using NetTemplate.Shared.WebApi.Identity.Implementations;
 using NetTemplate.Shared.WebApi.Identity.Models;

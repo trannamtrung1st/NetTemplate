@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NetTemplate.Blog.ApplicationCore.Common.Models;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Extensions;
 
 namespace NetTemplate.Blog.ApplicationCore.Common.Extensions
 {

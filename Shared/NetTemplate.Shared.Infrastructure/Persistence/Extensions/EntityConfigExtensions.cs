@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NetTemplate.Common.Reflection;
+using NetTemplate.Common.Expressions.Extensions;
+using NetTemplate.Common.Reflection.Extensions;
+using NetTemplate.Common.Reflection.Utils;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;
 using NetTemplate.Shared.Infrastructure.Persistence.Interfaces;
 using System.Linq.Expressions;

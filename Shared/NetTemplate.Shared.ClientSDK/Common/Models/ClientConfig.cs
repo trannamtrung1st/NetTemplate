@@ -1,4 +1,4 @@
-﻿using NetTemplate.Common.Objects;
+﻿using NetTemplate.Common.Objects.Interfaces;
 
 namespace NetTemplate.Shared.ClientSDK.Common.Models
 {

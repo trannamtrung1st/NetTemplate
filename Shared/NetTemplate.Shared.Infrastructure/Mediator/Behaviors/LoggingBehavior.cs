@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using NetTemplate.Common.Reflection;
+using NetTemplate.Common.Reflection.Extensions;
 using System.Diagnostics;
 
 namespace NetTemplate.Shared.Infrastructure.Mediator.Behaviors

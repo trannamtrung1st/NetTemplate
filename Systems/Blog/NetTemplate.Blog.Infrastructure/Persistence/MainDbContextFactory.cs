@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using NetTemplate.Common.Mediator;
+using NetTemplate.Common.Mediator.Implementations;
 using NetTemplate.Shared.ApplicationCore.Identity.Implementations;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence

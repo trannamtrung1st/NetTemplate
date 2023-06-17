@@ -1,7 +1,7 @@
 ﻿using Castle.DynamicProxy;
 using Microsoft.Extensions.Logging;
 using NetTemplate.Common.Logging.Extensions;
-using NetTemplate.Common.Reflection;
+using NetTemplate.Common.Reflection.Extensions;
 
 namespace NetTemplate.Common.Logging.Interceptors
 {

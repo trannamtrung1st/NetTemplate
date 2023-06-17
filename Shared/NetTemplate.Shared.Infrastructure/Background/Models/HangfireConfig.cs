@@ -1,4 +1,4 @@
-﻿using NetTemplate.Common.Objects;
+﻿using NetTemplate.Common.Objects.Interfaces;
 using TimeZoneConverter;
 
 namespace NetTemplate.Shared.Infrastructure.Background.Models

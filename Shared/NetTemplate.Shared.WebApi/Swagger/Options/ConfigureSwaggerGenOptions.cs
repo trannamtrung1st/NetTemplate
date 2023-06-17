@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
-using NetTemplate.Common.Reflection;
+using NetTemplate.Common.Reflection.Extensions;
 using NetTemplate.Shared.WebApi.Common.Models;
 using NetTemplate.Shared.WebApi.Identity.Schemes.ClientAuthentication;
 using Swashbuckle.AspNetCore.SwaggerGen;

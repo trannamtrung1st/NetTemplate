@@ -4,7 +4,7 @@ using NetTemplate.ApacheKafka.Implementations;
 using NetTemplate.ApacheKafka.Interfaces;
 using NetTemplate.ApacheKafka.Models;
 using NetTemplate.ApacheKafka.Utils;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Extensions;
 
 namespace NetTemplate.ApacheKafka.Extensions
 {

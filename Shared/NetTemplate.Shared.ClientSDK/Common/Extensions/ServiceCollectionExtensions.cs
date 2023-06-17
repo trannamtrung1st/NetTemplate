@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Extensions;
 using NetTemplate.Shared.ClientSDK.Common.Handlers;
 using NetTemplate.Shared.ClientSDK.Common.Models;
 

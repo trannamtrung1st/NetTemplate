@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
-using NetTemplate.Common.Streams;
+using NetTemplate.Common.Streams.Extensions;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 
 namespace NetTemplate.Shared.WebApi.Common.Filters

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Attributes;
 using NetTemplate.Shared.Infrastructure.Persistence.Interfaces;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence.Implementations

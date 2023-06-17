@@ -1,4 +1,4 @@
-﻿using NetTemplate.Common.Objects;
+﻿using NetTemplate.Common.Objects.Interfaces;
 using System.Reflection;
 
 namespace NetTemplate.Blog.Infrastructure.Common.Models

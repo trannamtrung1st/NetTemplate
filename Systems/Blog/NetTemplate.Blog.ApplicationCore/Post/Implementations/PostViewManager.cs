@@ -2,7 +2,7 @@
 using NetTemplate.Blog.ApplicationCore.Common.Models;
 using NetTemplate.Blog.ApplicationCore.Post.Interfaces;
 using NetTemplate.Blog.ApplicationCore.Post.Views;
-using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Common.DependencyInjection.Attributes;
 using NetTemplate.Common.MemoryStore.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Implementations;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;

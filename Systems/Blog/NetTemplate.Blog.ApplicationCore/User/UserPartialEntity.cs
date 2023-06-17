@@ -1,5 +1,5 @@
 ﻿using NetTemplate.Blog.ApplicationCore.User.Events;
-using NetTemplate.Common.Validation;
+using NetTemplate.Common.Validation.Utils;
 using NetTemplate.Shared.ApplicationCore.Common.Entities;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Common.Interfaces;

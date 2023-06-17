@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using NetTemplate.Common.Reflection;
+using NetTemplate.Common.Reflection.Utils;
 using NetTemplate.Shared.WebApi.Common.Attributes;
 using NetTemplate.Shared.WebApi.Common.Models;
 
