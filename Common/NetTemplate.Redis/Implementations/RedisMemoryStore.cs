@@ -4,7 +4,7 @@ using StackExchange.Redis;
 
 namespace NetTemplate.Redis.Implementations
 {
-    public class RedisMemoryStore : IMemoryStore
+    public class RedisMemoryStore : IDistributedMemoryStore
     {
         private readonly ConnectionMultiplexer _connectionMultiplexer;
 

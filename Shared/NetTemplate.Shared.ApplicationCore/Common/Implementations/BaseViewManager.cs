@@ -5,9 +5,9 @@ namespace NetTemplate.Shared.ApplicationCore.Common.Implementations
 {
     public abstract class BaseViewManager
     {
-        private readonly IMemoryStore _memoryStore;
+        private readonly IDistributedMemoryStore _memoryStore;
 
-        public BaseViewManager(IMemoryStore memoryStore)
+        public BaseViewManager(IDistributedMemoryStore memoryStore)
         {
             _memoryStore = memoryStore;
         }

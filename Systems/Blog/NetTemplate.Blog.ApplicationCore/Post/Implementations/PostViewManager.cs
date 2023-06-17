@@ -17,7 +17,7 @@ namespace NetTemplate.Blog.ApplicationCore.Post.Implementations
         private readonly IOptions<ViewsConfig> _viewsOptions;
 
         public PostViewManager(
-            IMemoryStore memoryStore,
+            IDistributedMemoryStore memoryStore,
             IPostRepository postRepository,
             IEntityCache<PostView> postCache,
             IOptions<ViewsConfig> viewsOptions) : base(memoryStore)

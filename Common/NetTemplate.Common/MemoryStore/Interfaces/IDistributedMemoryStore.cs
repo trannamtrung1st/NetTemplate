@@ -1,6 +1,6 @@
 ﻿namespace NetTemplate.Common.MemoryStore.Interfaces
 {
-    public interface IMemoryStore
+    public interface IDistributedMemoryStore
     {
         Task<bool> KeyExists(string key, CancellationToken cancellationToken = default);
         Task<bool> RemoveKey(string key, CancellationToken cancellationToken = default);

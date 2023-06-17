@@ -22,7 +22,7 @@ namespace NetTemplate.Redis.Extensions
 
         public static IServiceCollection AddRedisMemoryStore(this IServiceCollection services)
         {
-            return services.AddSingleton<IMemoryStore, RedisMemoryStore>();
+            return services.AddSingleton<IDistributedMemoryStore, RedisMemoryStore>();
         }
     }
 }

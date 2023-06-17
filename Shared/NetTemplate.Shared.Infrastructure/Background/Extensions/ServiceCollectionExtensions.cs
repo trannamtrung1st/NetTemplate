@@ -11,9 +11,7 @@ namespace NetTemplate.Shared.Infrastructure.Background.Extensions
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddHangfireDefaults(this IServiceCollection services,
-            HangfireConfig hangfireConfig, string connStr, string masterConnStr,
-            int retryAttemps = DefaultRetryAttempts,
-            int secondFactor = DefaultSecondsFactor)
+            HangfireConfig hangfireConfig, string connStr, string masterConnStr)
         {
             HangfireHelper.InitHangfireDatabase(masterConnStr, hangfireConfig.DatabaseName).Wait();
 
@@ -23,10 +21,10 @@ namespace NetTemplate.Shared.Infrastructure.Background.Extensions
                     .UseRecommendedSerializerSettings()
                     .UseFilter(new AutomaticRetryAttribute()
                     {
-                        Attempts = DefaultRetryAttempts,
-                        DelayInSecondsByAttemptFunc = (attempt) => (int)(DefaultSecondsFactor * attempt)
+                        Attempts = hangfireConfig.RetryAttemps ?? DefaultRetryAttempts,
+                        DelayInSecondsByAttemptFunc = (attempt) => (int)(hangfireConfig.RetrySecondsFactor ?? DefaultSecondsFactor * attempt)
                     })
-                    .UseFilter(new JobLoggingFilter())
+                    .UseFilter(new JobLogging())
                     .UseSerilogLogProvider()
 
                     // [OPTIONAL] In-memory

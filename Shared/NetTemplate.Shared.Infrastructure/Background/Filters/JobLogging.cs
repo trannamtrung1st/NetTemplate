@@ -1,15 +1,16 @@
-﻿using Hangfire.Logging;
+﻿using Hangfire.Common;
+using Hangfire.Logging;
 using Hangfire.Server;
 using NetTemplate.Common.Logging.Extensions;
 using NetTemplate.Common.Reflection;
 
 namespace NetTemplate.Shared.Infrastructure.Background.Filters
 {
-    public class JobLoggingFilter : IServerFilter, IServerExceptionFilter
+    public class JobLogging : JobFilterAttribute, IServerFilter, IServerExceptionFilter
     {
         private readonly ILog _logger;
 
-        public JobLoggingFilter()
+        public JobLogging()
         {
             _logger = LogProvider.GetCurrentClassLogger();
         }

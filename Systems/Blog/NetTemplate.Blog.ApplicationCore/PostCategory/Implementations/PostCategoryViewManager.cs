@@ -23,12 +23,12 @@ namespace NetTemplate.Blog.ApplicationCore.PostCategory.Implementations
         }
 
         // [NOTE] can be a NoSQL data store instead of memory store
-        private readonly IMemoryStore _memoryStore;
+        private readonly IDistributedMemoryStore _memoryStore;
         private readonly IOptions<ViewsConfig> _viewsOptions;
         private readonly IPostCategoryRepository _postCategoryRepository;
 
         public PostCategoryViewManager(
-            IMemoryStore memoryStore,
+            IDistributedMemoryStore memoryStore,
             IOptions<ViewsConfig> viewsOptions,
             IPostCategoryRepository postCategoryRepository) : base(memoryStore)
         {

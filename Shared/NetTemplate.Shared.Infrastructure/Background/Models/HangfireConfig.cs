@@ -10,6 +10,8 @@ namespace NetTemplate.Shared.Infrastructure.Background.Models
         public bool UseDashboard { get; set; }
         public string TimeZone { get; set; }
         public string DatabaseName { get; set; }
+        public int? RetryAttemps { get; set; }
+        public int? RetrySecondsFactor { get; set; }
         public TimeZoneInfo TimeZoneInfo => TimeZone != null ? TZConvert.GetTimeZoneInfo(TimeZone) : null;
         public IEnumerable<CronJob> Jobs { get; set; }
 

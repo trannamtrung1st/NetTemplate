@@ -7,10 +7,10 @@ namespace NetTemplate.ApacheKafka.Implementations
 {
     public class MemoryOffsetStore : IExternalOffsetStore
     {
-        private readonly IMemoryStore _memoryStore;
+        private readonly IDistributedMemoryStore _memoryStore;
         private readonly IAdminClient _adminClient;
 
-        public MemoryOffsetStore(IMemoryStore memoryStore, IAdminClient adminClient)
+        public MemoryOffsetStore(IDistributedMemoryStore memoryStore, IAdminClient adminClient)
         {
             _memoryStore = memoryStore;
             _adminClient = adminClient;

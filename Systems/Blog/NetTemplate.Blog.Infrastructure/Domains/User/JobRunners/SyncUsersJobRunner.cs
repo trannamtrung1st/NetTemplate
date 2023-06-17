@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using NetTemplate.Blog.ApplicationCore.User.Jobs.SyncUsers;
 using NetTemplate.Common.DependencyInjection;
+using NetTemplate.Shared.Infrastructure.Background.Filters;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.User.JobRunners
 {
@@ -12,6 +13,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User.JobRunners
             (int)(SyncUsersJobConstants.InitialDelay * 1.25),
             (int)(SyncUsersJobConstants.InitialDelay * 1.5)
         })]
+        [IgnoreIfTimedOut(timeOutMs: SyncUsersJobConstants.TimeOutMs)]
         Task Start(SyncUsersJobArgument args, CancellationToken cancellationToken = default);
     }
 

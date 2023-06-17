@@ -8,7 +8,7 @@ namespace NetTemplate.Common.MemoryStore.Extensions
     {
         public static IServiceCollection AddSimpleMemoryStore(this IServiceCollection services)
         {
-            return services.AddSingleton<IMemoryStore, SimpleMemoryStore>();
+            return services.AddSingleton<IDistributedMemoryStore, SimpleMemoryStore>();
         }
     }
 }

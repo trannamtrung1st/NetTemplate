@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace NetTemplate.Common.MemoryStore.Implementations
 {
-    public class SimpleMemoryStore : IMemoryStore
+    public class SimpleMemoryStore : IDistributedMemoryStore
     {
         private readonly ConcurrentDictionary<string, object> _map;
 
