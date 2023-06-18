@@ -19,6 +19,7 @@ namespace NetTemplate.ApacheKafka.Models
         public bool UseExternalOffsetStore { get; set; }
         public int DefaultRetryAfter { get; set; }
         public int ConsumerCount { get; set; }
+        public int MaxRetryCount { get; set; }
 
         public object Clone()
         {
@@ -29,6 +30,7 @@ namespace NetTemplate.ApacheKafka.Models
                 UseExternalOffsetStore = UseExternalOffsetStore,
                 DefaultRetryAfter = DefaultRetryAfter,
                 ConsumerCount = ConsumerCount,
+                MaxRetryCount = MaxRetryCount
             };
         }
     }

@@ -7,6 +7,7 @@ using NetTemplate.ApacheKafka.Extensions;
 using NetTemplate.ApacheKafka.Interfaces;
 using NetTemplate.ApacheKafka.Models;
 using NetTemplate.ApacheKafka.Utils;
+using Polly;
 
 namespace NetTemplate.ApacheKafka.Implementations
 {
@@ -76,18 +77,21 @@ namespace NetTemplate.ApacheKafka.Implementations
         {
             Thread thread = new Thread(async () =>
             {
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    try
-                    {
-                        await Consume(threadId, consumerConfig, cancellationToken);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.LogError(ex, ex.Message);
+                PolicyResult result = await Policy.Handle<Exception>()
+                    .WaitAndRetryAsync(
+                        retryCount: consumerConfig.MaxRetryCount,
+                        sleepDurationProvider: (_) => TimeSpan.FromMilliseconds(consumerConfig.DefaultRetryAfter),
+                        onRetry: (exception, delay, count, context) =>
+                        {
+                            logger.LogError(exception, exception.Message);
+                        })
+                    .ExecuteAndCaptureAsync(
+                        async (cancellationToken) => await Consume(threadId, consumerConfig, cancellationToken),
+                        cancellationToken);
 
-                        await Task.Delay(consumerConfig.DefaultRetryAfter);
-                    }
+                if (result.Outcome == OutcomeType.Failure)
+                {
+                    logger.LogCritical(result.FinalException, "[ERROR] Failed to consume messages");
                 }
             })
             {

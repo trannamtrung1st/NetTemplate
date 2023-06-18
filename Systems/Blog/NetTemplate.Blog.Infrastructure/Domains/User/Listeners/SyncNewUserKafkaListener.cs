@@ -8,6 +8,7 @@ using NetTemplate.ApacheKafka.Interfaces;
 using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Blog.ApplicationCore.User.Commands.SyncNewUser;
 using NetTemplate.Blog.Infrastructure.Domains.User.Interfaces;
+using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
 using ListenerNames = NetTemplate.Blog.Infrastructure.Domains.User.Constants.ListenerNames;
 using TopicNames = NetTemplate.Blog.Infrastructure.Integrations.Identity.Constants.TopicNames;
@@ -41,7 +42,7 @@ namespace NetTemplate.Blog.Infrastructure.Domains.User.Listeners
 
                 await mediator.Send(command, cancellationToken);
             }
-            catch (Exception ex)
+            catch (BaseException ex)
             {
                 logger.LogError(ex, ex.Message);
             }
