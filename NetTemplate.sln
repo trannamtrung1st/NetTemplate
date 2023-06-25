@@ -44,7 +44,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{7092AF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.ApacheKafka", "Common\NetTemplate.ApacheKafka\NetTemplate.ApacheKafka.csproj", "{AD740E04-B99F-4573-9A8F-0F597FDFECBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetTemplate.Blog.ConsumersWorker", "Systems\Blog\NetTemplate.Blog.ConsumersWorker\NetTemplate.Blog.ConsumersWorker.csproj", "{48B38A12-08C5-45BD-9D37-4A8AA5102C3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetTemplate.Blog.ConsumersWorker", "Systems\Blog\NetTemplate.Blog.ConsumersWorker\NetTemplate.Blog.ConsumersWorker.csproj", "{48B38A12-08C5-45BD-9D37-4A8AA5102C3E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{5C34A1AA-C51D-4355-996B-5DA111450986}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdService", "IdService", "{290D7874-960F-47D5-AF75-73AE8DD29C83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -130,6 +134,7 @@ Global
 		{7092AFBA-A748-4F3D-AF59-9B6BEA8DBF53} = {6C99D2B1-F5FF-455A-BE67-BD8ADD1FD4E6}
 		{AD740E04-B99F-4573-9A8F-0F597FDFECBF} = {B43C91A4-83AC-4DE1-BC96-52D35BDBB3FA}
 		{48B38A12-08C5-45BD-9D37-4A8AA5102C3E} = {6C99D2B1-F5FF-455A-BE67-BD8ADD1FD4E6}
+		{290D7874-960F-47D5-AF75-73AE8DD29C83} = {5C34A1AA-C51D-4355-996B-5DA111450986}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2119FE8C-EDF8-4B3A-B6DC-A62DC2C39512}
