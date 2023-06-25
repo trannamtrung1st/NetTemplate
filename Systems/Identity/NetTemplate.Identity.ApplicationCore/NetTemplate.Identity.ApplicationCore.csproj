@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Folder Include="Common\Commands\" />
+		<Folder Include="Common\Events\" />
+		<Folder Include="Common\Exceptions\" />
+		<Folder Include="Common\Extensions\" />
+		<Folder Include="Common\Handlers\" />
+		<Folder Include="Common\Interfaces\" />
+		<Folder Include="Common\Jobs\" />
+		<Folder Include="Common\Mapping\" />
+		<Folder Include="Common\Models\" />
+		<Folder Include="Common\Queries\" />
+		<Folder Include="Common\Utils\" />
+		<Folder Include="Cross\Commands\" />
+		<Folder Include="Cross\Queries\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.ApplicationCore.Domains\NetTemplate.Shared.ApplicationCore.Domains.csproj" />
+		<ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.ApplicationCore\NetTemplate.Shared.ApplicationCore.csproj" />
+	</ItemGroup>
+
+</Project>

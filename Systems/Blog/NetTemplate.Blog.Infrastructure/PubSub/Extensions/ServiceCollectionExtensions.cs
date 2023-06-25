@@ -5,6 +5,7 @@ using NetTemplate.Blog.Infrastructure.Domains.User.Listeners;
 using NetTemplate.Blog.Infrastructure.PubSub.Models;
 using NetTemplate.Redis.Extensions;
 using NetTemplate.Redis.Models;
+using NetTemplate.Shared.Infrastructure.PubSub.Implementations;
 using NetTemplate.Shared.Infrastructure.PubSub.Interfaces;
 
 namespace NetTemplate.Blog.Infrastructure.PubSub.Extensions
@@ -22,8 +23,8 @@ namespace NetTemplate.Blog.Infrastructure.PubSub.Extensions
             }
             else if (pubSubConfig.UseRedis)
             {
-                services.AddSingleton<ITopicManager, NullTopicManager>()
-                    .AddRedisPubSub(redisPubSubConfig)
+                services.AddRedisPubSub(redisPubSubConfig)
+                    .AddSingleton<ITopicManager, NullTopicManager>()
                     .AddSingleton<ISyncNewUserListener, SyncNewUserRedisListener>();
             }
 

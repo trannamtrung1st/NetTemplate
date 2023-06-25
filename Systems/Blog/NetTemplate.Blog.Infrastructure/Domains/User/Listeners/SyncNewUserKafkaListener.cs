@@ -11,7 +11,7 @@ using NetTemplate.Blog.Infrastructure.Domains.User.Interfaces;
 using NetTemplate.Shared.ApplicationCore.Common.Exceptions;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
 using ListenerNames = NetTemplate.Blog.Infrastructure.Domains.User.Constants.ListenerNames;
-using TopicNames = NetTemplate.Blog.Infrastructure.Integrations.Identity.Constants.TopicNames;
+using TopicNames = NetTemplate.Shared.ApplicationCore.Domains.Identity.Constants.TopicNames;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.User.Listeners
 {

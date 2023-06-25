@@ -73,6 +73,51 @@ namespace NetTemplate.Shared.Infrastructure.Persistence
 
         #endregion
 
+        public virtual Task ResetState(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries().ToArray();
+            foreach (var entry in entries)
+            {
+                entry.State = EntityState.Detached;
+            }
+            return Task.CompletedTask;
+        }
+
+        public virtual async Task<int> SaveEntitiesAsync(bool dispatchEvents = true, CancellationToken cancellationToken = default)
+        {
+            if (dispatchEvents) await _mediator.DispatchEntityEventsAsync(this, isPost: false, cancellationToken);
+
+            int result = await SaveChangesAsync(cancellationToken);
+
+            if (dispatchEvents) await _mediator.DispatchEntityEventsAsync(this, isPost: true, cancellationToken);
+
+            return result;
+        }
+
+        public virtual async Task SeedMigrationsAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
+        {
+            using var transaction = await this.BeginTransactionOrCurrent(cancellationToken);
+
+            List<Func<T, IServiceProvider, CancellationToken, Task>> actions = GetMigrationSeedingActions();
+
+            foreach (var action in actions)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                await action(this as T, serviceProvider, cancellationToken);
+            }
+
+            actions.Clear();
+
+            await transaction.CommitAsync(cancellationToken: cancellationToken);
+        }
+
+        public virtual async Task Migrate(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
+        {
+            await Database.MigrateAsync(cancellationToken);
+            await SeedMigrationsAsync(serviceProvider, cancellationToken);
+        }
+
         protected virtual void AuditEntities()
         {
             var hasChanges = ChangeTracker.HasChanges();
@@ -134,25 +179,6 @@ namespace NetTemplate.Shared.Infrastructure.Persistence
             }
         }
 
-        public virtual Task ResetState(CancellationToken cancellationToken = default)
-        {
-            var entries = ChangeTracker.Entries().ToArray();
-            foreach (var entry in entries)
-            {
-                entry.State = EntityState.Detached;
-            }
-            return Task.CompletedTask;
-        }
-
-        public virtual async Task<int> SaveEntitiesAsync(bool dispatchEvents = true, CancellationToken cancellationToken = default)
-        {
-            if (dispatchEvents) await _mediator.DispatchEntityEventsAsync(this, isPost: false, cancellationToken);
-
-            int result = await SaveChangesAsync(cancellationToken);
-
-            if (dispatchEvents) await _mediator.DispatchEntityEventsAsync(this, isPost: true, cancellationToken);
-
-            return result;
-        }
+        protected abstract List<Func<T, IServiceProvider, CancellationToken, Task>> GetMigrationSeedingActions();
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using NetTemplate.ApacheKafka.Models;
 using NetTemplate.Shared.Infrastructure.PubSub.Interfaces;
 
-namespace NetTemplate.Blog.Infrastructure.Common.Implementations
+namespace NetTemplate.Shared.Infrastructure.PubSub.Implementations
 {
     public class KafkaTopicManager : ITopicManager
     {

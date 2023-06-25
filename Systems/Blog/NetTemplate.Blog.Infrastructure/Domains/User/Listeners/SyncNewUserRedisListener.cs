@@ -10,7 +10,7 @@ using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using ListenerNames = NetTemplate.Blog.Infrastructure.Domains.User.Constants.ListenerNames;
-using TopicNames = NetTemplate.Blog.Infrastructure.Integrations.Identity.Constants.TopicNames;
+using TopicNames = NetTemplate.Shared.ApplicationCore.Domains.Identity.Constants.TopicNames;
 
 namespace NetTemplate.Blog.Infrastructure.Domains.User.Listeners
 {

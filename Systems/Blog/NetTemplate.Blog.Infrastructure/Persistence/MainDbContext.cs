@@ -6,13 +6,11 @@ using NetTemplate.Blog.ApplicationCore.PostCategory;
 using NetTemplate.Blog.ApplicationCore.User;
 using NetTemplate.Shared.ApplicationCore.Identity.Interfaces;
 using NetTemplate.Shared.Infrastructure.Persistence;
-using NetTemplate.Shared.Infrastructure.Persistence.Extensions;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence
 {
     public class MainDbContext : BaseDbContext<MainDbContext>
     {
-        // [IMPORTANT] It is acceptable to comment obsolete migration logics (e.g, Changes in properties)
         public static readonly List<Func<MainDbContext, IServiceProvider, CancellationToken, Task>> MigrationSeedingActions
             = new List<Func<MainDbContext, IServiceProvider, CancellationToken, Task>>();
 
@@ -49,26 +47,7 @@ namespace NetTemplate.Blog.Infrastructure.Persistence
             base.OnModelCreating(modelBuilder);
         }
 
-        public async Task SeedMigrationsAsync(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
-        {
-            using var transaction = await this.BeginTransactionOrCurrent(cancellationToken);
-
-            foreach (var action in MigrationSeedingActions)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                await action(this, serviceProvider, cancellationToken);
-            }
-
-            MigrationSeedingActions.Clear();
-
-            await transaction.CommitAsync(cancellationToken: cancellationToken);
-        }
-
-        public async Task Migrate(IServiceProvider serviceProvider, CancellationToken cancellationToken = default)
-        {
-            await Database.MigrateAsync(cancellationToken);
-            await SeedMigrationsAsync(serviceProvider, cancellationToken);
-        }
+        protected override List<Func<MainDbContext, IServiceProvider, CancellationToken, Task>> GetMigrationSeedingActions()
+            => MigrationSeedingActions;
     }
 }

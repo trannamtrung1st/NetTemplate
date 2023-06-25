@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.16" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.16">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.16">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Common\NetTemplate.ApacheKafka\NetTemplate.ApacheKafka.csproj" />
+		<ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.Infrastructure.PubSub\NetTemplate.Shared.Infrastructure.PubSub.csproj" />
+		<ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.Infrastructure\NetTemplate.Shared.Infrastructure.csproj" />
+		<ProjectReference Include="..\NetTemplate.Identity.ApplicationCore\NetTemplate.Identity.ApplicationCore.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Common\Interfaces\" />
+		<Folder Include="Domains\Cross\" />
+		<Folder Include="Persistence\Extensions\" />
+		<Folder Include="Persistence\Interfaces\" />
+		<Folder Include="Persistence\Models\" />
+		<Folder Include="Persistence\QueryFilters\" />
+		<Folder Include="Persistence\Repositories\" />
+	</ItemGroup>
+
+</Project>

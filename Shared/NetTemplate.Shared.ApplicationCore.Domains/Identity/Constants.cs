@@ -1,4 +1,4 @@
-﻿namespace NetTemplate.Blog.Infrastructure.Integrations.Identity
+﻿namespace NetTemplate.Shared.ApplicationCore.Domains.Identity
 {
     public static class Constants
     {

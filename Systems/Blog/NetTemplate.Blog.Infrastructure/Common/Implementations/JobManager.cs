@@ -5,7 +5,7 @@ using NetTemplate.Common.DependencyInjection.Attributes;
 using NetTemplate.Shared.Infrastructure.Background.Extensions;
 using NetTemplate.Shared.Infrastructure.Background.Interfaces;
 using NetTemplate.Shared.Infrastructure.Background.Models;
-using CommonJobNames = NetTemplate.Blog.ApplicationCore.Cross.Constants.JobNames;
+using CrossJobNames = NetTemplate.Blog.ApplicationCore.Cross.Constants.JobNames;
 using UserJobNames = NetTemplate.Blog.ApplicationCore.User.Constants.JobNames;
 
 namespace NetTemplate.Blog.Infrastructure.Common.Implementations
@@ -32,7 +32,7 @@ namespace NetTemplate.Blog.Infrastructure.Common.Implementations
             {
                 switch (job.Name)
                 {
-                    case CommonJobNames.Sample:
+                    case CrossJobNames.Sample:
                         {
                             _recurringJobManager.ScheduleCronJob<object>(job,
                                 (jobData) => () => Console.WriteLine(),

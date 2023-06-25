@@ -19,6 +19,8 @@
 - Design patterns: ?
 - RabbitMQ: ?
 - Service discovery/registry
+- Documentation
+- UI template: React
 - More & more
 
 [IMPORTANT]

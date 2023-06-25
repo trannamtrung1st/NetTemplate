@@ -6,7 +6,7 @@ using NetTemplate.ApacheKafka.Extensions;
 using NetTemplate.ApacheKafka.Models;
 using NetTemplate.ApacheKafka.Utils;
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
-using TopicNames = NetTemplate.Blog.Infrastructure.Integrations.Identity.Constants.TopicNames;
+using TopicNames = NetTemplate.Shared.ApplicationCore.Domains.Identity.Constants.TopicNames;
 
 namespace NetTemplate.Blog.ConsoleApp.UseCases
 {

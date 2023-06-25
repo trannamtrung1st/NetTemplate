@@ -1,25 +1,16 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using NetTemplate.Common.DependencyInjection.Attributes;
-using NetTemplate.Shared.Infrastructure.Persistence.Interfaces;
+using NetTemplate.Shared.Infrastructure.Persistence.Implementations;
 
 namespace NetTemplate.Blog.Infrastructure.Persistence.Implementations
 {
     [SingletonService]
-    public class SqlConnectionProvider : ISqlConnectionProvider
+    public class SqlConnectionProvider : BaseSqlConnectionProvider
     {
-        private IConfiguration _configuration;
-
-        public SqlConnectionProvider(IConfiguration configuration)
+        public SqlConnectionProvider(IConfiguration configuration) : base(configuration)
         {
-            _configuration = configuration;
         }
 
-        public SqlConnection CreateConnection()
-        {
-            string connStr = _configuration.GetConnectionString(nameof(MainDbContext));
-
-            return new SqlConnection(connStr);
-        }
+        protected override string DefaultConnectionString => configuration.GetConnectionString(nameof(MainDbContext));
     }
 }

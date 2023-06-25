@@ -1,6 +1,6 @@
 ﻿using NetTemplate.Shared.Infrastructure.PubSub.Interfaces;
 
-namespace NetTemplate.Blog.Infrastructure.Common.Implementations
+namespace NetTemplate.Shared.Infrastructure.PubSub.Implementations
 {
     public class NullTopicManager : ITopicManager
     {

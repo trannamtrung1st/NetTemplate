@@ -4,6 +4,6 @@ namespace NetTemplate.Shared.Infrastructure.Persistence.Interfaces
 {
     public interface ISqlConnectionProvider
     {
-        SqlConnection CreateConnection();
+        SqlConnection CreateConnection(string connectionString = default);
     }
 }

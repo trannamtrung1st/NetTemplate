@@ -19,6 +19,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\Common\NetTemplate.ApacheKafka\NetTemplate.ApacheKafka.csproj" />
+		<ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.Infrastructure.PubSub\NetTemplate.Shared.Infrastructure.PubSub.csproj" />
 		<ProjectReference Include="..\..\..\Shared\NetTemplate.Shared.Infrastructure\NetTemplate.Shared.Infrastructure.csproj" />
 		<ProjectReference Include="..\NetTemplate.Blog.ApplicationCore\NetTemplate.Blog.ApplicationCore.csproj" />
 	</ItemGroup>

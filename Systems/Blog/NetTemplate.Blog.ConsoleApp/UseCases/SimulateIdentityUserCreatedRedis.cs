@@ -2,7 +2,7 @@
 using NetTemplate.Shared.ApplicationCore.Domains.Identity.Models;
 using Newtonsoft.Json;
 using StackExchange.Redis;
-using TopicNames = NetTemplate.Blog.Infrastructure.Integrations.Identity.Constants.TopicNames;
+using TopicNames = NetTemplate.Shared.ApplicationCore.Domains.Identity.Constants.TopicNames;
 
 namespace NetTemplate.Blog.ConsoleApp.UseCases
 {
